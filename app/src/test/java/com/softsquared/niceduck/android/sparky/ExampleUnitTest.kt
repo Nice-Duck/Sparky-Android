@@ -1,4 +1,4 @@
-package com.softsquared.gridge_test.android.sparky
+package com.softsquared.niceduck.android.sparky
 
 import org.junit.Test
 
