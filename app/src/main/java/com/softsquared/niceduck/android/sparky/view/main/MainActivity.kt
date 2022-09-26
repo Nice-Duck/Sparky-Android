@@ -1,4 +1,4 @@
-package com.softsquared.niceduck.android.sparky.src.main
+package com.softsquared.niceduck.android.sparky.view.main
 
 import android.os.Bundle
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMainBinding
