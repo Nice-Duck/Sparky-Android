@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/parent_layout_padding"
-    tools:context=".view.sign_in.SignInFragment">
+    tools:context=".view.sign_in.SignInActivity">
 
     <ImageView
         android:layout_gravity="center_horizontal"
