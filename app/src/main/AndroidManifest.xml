@@ -18,16 +18,23 @@
         android:theme="@style/Theme.Sparky"
         tools:targetApi="31">
         <activity
+            android:name=".view.sign_in.SignInActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.sign_up.SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.scrap.ScrapTemplateActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="image/*" />
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true">
