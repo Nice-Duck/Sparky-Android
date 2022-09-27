@@ -24,7 +24,7 @@ class SignUpInputPwdFragment :
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
-        signUpViewModel.setProgress(50)
+        signUpViewModel.setProgress(70)
         d("네비게이션 테스트", "signUpViewModel.setProgress(50) , ${signUpViewModel.progress.value}")
 
         binding.signUpInputPwdBtnNext.setOnClickListener {
