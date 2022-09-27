@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/sign_in_input"
         android:hint="example@sparky.com"
+        android:inputType="textEmailAddress"
         android:maxLength="20"
         android:paddingVertical="15dp"
         android:paddingStart="18dp"
