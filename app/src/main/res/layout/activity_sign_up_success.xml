@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="@dimen/parent_layout_padding"
+    tools:context=".view.sign_up.SignUpSuccessActivity">
+
+    <ImageView
+        android:layout_marginTop="122dp"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
+        android:src="@drawable/sign_up_img"
+        android:layout_marginBottom="38dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:text="회원가입이 완료되었습니다"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="48dp"
+        android:text="이제 로그인하여 스파키를 이용해보세요"/>
+
+    <Button
+        android:id="@+id/sign_up_success_btn_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button"
+        android:text="로그인하기"
+        android:textStyle="bold"
+        android:paddingVertical="15dp"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

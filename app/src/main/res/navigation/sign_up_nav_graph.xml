@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_up_nav_graph"
+    app:startDestination="@id/signUpInputEmailFragment">
+
+    <fragment
+        android:id="@+id/signUpInputEmailFragment"
+        android:name="com.softsquared.niceduck.android.sparky.view.sign_up.fragment.SignUpInputEmailFragment"
+        android:label="fragment_sign_up_input_email"
+        tools:layout="@layout/fragment_sign_up_input_email" >
+        <action
+            android:id="@+id/action_signUpInputEmailFragment_to_signUpInputPwdFragment"
+            app:destination="@id/signUpInputPwdFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpInputPwdFragment"
+        android:name="com.softsquared.niceduck.android.sparky.view.sign_up.fragment.SignUpInputPwdFragment"
+        android:label="fragment_sign_up_input_pwd"
+        tools:layout="@layout/fragment_sign_up_input_pwd" >
+        <action
+            android:id="@+id/action_signUpInputPwdFragment_to_signUpInputNameFragment"
+            app:destination="@id/signUpInputNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpInputNameFragment"
+        android:name="com.softsquared.niceduck.android.sparky.view.sign_up.fragment.SignUpInputNameFragment"
+        android:label="fragment_sign_up_input_name"
+        tools:layout="@layout/fragment_sign_up_input_name" />
+</navigation>
