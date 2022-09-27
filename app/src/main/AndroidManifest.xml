@@ -25,7 +25,13 @@
             android:exported="false" />
         <activity
             android:name=".view.sign_up.SignUpActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.scrap.ScrapTemplateActivity"
             android:exported="true">
@@ -41,11 +47,6 @@
         <activity
             android:name=".view.main.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

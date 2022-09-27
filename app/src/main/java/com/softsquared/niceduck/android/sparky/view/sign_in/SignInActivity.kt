@@ -8,6 +8,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
 }

@@ -23,6 +23,7 @@
         android:background="@drawable/sign_in_input"
         android:hint="이메일을 입력해주세요"
         android:maxLength="20"
+        android:inputType="textEmailAddress"
         android:paddingVertical="15dp"
         android:paddingStart="18dp"
         android:singleLine="true"

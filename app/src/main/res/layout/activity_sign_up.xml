@@ -39,6 +39,18 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:layout_marginTop="18dp"
+        android:progress="0"
+        android:id="@+id/sign_up_linearProgressIndicator"
+        app:trackColor="@color/progress_indicator"
+        app:indicatorColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/sign_up_nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -48,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_linearProgressIndicator"
         app:navGraph="@navigation/sign_up_nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
