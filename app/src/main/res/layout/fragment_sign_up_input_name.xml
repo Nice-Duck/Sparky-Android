@@ -20,7 +20,7 @@
         android:id="@+id/sign_up_input_name_edit_txt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/sign_in_input"
+        android:background="@drawable/sign_input_selector"
         android:hint="닉네임을 입력해주세요"
         android:maxLength="18"
         android:paddingVertical="15dp"
@@ -31,11 +31,20 @@
         android:layout_marginBottom="21dp"/>
 
     <TextView
+        android:id="@+id/sign_up_input_name_txt_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="특수문자는 사용할 수 없습니다."
+        android:textColor="@color/sparky_orange"
+        android:visibility="gone"
+        android:layout_marginBottom="21dp"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:text="영문, 한글, 숫자 6~18자"
-        android:textColor="@color/edit_text" />
+        android:text="한글, 영어, 숫자로 2~16글자"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/sign_up_input_name_btn_next"

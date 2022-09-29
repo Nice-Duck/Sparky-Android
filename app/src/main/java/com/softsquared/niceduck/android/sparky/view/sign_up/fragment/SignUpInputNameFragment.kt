@@ -25,12 +25,11 @@ class SignUpInputNameFragment :
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
         signUpViewModel.setProgress(100)
-        d("네비게이션 테스트", "signUpViewModel.setProgress(100) , ${signUpViewModel.progress.value}")
-
 
         binding.signUpInputNameBtnNext.setOnClickListener {
             val intent = Intent(activity, SignUpSuccessActivity::class.java)
             startActivity(intent)
+            activity?.finish()
         }
     }
 }

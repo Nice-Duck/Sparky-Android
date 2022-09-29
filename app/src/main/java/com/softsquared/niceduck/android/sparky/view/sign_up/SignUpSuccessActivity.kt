@@ -11,8 +11,7 @@ class SignUpSuccessActivity : BaseActivity<ActivitySignUpSuccessBinding>(Activit
         super.onCreate(savedInstanceState)
 
         binding.signUpSuccessBtnSignIn.setOnClickListener {
-            val intent = Intent(this, SignInActivity::class.java)
-            startActivity(intent)
+            finish()
         }
     }
 }

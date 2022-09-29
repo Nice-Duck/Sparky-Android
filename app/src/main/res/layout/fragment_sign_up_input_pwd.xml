@@ -20,7 +20,7 @@
         android:id="@+id/sign_up_input_pwd_edit_txt_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/sign_in_input"
+        android:background="@drawable/sign_input_selector"
         android:hint="비밀번호를 입력해주세요"
         android:inputType="textPassword"
         android:maxLength="20"
@@ -32,11 +32,20 @@
         android:layout_marginBottom="21dp"/>
 
     <TextView
+        android:id="@+id/sign_up_input_pwd_txt_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="올바르지 않은 비밀번호 형식입니다."
+        android:textColor="@color/sparky_orange"
+        android:visibility="gone"
+        android:layout_marginBottom="21dp"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:text="영문/숫자 조합 6~18자"
-        android:textColor="@color/edit_text" />
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/sign_up_input_pwd_btn_next"
