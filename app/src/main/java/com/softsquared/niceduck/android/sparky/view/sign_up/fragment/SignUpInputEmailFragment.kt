@@ -21,7 +21,7 @@ class SignUpInputEmailFragment :
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
-        signUpViewModel.setProgress(25)
+        signUpViewModel.setProgress(0)
 
         binding.signUpInputEmailBtnNext.setOnClickListener {
             val action =

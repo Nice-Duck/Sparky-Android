@@ -22,7 +22,7 @@ class SignUpInputCertificationNumFragment :
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
-        signUpViewModel.setProgress(50)
+        signUpViewModel.setProgress(35)
 
         binding.signUpInputCertificationNumBtnNext.setOnClickListener {
             val action =
