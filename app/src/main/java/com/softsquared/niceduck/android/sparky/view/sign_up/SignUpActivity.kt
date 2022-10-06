@@ -19,8 +19,6 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
 
         signUpViewModel.progress.observe(this, Observer {
             binding.signUpLinearProgressIndicator.progress = it
-
-            d("네비게이션 테스트", "${it}, binding.signUpLinearProgressIndicator.progress = it")
         })
 
     }
