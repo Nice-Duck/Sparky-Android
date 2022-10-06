@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/parent_layout_padding"
+    tools:context=".view.sign_up.fragment.SignUpInputNameFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="닉네임을 입력해주세요"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginVertical="18dp"
+        android:textColor="@color/black"/>
+
+    <EditText
+        android:id="@+id/sign_up_input_name_edit_txt_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sign_input_selector"
+        android:hint="닉네임을 입력해주세요"
+        android:maxLength="16"
+        android:paddingVertical="15dp"
+        android:paddingStart="18dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/sign_up_input_name_txt_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="특수문자는 사용할 수 없습니다."
+        android:textColor="@color/sparky_orange"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="한글, 영어, 숫자로 2~16글자"
+        android:textColor="@color/black" />
+
+    <Button
+        android:id="@+id/sign_up_input_name_btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button2"
+        android:text="다음"
+        android:textStyle="bold"
+        android:paddingVertical="15dp"
+        android:enabled="false"
+        android:textColor="@color/white"/>
+
+</LinearLayout>

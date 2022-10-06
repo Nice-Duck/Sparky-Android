@@ -16,7 +16,7 @@ class ApplicationClass : Application() {
     // val BASE_URL = ""
 
     // 테스트 서버 주소
-    private val BASE_URL = "https://sparky-demo.herokuapp.com/"
+    private val BASE_URL = "https://sparky-demo.herokuapp.com"
 
 
     companion object {
@@ -46,7 +46,6 @@ class ApplicationClass : Application() {
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
             // 로그캣에 okhttp.OkHttpClient로 검색하면 http 통신 내용을 보여줍니다.
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .build()
 
         // sRetrofit 이라는 전역변수에 API url, 인터셉터, Gson을 넣어주고 빌드해주는 코드

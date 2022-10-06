@@ -7,4 +7,9 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="input_stroke_gray">#E5E5E5</color>
+    <color name="progress_indicator">#E4E4E4</color>
+    <color name="edit_text">#B1B1B2</color>
+    <color name="sparky_orange">#FF7143</color>
+    <color name="gray_300">#E0E0DF</color>
 </resources>
