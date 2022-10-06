@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.util.Log.d
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
@@ -22,6 +23,8 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Log.d("테스트", "${intent}\n ${intent}\n" +
+                " ${intent.getStringExtra(Intent.EXTRA_TEXT )}\n${intent.extras}\n ${intent.type}\n ${intent.component}\n${intent.sourceBounds}")
         // TODO: 아키텍처 패턴 적용 및 코루틴 코드 개선 예정
         CoroutineScope(Dispatchers.Main).launch {
             getScrapData()
@@ -57,6 +60,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
             d("test_url", url?:" ")
             val document = Jsoup.connect(url).get()
+            d("test_document", document.toString())
             val elements = document.select("meta[property^=og:]")
             elements?.let { elements ->
                 elements.forEach { el ->

@@ -29,7 +29,15 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp"
-        android:layout_marginBottom="21dp"/>
+        android:layout_marginBottom="12dp"/>
+    <TextView
+        android:id="@+id/sign_up_input_email_txt_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="올바르지 않은 이메일 형식입니다"
+        android:textColor="@color/sparky_orange"
+        android:visibility="gone"
+        android:layout_marginBottom="12dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -43,7 +51,8 @@
         android:id="@+id/sign_up_input_email_btn_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/button"
+        android:background="@drawable/button2"
+        android:enabled="false"
         android:text="인증메일 받기"
         android:textStyle="bold"
         android:paddingVertical="15dp"
