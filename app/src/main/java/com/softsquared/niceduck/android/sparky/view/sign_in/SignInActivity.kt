@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.ActivitySignInBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.sign_up.SignUpActivity
@@ -32,6 +33,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
             // 입력되는 텍스트에 변화가 있을 때
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (binding.signInEditTxtEmail.text.isNotEmpty()) {
+                    binding.signInEditTxtEmail.setBackgroundResource(R.drawable.sign_input_focused)
+                } else {
+                    binding.signInEditTxtEmail.setBackgroundResource(R.drawable.sign_input_selector)
+                }
 
             }
 
@@ -49,7 +55,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
             // 입력되는 텍스트에 변화가 있을 때
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
+                if (binding.signInEditTxtPwd.text.isNotEmpty()) {
+                    binding.signInEditTxtPwd.setBackgroundResource(R.drawable.sign_input_focused)
+                } else {
+                    binding.signInEditTxtPwd.setBackgroundResource(R.drawable.sign_input_selector)
+                }
             }
 
             // 입력이 끝났을 때
@@ -58,13 +68,14 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
             }
         })
 
-        signInViewModel.signInResponse.observe(this, Observer {
+        signInViewModel.signInResponse.observe(this) {
 
-        })
 
-        signInViewModel.signInFailure.observe(this, Observer {
+        }
 
-        })
+        signInViewModel.signInFailure.observe(this) {
+
+        }
 
         binding.signInBtnSignIn.setOnClickListener {
             signInViewModel.email = binding.signInEditTxtEmail.text.toString()

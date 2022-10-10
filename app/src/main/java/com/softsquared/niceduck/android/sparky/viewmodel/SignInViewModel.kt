@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.model.*
+import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import kotlinx.coroutines.*
 
 class SignInViewModel : ViewModel() {
@@ -13,12 +15,12 @@ class SignInViewModel : ViewModel() {
     var email: String = ""
     var pwd: String = ""
 
-    private val _signInResponse = MutableLiveData<SignResponse>()
-    val signInResponse: LiveData<SignResponse>
+    private val _signInResponse = MutableSingleLiveData<SignResponse>()
+    val signInResponse: SingleLiveData<SignResponse>
         get() = _signInResponse
 
-    private val _signInFailure = MutableLiveData<Int>()
-    val signInFailure: LiveData<Int>
+    private val _signInFailure = MutableSingleLiveData<Int>()
+    val signInFailure: SingleLiveData<Int>
         get() = _signInFailure
 
     fun postSignIn() {
@@ -29,9 +31,9 @@ class SignInViewModel : ViewModel() {
             ))
 
             if (response.isSuccessful) {
-                _signInResponse.value = response.body()
+                response.body()?.let { _signInResponse.setValue(it) }
             } else {
-                _signInFailure.value = response.code()
+                _signInFailure.setValue(response.code())
             }
         }
     }

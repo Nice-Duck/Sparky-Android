@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.softsquared.niceduck.android.sparky.model.ScrapTemplateModel
+import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,24 +15,24 @@ import kotlinx.coroutines.withContext
 class ScrapTemplateViewModel {
     private val scrapTemplateModel = ScrapTemplateModel()
 
-    private val _url = MutableLiveData<String>()
-    val url: LiveData<String>
+    private val _url = MutableSingleLiveData<String>()
+    val url: SingleLiveData<String>
         get() = _url
 
-    private val _title = MutableLiveData<String>()
-    val title: LiveData<String>
+    private val _title = MutableSingleLiveData<String>()
+    val title: SingleLiveData<String>
     get() = _title
 
-    private val _memo = MutableLiveData<String>()
-    val memo: LiveData<String>
+    private val _memo = MutableSingleLiveData<String>()
+    val memo: SingleLiveData<String>
         get() = _memo
 
-    private val _img = MutableLiveData<String>()
-    val img: LiveData<String>
+    private val _img = MutableSingleLiveData<String>()
+    val img: SingleLiveData<String>
         get() = _img
 
-    private val _tags = MutableLiveData<ArrayList<Int>>()
-    val tags: LiveData<ArrayList<Int>>
+    private val _tags = MutableSingleLiveData<ArrayList<Int>>()
+    val tags: SingleLiveData<ArrayList<Int>>
         get() = _tags
 
     fun getScrapData(intent: Intent?) {
@@ -47,22 +49,22 @@ class ScrapTemplateViewModel {
 
     private suspend fun setDataView(intent: Intent, url: String, ogMap: Map<String, String>) {
         withContext(Dispatchers.Main) {
-            _url.value = url
+            _url.setValue(url)
 
             if (ogMap["image"].isNullOrEmpty()) {
-                _img.value = intent.getStringExtra("ogImage")?:""
+                _img.setValue(intent.getStringExtra("ogImage")?:"")
             } else {
-                _img.value = ogMap["image"]
+                ogMap["image"]?.let { _img.setValue(it) }
             }
             if (ogMap["title"].isNullOrEmpty()) {
-                _title.value = intent.getStringExtra("title") ?:""
+                _title.setValue(intent.getStringExtra("title") ?:"")
             } else {
-                _title.value = ogMap["title"]
+                ogMap["title"]?.let { _title.setValue(it) }
             }
             if (ogMap["description"].isNullOrEmpty()) {
-                _memo.value = intent.getStringExtra("ogDescription") ?:""
+                _memo.setValue(intent.getStringExtra("ogDescription") ?:"")
             } else {
-                _memo.value = ogMap["description"]
+                ogMap["description"]?.let { _memo.setValue(it) }
             }
         }
     }

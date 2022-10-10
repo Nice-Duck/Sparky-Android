@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
+import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import kotlinx.coroutines.*
 
 class SignUpViewModel : ViewModel() {
@@ -19,12 +21,12 @@ class SignUpViewModel : ViewModel() {
     var pwd: String = ""
 
     // 이메일 중복 확인
-    private val _duplicationEmailCheckResponse = MutableLiveData<BaseResponse>()
-    val duplicationEmailCheckResponse: LiveData<BaseResponse>
+    private val _duplicationEmailCheckResponse = MutableSingleLiveData<BaseResponse>()
+    val duplicationEmailCheckResponse: SingleLiveData<BaseResponse>
         get() = _duplicationEmailCheckResponse
 
-    private val _duplicationEmailCheckFailure = MutableLiveData<Int>()
-    val duplicationEmailCheckFailure: LiveData<Int>
+    private val _duplicationEmailCheckFailure = MutableSingleLiveData<Int>()
+    val duplicationEmailCheckFailure: SingleLiveData<Int>
         get() = _duplicationEmailCheckFailure
 
     fun getDuplicationEmailCheck() {
@@ -32,20 +34,20 @@ class SignUpViewModel : ViewModel() {
             val response = repository.getDuplicationEmailCheck(email)
 
             if (response.isSuccessful) {
-                _duplicationEmailCheckResponse.value = response.body()
+                response.body()?.let { _duplicationEmailCheckResponse.setValue(it) }
             } else {
-                _duplicationEmailCheckFailure.value = response.code()
+                _duplicationEmailCheckFailure.setValue(response.code())
             }
         }
     }
 
     // 닉네임 중복 확인
-    private val _duplicationNameCheckResponse = MutableLiveData<BaseResponse>()
-    val duplicationNameCheckResponse: LiveData<BaseResponse>
+    private val _duplicationNameCheckResponse = MutableSingleLiveData<BaseResponse>()
+    val duplicationNameCheckResponse: SingleLiveData<BaseResponse>
         get() = _duplicationNameCheckResponse
 
-    private val _duplicationNameCheckFailure = MutableLiveData<Int>()
-    val duplicationNameCheckFailure: LiveData<Int>
+    private val _duplicationNameCheckFailure = MutableSingleLiveData<Int>()
+    val duplicationNameCheckFailure: SingleLiveData<Int>
         get() = _duplicationNameCheckFailure
 
     fun getDuplicationNameCheck() {
@@ -53,20 +55,20 @@ class SignUpViewModel : ViewModel() {
             val response = repository.getDuplicationNameCheck(name)
 
             if (response.isSuccessful) {
-                _duplicationNameCheckResponse.value = response.body()
+                response.body()?.let { _duplicationNameCheckResponse.setValue(it) }
             } else {
-                _duplicationNameCheckFailure.value = response.code()
+                _duplicationNameCheckFailure.setValue(response.code())
             }
         }
     }
 
     // 인증 전송
-    private val _certificationSendResponse = MutableLiveData<BaseResponse>()
-    val certificationSendResponse: LiveData<BaseResponse>
+    private val _certificationSendResponse = MutableSingleLiveData<BaseResponse>()
+    val certificationSendResponse: SingleLiveData<BaseResponse>
         get() = _certificationSendResponse
 
-    private val _certificationSendFailure = MutableLiveData<Int>()
-    val certificationSendFailure: LiveData<Int>
+    private val _certificationSendFailure = MutableSingleLiveData<Int>()
+    val certificationSendFailure: SingleLiveData<Int>
         get() = _certificationSendFailure
 
     fun postCertificationSend() {
@@ -74,20 +76,20 @@ class SignUpViewModel : ViewModel() {
             val response = repository.postCertificationSend(SignUpCertificationSendRequest(email))
 
             if (response.isSuccessful) {
-                _certificationSendResponse.value = response.body()
+                response.body()?.let { _certificationSendResponse.setValue(it) }
             } else {
-                _certificationSendFailure.value = response.code()
+                _certificationSendFailure.setValue(response.code())
             }
         }
     }
 
     // 인증 확인
-    private val _certificationCheckResponse = MutableLiveData<BaseResponse>()
-    val certificationCheckResponse: LiveData<BaseResponse>
+    private val _certificationCheckResponse = MutableSingleLiveData<BaseResponse>()
+    val certificationCheckResponse: SingleLiveData<BaseResponse>
         get() = _certificationCheckResponse
 
-    private val _certificationCheckFailure = MutableLiveData<Int>()
-    val certificationCheckFailure: LiveData<Int>
+    private val _certificationCheckFailure = MutableSingleLiveData<Int>()
+    val certificationCheckFailure: SingleLiveData<Int>
         get() = _certificationCheckFailure
 
     fun postCertificationCheck(number: String) {
@@ -95,21 +97,21 @@ class SignUpViewModel : ViewModel() {
             val response = repository.postCertificationCheck(SignUpCertificationCheckRequest(email, number))
 
             if (response.isSuccessful) {
-                _certificationCheckResponse.value = response.body()
+                response.body()?.let { _certificationCheckResponse.setValue(it) }
             } else {
-                _certificationCheckFailure.value = response.code()
+                _certificationCheckFailure.setValue(response.code())
             }
         }
 
     }
 
     // 회원 가입
-    private val _signUpResponse = MutableLiveData<SignResponse>()
-    val signUpResponse: LiveData<SignResponse>
+    private val _signUpResponse = MutableSingleLiveData<SignResponse>()
+    val signUpResponse: SingleLiveData<SignResponse>
         get() = _signUpResponse
 
-    private val _signUpFailure = MutableLiveData<Int>()
-    val signUpFailure: LiveData<Int>
+    private val _signUpFailure = MutableSingleLiveData<Int>()
+    val signUpFailure: SingleLiveData<Int>
         get() = _signUpFailure
 
     fun postSignUp() {
@@ -121,9 +123,9 @@ class SignUpViewModel : ViewModel() {
             ))
 
             if (response.isSuccessful) {
-                _signUpResponse.value = response.body()
+                response.body()?.let { _signUpResponse.setValue(it) }
             } else {
-                _signUpFailure.value = response.code()
+                _signUpFailure.setValue(response.code())
             }
         }
     }

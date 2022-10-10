@@ -69,21 +69,26 @@ class SignUpInputEmailFragment :
         })
 
 
-        signUpViewModel.duplicationEmailCheckResponse.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.duplicationEmailCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
                 signUpViewModel.postCertificationSend()
             } else if (it.code == "0001") {
                 binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
+                binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.edit_txt_inner,
+                    0
+                )
                 binding.signUpInputEmailTxtValidation.text = "이미 가입된 이메일입니다"
                 binding.signUpInputEmailTxtValidation.visibility = VISIBLE
                 binding.signUpInputEmailBtnNext.isEnabled = false
                 binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
             }
 
-        })
+        }
 
-        signUpViewModel.duplicationEmailCheckFailure.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.duplicationEmailCheckFailure.observe(viewLifecycleOwner) {
             when (it) {
                 409 -> {
                     binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
@@ -94,20 +99,20 @@ class SignUpInputEmailFragment :
                     binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
                }
             }
-        })
+        }
 
-        signUpViewModel.certificationSendResponse.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.certificationSendResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
                 val action =
                     SignUpInputEmailFragmentDirections.
                     actionSignUpInputEmailFragmentToSignUpInputCertificationNumFragment()
                 view.findNavController().navigate(action)
             }
-        })
+        }
 
-        signUpViewModel.certificationSendFailure.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.certificationSendFailure.observe(viewLifecycleOwner) {
 
-        })
+        }
 
         binding.signUpInputEmailBtnNext.setOnClickListener {
             signUpViewModel.email = binding.signUpInputEmailEditTxtEmail.text.toString()

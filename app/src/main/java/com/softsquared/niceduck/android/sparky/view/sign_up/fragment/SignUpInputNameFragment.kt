@@ -73,12 +73,9 @@ class SignUpInputNameFragment :
             }
         })
 
-
-        signUpViewModel.signUpResponse.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.duplicationNameCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
-                val intent = Intent(activity, SignUpSuccessActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
+                signUpViewModel.postSignUp()
             } else if (it.code == "0004") {
                 binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
                 binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
@@ -87,15 +84,32 @@ class SignUpInputNameFragment :
                 binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
                 binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
             }
-        })
+        }
 
-        signUpViewModel.signUpFailure.observe(viewLifecycleOwner, Observer {
+        signUpViewModel.duplicationNameCheckFailure.observe(viewLifecycleOwner) {
+            binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
+            binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
+            binding.signUpInputNameBtnNext.isEnabled = false
+            binding.signUpInputNameTxtValidation.text = "이미 존재하는 닉네임입니다"
+            binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
+            binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
+        }
 
-        })
+        signUpViewModel.signUpResponse.observe(viewLifecycleOwner) {
+            if (it.code == "0000") {
+                val intent = Intent(activity, SignUpSuccessActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+        }
+
+        signUpViewModel.signUpFailure.observe(viewLifecycleOwner) {
+
+        }
 
         binding.signUpInputNameBtnNext.setOnClickListener {
             signUpViewModel.name = binding.signUpInputNameEditTxtName.text.toString()
-            signUpViewModel.postSignUp()
+            signUpViewModel.getDuplicationNameCheck()
         }
     }
 }

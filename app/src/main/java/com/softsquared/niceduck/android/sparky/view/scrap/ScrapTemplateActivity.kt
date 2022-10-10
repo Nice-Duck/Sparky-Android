@@ -27,31 +27,31 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
         scrapTemplateViewModel.getScrapData(intent)
 
-        scrapTemplateViewModel.url.observe(this, Observer {
+        scrapTemplateViewModel.url.observe(this) {
 
-        })
+        }
 
-        scrapTemplateViewModel.title.observe(this, Observer {
+        scrapTemplateViewModel.title.observe(this) {
             binding.scrapTemplateEditTxtTitle.setText(it)
-        })
+        }
 
-        scrapTemplateViewModel.img.observe(this, Observer {
+        scrapTemplateViewModel.img.observe(this) {
             // Glide 옵션 fitCenter() or centerCrop()
             if (it == "") {
                 Glide.with(this@ScrapTemplateActivity).load(getDrawable(R.drawable.sparky)).centerCrop().into(binding.scrapTemplateImgThumbnail)
             } else {
                 Glide.with(this@ScrapTemplateActivity).load(it).centerCrop().into(binding.scrapTemplateImgThumbnail)
             }
-        })
+        }
 
-        scrapTemplateViewModel.memo.observe(this, Observer {
+        scrapTemplateViewModel.memo.observe(this) {
             binding.scrapTemplateEditTxtMemo.setText(it)
             binding.scrapTemplateEditTxtSummary.setText(it)
-        })
+        }
 
-        scrapTemplateViewModel.tags.observe(this, Observer {
+        scrapTemplateViewModel.tags.observe(this) {
 
-        })
+        }
     }
 
 }
