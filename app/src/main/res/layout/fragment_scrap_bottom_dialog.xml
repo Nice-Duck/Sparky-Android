@@ -37,17 +37,39 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/scrap_bottom_dialog_edit_txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_marginBottom="16dp"
-        android:maxLength="7"
-        android:drawableStart="@drawable/edit_txt_inner_search"
-        android:hint="검색할 태그를 입력해주세요 (최대 7글자)"
-        android:backgroundTint="@color/gray_400"
-        android:textSize="14sp"
-        android:textColor="@color/gray_400"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/scrap_bottom_dialog_edit_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/gray_400"
+            android:drawableStart="@drawable/edit_txt_inner_search"
+            android:hint="검색할 태그를 입력해주세요 (최대 7글자)"
+            android:maxLength="7"
+            android:textColor="@color/gray_400"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/scrap_bottom_dialog_img_search_delete_btn"
+            android:layout_marginEnd="10dp"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:src="@drawable/ic_search_inner_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <TextView
