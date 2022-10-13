@@ -60,7 +60,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
 
     fun getScrapData(title: String?) {
         CoroutineScope(Dispatchers.IO).launch {
-            d("테스트2", "scrapTemplateRepository.handleSendText(title)")
             scrapTemplateRepository.handleSendText(title).apply {
                 setDataView(this)
             }
@@ -70,7 +69,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
     private suspend fun setDataView(result: Pair<String, Map<String, String>>) {
         withContext(Dispatchers.Main) {
             _setDataViewCall.setValue(result)
-            d("테스트5", "setDataView(result: Pair<String, Map<String, String>>)")
         }
 
     }
@@ -129,7 +127,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         setTagAddAdapter(TagAddRecyclerviewAdapter(this))
         setTagAddDataSet(tags)
         // 바텀 네비게이션 콜
-        d("어답터 테스트", "바텀 네비게이션 콜")
         _showBottomSheetCall.setValue(true)
 
     }

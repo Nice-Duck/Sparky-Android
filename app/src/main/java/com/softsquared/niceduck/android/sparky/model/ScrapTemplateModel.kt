@@ -24,7 +24,6 @@ class ScrapTemplateModel {
     }
 
     suspend fun handleSendText(title: String?): Pair<String, Map<String, String>> {
-        d("테스트4", "suspend fun handleSendText(title: String?): Pair<String, Map<String, String>> 내부코드")
         val ogMap = mutableMapOf<String, String>()
         var url = ""
 

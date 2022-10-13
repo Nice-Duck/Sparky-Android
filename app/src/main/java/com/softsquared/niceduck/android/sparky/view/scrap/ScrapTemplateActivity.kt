@@ -34,7 +34,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
 
         scrapTemplateViewModel.setDataViewCall.observe(this) {
-            d("테스트6", "scrapTemplateViewModel.setDataViewCall.observe(this)")
             val url = it.first
             val ogMap = it.second
 
@@ -104,7 +103,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
 
         scrapTemplateViewModel.url.observe(this) {
-            d("테스트7", " scrapTemplateViewModel.url.observe(this)")
         }
 
         scrapTemplateViewModel.title.observe(this) {
@@ -131,7 +129,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         CoroutineScope(Dispatchers.IO).launch {
             if (intent?.action == Intent.ACTION_SEND) {
                 if ("text/plain" == intent.type) {
-                    d("테스트1", "scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))")
                     scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))
                 }
             }
