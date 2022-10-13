@@ -41,6 +41,11 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         })
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setTagAddRecyclerview() {
         val layoutManager = FlexboxLayoutManager(activity)
         layoutManager.flexDirection = FlexDirection.ROW
