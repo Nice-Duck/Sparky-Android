@@ -12,4 +12,6 @@
     <color name="edit_text">#B1B1B2</color>
     <color name="sparky_orange">#FF7143</color>
     <color name="gray_300">#E0E0DF</color>
+    <color name="gray_400">#BEBDBD</color>
+    <color name="background">#FAF9F7</color>
 </resources>

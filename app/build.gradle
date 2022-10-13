@@ -80,4 +80,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
+    // FlexboxLayout for Recyclerview LayoutManager
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
+
 }

@@ -23,15 +23,15 @@ class ScrapTemplateModel {
         }
     }
 
-    suspend fun handleSendText(intent: Intent): Pair<String, Map<String, String>> {
+    suspend fun handleSendText(title: String?): Pair<String, Map<String, String>> {
+        d("테스트4", "suspend fun handleSendText(title: String?): Pair<String, Map<String, String>> 내부코드")
         val ogMap = mutableMapOf<String, String>()
         var url = ""
-        val title = intent.getStringExtra(Intent.EXTRA_TEXT)
 
         title?.let {
 
             url = extractUrl(it)
-            d("test_url", url?:" ")
+            d("test_url", url)
 
             val document = Jsoup.connect(url).get()
             d("test_document", document.toString())
@@ -66,6 +66,7 @@ class ScrapTemplateModel {
                 }
             }
         }
+
         return Pair(url, ogMap)
     }
 
