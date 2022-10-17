@@ -58,6 +58,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <RadioGroup
+            android:id="@+id/my_radio_group"
             android:layout_width="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="right"
@@ -65,18 +66,18 @@
             android:layout_height="wrap_content">
 
             <RadioButton
+                android:id="@+id/my_radio_btn1"
                 android:layout_marginHorizontal="12dp"
                 android:button="@null"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:checked="false"
                 android:background="@drawable/scrap_sort_btn_selector" />
 
             <RadioButton
+                android:id="@+id/my_radio_btn2"
                 android:button="@null"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:checked="true"
                 android:background="@drawable/scrap_sort_btn_selector" />
         </RadioGroup>
 

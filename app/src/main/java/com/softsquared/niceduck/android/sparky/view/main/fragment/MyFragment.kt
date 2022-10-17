@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,10 +30,15 @@ class MyFragment  :
             mainViewModel.getMyScrapAdapter2().submitList(it)
         })
 
+        binding.myRadioBtn2.isChecked = true
+
         val layoutManager1 = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         with(binding.myRecyclerview) {
             this.layoutManager = layoutManager1
             adapter = mainViewModel.getMyScrapAdapter2()
         }
+
+        
     }
+
 }
