@@ -23,18 +23,17 @@
 
     <EditText
         android:id="@+id/sign_in_edit_txt_email"
-        android:nextFocusDown="@id/sign_in_edit_txt_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="17dp"
         android:background="@drawable/sign_input_selector"
         android:hint="example@sparky.com"
         android:inputType="textEmailAddress"
-        android:maxLength="20"
+        android:nextFocusDown="@id/sign_in_edit_txt_pwd"
         android:paddingVertical="15dp"
         android:paddingStart="18dp"
         android:singleLine="true"
         android:textColor="@color/black"
-        android:layout_marginBottom="17dp"
         android:textSize="15sp" />
 
     <TextView
