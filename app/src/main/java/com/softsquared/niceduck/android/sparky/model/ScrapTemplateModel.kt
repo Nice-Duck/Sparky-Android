@@ -23,7 +23,7 @@ class ScrapTemplateModel {
         }
     }
 
-    suspend fun handleSendText(title: String?): Pair<String, Map<String, String>> {
+    fun handleSendText(title: String?): Pair<String, Map<String, String>> {
         val ogMap = mutableMapOf<String, String>()
         var url = ""
 

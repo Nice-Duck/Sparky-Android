@@ -1,9 +1,6 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
