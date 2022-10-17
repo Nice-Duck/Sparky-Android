@@ -58,7 +58,7 @@
 
             <ImageView
                 android:visibility="gone"
-                android:id="@+id/scrap_bottom_dialog_img_search_delete_btn"
+                android:id="@+id/my_img_search_delete_btn"
                 android:layout_marginEnd="10dp"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
