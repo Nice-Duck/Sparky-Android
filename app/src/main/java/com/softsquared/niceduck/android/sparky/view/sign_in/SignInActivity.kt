@@ -4,14 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.softsquared.niceduck.android.sparky.R
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_REFRESH_TOKEN
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.databinding.ActivitySignInBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
+import com.softsquared.niceduck.android.sparky.view.main.MainActivity
 import com.softsquared.niceduck.android.sparky.view.sign_up.SignUpActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.SignInViewModel
-import kotlin.math.sign
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
 
@@ -69,7 +73,16 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         })
 
         signInViewModel.signInResponse.observe(this) {
+            if (it.code == "0000") {
+                val editor = sSharedPreferences.edit()
+                editor.putString(X_ACCESS_TOKEN, it.result?.accessToken)
+                editor.putString(X_REFRESH_TOKEN, it.result?.refreshToken)
+                editor.apply()
 
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
 
         }
 

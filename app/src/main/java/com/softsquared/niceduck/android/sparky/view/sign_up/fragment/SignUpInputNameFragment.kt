@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.softsquared.niceduck.android.sparky.R
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputNameBinding
 import com.softsquared.niceduck.android.sparky.model.SignUpRequest
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
@@ -97,6 +98,11 @@ class SignUpInputNameFragment :
 
         signUpViewModel.signUpResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
+                val editor = ApplicationClass.sSharedPreferences.edit()
+                editor.putString(ApplicationClass.X_ACCESS_TOKEN, it.result?.accessToken)
+                editor.putString(ApplicationClass.X_REFRESH_TOKEN, it.result?.refreshToken)
+                editor.apply()
+
                 val intent = Intent(activity, SignUpSuccessActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
