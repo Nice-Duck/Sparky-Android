@@ -7,6 +7,7 @@ import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
 import com.softsquared.niceduck.android.sparky.model.Tag
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter2
+import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter3
 import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 
@@ -19,6 +20,7 @@ class MainViewModel(): ViewModel(), ItemEvent {
 
     private lateinit var myScrapRecyclerviewAdapter: MyScrapRecyclerviewAdapter
     private lateinit var myScrapRecyclerviewAdapter2: MyScrapRecyclerviewAdapter2
+    private lateinit var myScrapRecyclerviewAdapter3: MyScrapRecyclerviewAdapter3
 
     private val _myScrapDataSet: MutableLiveData<ArrayList<ScrapDataModel>> = MutableLiveData()
     private val  myScrapDataSet: LiveData<ArrayList<ScrapDataModel>>
@@ -48,6 +50,7 @@ class MainViewModel(): ViewModel(), ItemEvent {
 
         setMyScrapAdapter(MyScrapRecyclerviewAdapter(this))
         setMyScrapAdapter2(MyScrapRecyclerviewAdapter2(this))
+        setMyScrapAdapter3(MyScrapRecyclerviewAdapter3(this))
         setMyScrapDataSet(scrapDataModels)
     }
 
@@ -84,6 +87,12 @@ class MainViewModel(): ViewModel(), ItemEvent {
 
     private fun setMyScrapAdapter2(customAdapter : MyScrapRecyclerviewAdapter2) {
         this.myScrapRecyclerviewAdapter2 = customAdapter
+    }
+
+    fun getMyScrapAdapter3() = myScrapRecyclerviewAdapter3
+
+    private fun setMyScrapAdapter3(customAdapter : MyScrapRecyclerviewAdapter3) {
+        this.myScrapRecyclerviewAdapter3 = customAdapter
     }
 
 

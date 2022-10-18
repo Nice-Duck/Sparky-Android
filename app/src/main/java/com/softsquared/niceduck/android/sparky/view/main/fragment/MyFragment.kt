@@ -28,9 +28,18 @@ class MyFragment  :
 
         mainViewModel.getMyScrapData().observe(viewLifecycleOwner, Observer {
             mainViewModel.getMyScrapAdapter2().submitList(it)
+            mainViewModel.getMyScrapAdapter3().submitList(it)
         })
 
         binding.myRadioBtn2.isChecked = true
+
+        binding.myRadioBtn1.setOnClickListener {
+            onRadioButtonClicked(it)
+        }
+
+        binding.myRadioBtn2.setOnClickListener {
+            onRadioButtonClicked(it)
+        }
 
         val layoutManager1 = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         with(binding.myRecyclerview) {
@@ -39,6 +48,32 @@ class MyFragment  :
         }
 
         
+    }
+
+    private fun onRadioButtonClicked(view: View) {
+        if (view is RadioButton) {
+            val checked = view.isChecked
+            val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+
+            when (view.getId()) {
+                R.id.my_radio_btn1 ->
+                    if (checked) {
+                        with(binding.myRecyclerview) {
+                            binding.myRadioBtn2.isChecked = false
+                            this.layoutManager = layoutManager
+                            adapter = mainViewModel.getMyScrapAdapter3()
+                        }
+                    }
+                R.id.my_radio_btn2 ->
+                    if (checked) {
+                        binding.myRadioBtn1.isChecked = false
+                        with(binding.myRecyclerview) {
+                            this.layoutManager = layoutManager
+                            adapter = mainViewModel.getMyScrapAdapter2()
+                        }
+                    }
+            }
+        }
     }
 
 }

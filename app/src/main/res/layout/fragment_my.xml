@@ -78,7 +78,7 @@
                 android:button="@null"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:background="@drawable/scrap_sort_btn_selector" />
+                android:background="@drawable/scrap_sort_btn_selector2" />
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
