@@ -82,9 +82,31 @@
         </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/my_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/my_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:shimmer_auto_start="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/loading_item3"/>
+                <include layout="@layout/loading_item3"/>
+                <include layout="@layout/loading_item3"/>
+                <include layout="@layout/loading_item3"/>
+                <include layout="@layout/loading_item3"/>
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </LinearLayout>
 

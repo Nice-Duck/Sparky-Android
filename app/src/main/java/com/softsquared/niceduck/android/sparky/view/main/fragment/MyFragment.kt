@@ -4,18 +4,22 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.RadioButton
 import androidx.activity.viewModels
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentHomeBinding
 import com.softsquared.niceduck.android.sparky.databinding.FragmentMyBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class MyFragment  :
@@ -41,11 +45,24 @@ class MyFragment  :
             onRadioButtonClicked(it)
         }
 
-        val layoutManager1 = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-        with(binding.myRecyclerview) {
-            this.layoutManager = layoutManager1
-            adapter = mainViewModel.getMyScrapAdapter2()
+        viewLifecycleOwner.lifecycleScope.launch {
+
+            delay(1000)
+            val layoutManager1 = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            with(binding.myRecyclerview) {
+                this.layoutManager = layoutManager1
+                adapter = mainViewModel.getMyScrapAdapter2()
+
+            }
+            binding.myRecyclerview.visibility = VISIBLE
+            with(binding.myLoading) {
+                if(isShimmerStarted) {
+                    stopShimmer()
+                    visibility = android.view.View.GONE
+                }
+            }
         }
+
 
         
     }
