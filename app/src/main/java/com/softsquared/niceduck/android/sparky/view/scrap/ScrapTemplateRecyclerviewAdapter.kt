@@ -18,8 +18,10 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.TagAddItemBinding
 import com.softsquared.niceduck.android.sparky.databinding.TagItemBinding
 import com.softsquared.niceduck.android.sparky.model.Tag
+import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter.Companion.ITEM
+import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
 
-class ScrapTemplateRecyclerviewAdapter(private val viewModel: ItemEvent)
+class ScrapTemplateRecyclerviewAdapter(private val viewModel: ScrapTemplateViewModel)
     : ListAdapter<Tag, RecyclerView.ViewHolder>(MyDiffUtil) {
 
     companion object {
@@ -28,7 +30,7 @@ class ScrapTemplateRecyclerviewAdapter(private val viewModel: ItemEvent)
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == (viewModel.getScrapTemplateDataSet()?.size?.minus(1) ?: 0))
+        return if (position == (viewModel.scrapTemplateDataSet.value?.size?.minus(1) ?: 0))
             FOOTER
         else
             ITEM

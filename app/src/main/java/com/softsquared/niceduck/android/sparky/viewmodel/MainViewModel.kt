@@ -109,7 +109,4 @@ class MainViewModel(): ViewModel(), ItemEvent {
         TODO("Not yet implemented")
     }
 
-    override fun getScrapTemplateDataSet(): ArrayList<Tag>? {
-        TODO("Not yet implemented")
-    }
 }

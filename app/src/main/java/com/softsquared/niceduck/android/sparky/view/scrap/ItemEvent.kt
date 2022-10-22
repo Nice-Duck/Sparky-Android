@@ -10,6 +10,4 @@ interface ItemEvent {
 
     fun selectItem(position: Int)
 
-    fun getScrapTemplateDataSet(): ArrayList<Tag>?
-
 }

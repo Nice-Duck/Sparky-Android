@@ -23,7 +23,7 @@ import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerv
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter.Companion.ITEM
 
 class TagAddRecyclerviewAdapter(private val viewModel: ItemEvent)
-    : ListAdapter<Tag, TagAddViewHolder>(ScrapTemplateRecyclerviewAdapter.MyDiffUtil) {
+    : ListAdapter<Tag, TagAddViewHolder>(MyDiffUtil) {
 
 
 
@@ -32,6 +32,8 @@ class TagAddRecyclerviewAdapter(private val viewModel: ItemEvent)
                 TagItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false),
                 onItemClick = { position ->
                     viewModel.selectItem(position)
+               d("선택 테스트", position.toString())
+
             })
     }
 

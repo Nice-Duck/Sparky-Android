@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
@@ -33,6 +35,10 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         super.onCreate(savedInstanceState)
 
 
+        binding.scrapTemplateBtnStore.setOnClickListener {
+            scrapTemplateViewModel.postScrapStore()
+        }
+
         scrapTemplateViewModel.setDataViewCall.observe(this) {
             val url = it.first
             val ogMap = it.second
@@ -41,6 +47,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
             if (ogMap["image"].isNullOrEmpty()) {
                 scrapTemplateViewModel.img.setValue(intent.getStringExtra("ogImage")?:"")
+
             } else {
                 ogMap["image"]?.let { scrapTemplateViewModel.img.setValue(it) }
             }
@@ -60,11 +67,22 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
         setScrapTemplateRecyclerview()
 
-        scrapTemplateViewModel.getScrapTemplateData().observe(this, Observer {
-            scrapTemplateViewModel.getScrapTemplateAdapter().submitList(it)
+        scrapTemplateViewModel.scrapTemplateDataSet.observe(this, Observer { it ->
+            scrapTemplateViewModel.scrapTemplateRecyclerviewAdapter.submitList(it.toMutableList())
+            scrapTemplateViewModel.tags.clear()
+            it.forEach { tag ->
+                if (tag.name != "") scrapTemplateViewModel.tags.add(tag.tagId)
+            }
         })
 
+        scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
+            if (it.code == "0000") {
+                it.result.tagResponses?.let { response -> scrapTemplateViewModel.lastTags.setValue(response) }
+            }
+        }
+
         scrapTemplateViewModel.showBottomSheetCall.observe(this) {
+            scrapTemplateViewModel.tagColor.setValue(scrapTemplateViewModel.randomColor())
             val bottomDialogFragment = ScrapBottomDialogFragment()
             bottomDialogFragment.show(supportFragmentManager, bottomDialogFragment.tag)
         }
@@ -112,9 +130,14 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         scrapTemplateViewModel.img.observe(this) {
             // Glide 옵션 fitCenter() or centerCrop()
             if (it == "") {
-                Glide.with(this@ScrapTemplateActivity).load(getDrawable(R.drawable.sparky)).centerCrop().into(binding.scrapTemplateImgThumbnail)
+                Glide.with(this@ScrapTemplateActivity).load(getDrawable(R.drawable.sparky)).transform(
+                    CenterCrop(), RoundedCorners(8)
+                ).into(binding.scrapTemplateImgThumbnail)
             } else {
-                Glide.with(this@ScrapTemplateActivity).load(it).centerCrop().into(binding.scrapTemplateImgThumbnail)
+                d("test_img", it)
+                Glide.with(this@ScrapTemplateActivity).load(it).transform(
+                    CenterCrop(), RoundedCorners(8)
+                ).into(binding.scrapTemplateImgThumbnail)
             }
         }
 
@@ -140,7 +163,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         layoutManager.flexDirection = FlexDirection.ROW
         with(binding.scrapTemplateRecyclerview) {
             this.layoutManager = layoutManager
-            adapter = scrapTemplateViewModel.getScrapTemplateAdapter()
+            adapter = scrapTemplateViewModel.scrapTemplateRecyclerviewAdapter
             visibility = VISIBLE
         }
     }

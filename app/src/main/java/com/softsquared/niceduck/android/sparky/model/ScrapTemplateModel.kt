@@ -1,13 +1,11 @@
 package com.softsquared.niceduck.android.sparky.model
 
-import android.content.Intent
 import android.util.Log.d
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+
 
 class ScrapTemplateModel {
     private fun extractUrl(content: String?): String {
@@ -32,8 +30,8 @@ class ScrapTemplateModel {
             url = extractUrl(it)
             d("test_url", url)
 
-            val document = Jsoup.connect(url).get()
-            d("test_document", document.toString())
+            val document = Jsoup.connect(url).userAgent("USER_AGENT_HERE").get()
+            d("test_document", document.html())
 
             val elements = document.select("meta[property^=og:]")
 
