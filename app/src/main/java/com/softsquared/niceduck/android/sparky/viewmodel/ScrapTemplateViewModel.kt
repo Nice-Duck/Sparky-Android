@@ -33,6 +33,10 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
     val lastTags = MutableLiveData<ArrayList<Tag>>()
     var updatedList = ArrayList<Tag>()
 
+    private val tagColorList = listOf(
+        "#FFDDDA", "#FFE8D3", "#FFFDCC", "#D8F5D6", "#D5E7E0", "#DFF1F5",
+        "#DFF1F5", "#E5DDF3", "#F1E0EB", "#FFE6F7", "#E5DBE0", "#DFDFDF"
+    )
     val tagColor = MutableSingleLiveData<String>()
 
 
@@ -40,9 +44,7 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
     val scrapTemplateRecyclerviewAdapter: ScrapTemplateRecyclerviewAdapter
 
     // 템플릿 화면 어댑터 데이터셋
-    val _scrapTemplateDataSet: MutableLiveData<ArrayList<Tag>> = MutableLiveData()
-    val scrapTemplateDataSet: LiveData<ArrayList<Tag>>
-        get() = _scrapTemplateDataSet
+    val scrapTemplateDataSet: MutableLiveData<ArrayList<Tag>> = MutableLiveData()
 
     // 바텀 시트 화면 어댑터
     val tagAddRecyclerviewAdapter: TagAddRecyclerviewAdapter
@@ -149,15 +151,20 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         val tags = arrayListOf(Tag("", "", 0))
 
         scrapTemplateRecyclerviewAdapter = ScrapTemplateRecyclerviewAdapter(this) // 템플릿 화면 어댑터 생성
-        _scrapTemplateDataSet.value = tags // 탬플릿 화면 어댑터 데이터
+        scrapTemplateDataSet.value = tags // 탬플릿 화면 어댑터 데이터
         tagAddRecyclerviewAdapter = TagAddRecyclerviewAdapter(this) // 바텀 시트 어댑터 생성
         getTagLastLoad()
 
     }
 
 
+    fun randomColor(): String {
+        val randomIndex = Random.nextInt(tagColorList.size)
 
-    // 바텀 네비게이션 콜
+        return tagColorList[randomIndex]
+    }
+
+
     override fun addItem() {
         _showBottomSheetCall.setValue(true)
 
@@ -166,37 +173,28 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
     override fun removeItem(position: Int) {
         val newList = scrapTemplateRecyclerviewAdapter.currentList.toMutableList()
         newList.removeAt(position)
-        _scrapTemplateDataSet.value = newList as ArrayList
+        scrapTemplateDataSet.value = newList as ArrayList
     }
 
 
     override fun selectItem(position: Int) {
         val newList =   tagAddRecyclerviewAdapter.currentList.toMutableList()
-        val i = _scrapTemplateDataSet.value!!.size-1
+        val i = scrapTemplateDataSet.value!!.size-1
 
         d("선택 테스트",Tag(newList[position].color,
             newList[position].name,
             newList[position].tagId).toString())
 
-        _scrapTemplateDataSet.value!!.add(i,
+        scrapTemplateDataSet.value!!.add(i,
             Tag(newList[position].color,
                 newList[position].name,
                 newList[position].tagId))
 
-        val newTagList = _scrapTemplateDataSet.value!!
+        val newTagList = scrapTemplateDataSet.value!!
 
-        _scrapTemplateDataSet.value = newTagList
+        scrapTemplateDataSet.value = newTagList
 
         _hideBottomSheetCall.setValue(true)
     }
 
-    fun randomColor(): String {
-        val list = listOf(
-            "#FFDDDA", "#FFE8D3", "#FFFDCC", "#D8F5D6", "#D5E7E0", "#DFF1F5",
-            "#DFF1F5", "#E5DDF3", "#F1E0EB", "#FFE6F7", "#E5DBE0", "#DFDFDF"
-        )
-        val randomIndex = Random.nextInt(list.size);
-
-        return list[randomIndex]
-    }
 }

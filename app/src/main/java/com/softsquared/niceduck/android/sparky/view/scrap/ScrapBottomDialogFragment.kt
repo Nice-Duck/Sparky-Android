@@ -86,14 +86,14 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
 
         scrapTemplateViewModel.tagSaveResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
-                val i = scrapTemplateViewModel._scrapTemplateDataSet.value!!.size-1
+                val i = scrapTemplateViewModel.scrapTemplateDataSet.value!!.size-1
 
-                scrapTemplateViewModel._scrapTemplateDataSet.value!!.add(i,
+                scrapTemplateViewModel.scrapTemplateDataSet.value!!.add(i,
                     Tag(it.result.color, it.result.name, it.result.tagId))
 
-                val newTagList = scrapTemplateViewModel._scrapTemplateDataSet.value
+                val newTagList = scrapTemplateViewModel.scrapTemplateDataSet.value
 
-                scrapTemplateViewModel._scrapTemplateDataSet.value = newTagList
+                scrapTemplateViewModel.scrapTemplateDataSet.value = newTagList
 
                 dismiss()
             }

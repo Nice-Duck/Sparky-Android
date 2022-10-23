@@ -30,8 +30,9 @@ class ScrapTemplateModel {
             url = extractUrl(it)
             d("test_url", url)
 
-            val document = Jsoup.connect(url).userAgent("USER_AGENT_HERE").get()
+            val document = Jsoup.connect(url).userAgent("Android").get()
             d("test_document", document.html())
+            d("test_title", document.title())
 
             val elements = document.select("meta[property^=og:]")
 
