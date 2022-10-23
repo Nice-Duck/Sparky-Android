@@ -32,6 +32,4 @@ interface AuthRetrofitInterface {
     // 인증 확인
     @POST("/api/v1/accounts/mails/confirm")
     suspend fun postCertificationCheck(@Body signUpCertificationCheckRequest: SignUpCertificationCheckRequest): Response<BaseResponse>
-
-
 }

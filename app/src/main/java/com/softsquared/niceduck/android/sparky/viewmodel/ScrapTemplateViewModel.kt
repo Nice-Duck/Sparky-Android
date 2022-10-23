@@ -1,7 +1,6 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
 import android.util.Log.d
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,8 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
-
-class ScrapTemplateViewModel: ViewModel(), ItemEvent {
+class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val scrapTemplateRepository = ScrapTemplateRepository()
 
     // 저장할 스크랩 데이터
@@ -29,7 +27,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
     val img = MutableSingleLiveData<String>()
     val tags = ArrayList<Int>()
 
-
     val lastTags = MutableLiveData<ArrayList<Tag>>()
     var updatedList = ArrayList<Tag>()
 
@@ -38,7 +35,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         "#DFF1F5", "#E5DDF3", "#F1E0EB", "#FFE6F7", "#E5DBE0", "#DFDFDF"
     )
     val tagColor = MutableSingleLiveData<String>()
-
 
     // 템플릿 화면 어댑터
     val scrapTemplateRecyclerviewAdapter: ScrapTemplateRecyclerviewAdapter
@@ -83,7 +79,6 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
             }
         }
     }
-
 
     // 태그 조회
     private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
@@ -142,7 +137,9 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
                     memo.getValue(),
                     url.getValue(),
                     tags,
-                    title.getValue()))
+                    title.getValue()
+                )
+            )
         }
     }
 
@@ -154,9 +151,7 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         scrapTemplateDataSet.value = tags // 탬플릿 화면 어댑터 데이터
         tagAddRecyclerviewAdapter = TagAddRecyclerviewAdapter(this) // 바텀 시트 어댑터 생성
         getTagLastLoad()
-
     }
-
 
     fun randomColor(): String {
         val randomIndex = Random.nextInt(tagColorList.size)
@@ -164,10 +159,8 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         return tagColorList[randomIndex]
     }
 
-
     override fun addItem() {
         _showBottomSheetCall.setValue(true)
-
     }
 
     override fun removeItem(position: Int) {
@@ -176,19 +169,27 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
         scrapTemplateDataSet.value = newList as ArrayList
     }
 
-
     override fun selectItem(position: Int) {
-        val newList =   tagAddRecyclerviewAdapter.currentList.toMutableList()
-        val i = scrapTemplateDataSet.value!!.size-1
+        val newList = tagAddRecyclerviewAdapter.currentList.toMutableList()
+        val i = scrapTemplateDataSet.value!!.size - 1
 
-        d("선택 테스트",Tag(newList[position].color,
-            newList[position].name,
-            newList[position].tagId).toString())
-
-        scrapTemplateDataSet.value!!.add(i,
-            Tag(newList[position].color,
+        d(
+            "선택 테스트",
+            Tag(
+                newList[position].color,
                 newList[position].name,
-                newList[position].tagId))
+                newList[position].tagId
+            ).toString()
+        )
+
+        scrapTemplateDataSet.value!!.add(
+            i,
+            Tag(
+                newList[position].color,
+                newList[position].name,
+                newList[position].tagId
+            )
+        )
 
         val newTagList = scrapTemplateDataSet.value!!
 
@@ -196,5 +197,4 @@ class ScrapTemplateViewModel: ViewModel(), ItemEvent {
 
         _hideBottomSheetCall.setValue(true)
     }
-
 }

@@ -1,28 +1,14 @@
 package com.softsquared.niceduck.android.sparky.view.main.fragment
 
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.util.Log
-import android.util.Log.d
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat.setBackgroundTintList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.softsquared.niceduck.android.sparky.R
-import com.softsquared.niceduck.android.sparky.databinding.*
+import com.softsquared.niceduck.android.sparky.databinding.ScrapItem2Binding
+import com.softsquared.niceduck.android.sparky.databinding.ScrapItem3Binding
+import com.softsquared.niceduck.android.sparky.databinding.ScrapItem4Binding
 import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
-import com.softsquared.niceduck.android.sparky.model.Tag
-import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
-import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateFooterViewHolder
-import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter.Companion.FOOTER
-import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter.Companion.ITEM
-import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateViewHolder
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
 class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
@@ -73,10 +59,8 @@ class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
             is ScrapViewHolder3 -> holder.bind(getItem(position))
             is ScrapViewHolder4 -> holder.bind(getItem(position))
             else -> {
-
             }
         }
-
 
     object MyDiffUtil : DiffUtil.ItemCallback<ScrapDataModel>() {
         override fun areItemsTheSame(oldItem: ScrapDataModel, newItem: ScrapDataModel): Boolean {

@@ -52,7 +52,6 @@ class ScrapViewHolder1(
                         adapter = tagAdapter
                     }
                 }
-
             }
         }
     }

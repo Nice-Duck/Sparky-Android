@@ -5,7 +5,6 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface ScrapTemplateRetrofitInterface {
 
@@ -20,6 +19,4 @@ interface ScrapTemplateRetrofitInterface {
     // 스크랩 저장
     @POST("/api/v1/scraps")
     suspend fun postStoreScrap(@Body request: ScrapStoreRequest): Response<BaseResponse>
-
-
 }

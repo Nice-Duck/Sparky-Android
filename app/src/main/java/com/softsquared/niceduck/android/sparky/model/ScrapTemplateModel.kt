@@ -1,11 +1,9 @@
 package com.softsquared.niceduck.android.sparky.model
 
 import android.util.Log.d
-import org.jsoup.Connection
 import org.jsoup.Jsoup
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-
 
 class ScrapTemplateModel {
     private fun extractUrl(content: String?): String {
@@ -67,5 +65,4 @@ class ScrapTemplateModel {
 
         return Pair(url, ogMap)
     }
-
 }

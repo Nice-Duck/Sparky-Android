@@ -22,10 +22,12 @@ class SignInViewModel : ViewModel() {
 
     fun postSignIn() {
         viewModelScope.launch {
-            val response = repository.postSignIn(SignInRequest(
-                email,
-                pwd
-            ))
+            val response = repository.postSignIn(
+                SignInRequest(
+                    email,
+                    pwd
+                )
+            )
 
             if (response.isSuccessful) {
                 response.body()?.let { _signInResponse.setValue(it) }

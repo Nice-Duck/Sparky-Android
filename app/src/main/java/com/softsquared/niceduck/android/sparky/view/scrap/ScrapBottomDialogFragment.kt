@@ -4,17 +4,12 @@ import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -39,7 +34,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         if (bottomSheetDialog is BottomSheetDialog) {
             bottomSheetDialog.behavior.skipCollapsed = true
             bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
-            }
+        }
         return bottomSheetDialog
     }
 
@@ -56,13 +51,14 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         scrapTemplateViewModel.tagColor.observe(viewLifecycleOwner) {
-            binding.scrapBottomDialogLLNewTagName.backgroundTintList = ColorStateList.valueOf(Color.parseColor(
-                it
-            ))
+            binding.scrapBottomDialogLLNewTagName.backgroundTintList = ColorStateList.valueOf(
+                Color.parseColor(
+                    it
+                )
+            )
         }
 
         scrapTemplateViewModel.tagLastLoadFailure.observe(viewLifecycleOwner) {
-
         }
 
         scrapTemplateViewModel.lastTags.observe(viewLifecycleOwner) {
@@ -75,21 +71,24 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         binding.scrapBottomDialogLLTagAddBtn.setOnClickListener {
-            val color = scrapTemplateViewModel.tagColor.getValue()?: "#DFDFDF"
+            val color = scrapTemplateViewModel.tagColor.getValue() ?: "#DFDFDF"
 
             scrapTemplateViewModel.postTagSave(
                 TagRequest(
                     binding.scrapBottomDialogEditTxt.text.toString(),
                     color
-                    ))
+                )
+            )
         }
 
         scrapTemplateViewModel.tagSaveResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
-                val i = scrapTemplateViewModel.scrapTemplateDataSet.value!!.size-1
+                val i = scrapTemplateViewModel.scrapTemplateDataSet.value!!.size - 1
 
-                scrapTemplateViewModel.scrapTemplateDataSet.value!!.add(i,
-                    Tag(it.result.color, it.result.name, it.result.tagId))
+                scrapTemplateViewModel.scrapTemplateDataSet.value!!.add(
+                    i,
+                    Tag(it.result.color, it.result.name, it.result.tagId)
+                )
 
                 val newTagList = scrapTemplateViewModel.scrapTemplateDataSet.value
 
@@ -100,7 +99,6 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagSaveFailure.observe(viewLifecycleOwner) {
-
         }
 
         binding.scrapBottomDialogImgSearchDeleteBtn.setOnClickListener {
@@ -110,21 +108,25 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         binding.scrapBottomDialogEditTxt.addTextChangedListener {
             if (binding.scrapBottomDialogEditTxt.text.isNotEmpty()) {
                 binding.scrapBottomDialogImgSearchDeleteBtn.visibility = VISIBLE
-                binding.scrapBottomDialogEditTxt.backgroundTintList = ColorStateList.valueOf(Color.parseColor(
-             "#FF000000"
-                ))
+                binding.scrapBottomDialogEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#FF000000"
+                    )
+                )
                 binding.scrapBottomDialogEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
             } else {
                 binding.scrapBottomDialogImgSearchDeleteBtn.visibility = GONE
-                binding.scrapBottomDialogEditTxt.backgroundTintList = ColorStateList.valueOf(Color.parseColor(
-                    "#BEBDBD"
-                ))
+                binding.scrapBottomDialogEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#BEBDBD"
+                    )
+                )
                 binding.scrapBottomDialogEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
             }
 
             if (scrapTemplateViewModel.lastTags.getValue() != null) {
                 updateList(binding.scrapBottomDialogEditTxt.text.toString())
-                if (scrapTemplateViewModel.updatedList.isNotEmpty()){
+                if (scrapTemplateViewModel.updatedList.isNotEmpty()) {
                     binding.scrapBottomDialogLL.visibility = GONE
                     binding.scrapBottomDialogRecyclerview.visibility = VISIBLE
                     binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
@@ -136,12 +138,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
                     binding.scrapBottomDialogTxtLastTagTitle.visibility = GONE
                 }
             }
-
         }
-
-
-
-
     }
 
     private fun updateList(str: String) {
@@ -149,7 +146,6 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
             scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.getValue()!!.filter { it.name.contains(str) } as ArrayList<Tag>
         else scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.getValue()!!
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -168,4 +164,3 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
     }
 }
-

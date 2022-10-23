@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.softsquared.niceduck.android.sparky.R
-import com.softsquared.niceduck.android.sparky.databinding.TagItem2Binding
 import com.softsquared.niceduck.android.sparky.model.Tag
 
-class TagRecyclerviewAdapter(private val tags: List<Tag>):
+class TagRecyclerviewAdapter(private val tags: List<Tag>) :
     RecyclerView.Adapter<TagRecyclerviewAdapter.TagViewHolder>() {
 
     class TagViewHolder(view: View) : RecyclerView.ViewHolder(view) {

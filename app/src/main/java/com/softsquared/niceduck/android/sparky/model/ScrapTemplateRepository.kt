@@ -1,9 +1,7 @@
 package com.softsquared.niceduck.android.sparky.model
 
-import android.util.Log.d
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import retrofit2.create
-
 
 class ScrapTemplateRepository {
     private val scrapTemplateModel = ScrapTemplateModel()
@@ -24,5 +22,4 @@ class ScrapTemplateRepository {
     // 스크랩 저장
     suspend fun postStoreScrap(request: ScrapStoreRequest) =
         scrapTemplateService.postStoreScrap(request)
-
 }

@@ -29,6 +29,4 @@ class AuthRepository {
     // 닉네임 중복 확인
     suspend fun getDuplicationNameCheck(name: String) =
         authService.getDuplicationNameCheck(name)
-
-
 }

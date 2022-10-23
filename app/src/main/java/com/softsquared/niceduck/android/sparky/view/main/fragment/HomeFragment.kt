@@ -18,7 +18,6 @@ import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class HomeFragment :
     BaseFragment<FragmentHomeBinding>(
         FragmentHomeBinding::bind, R.layout.fragment_home
@@ -28,14 +27,19 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModel.getMyScrapData().observe(viewLifecycleOwner, Observer {
-            mainViewModel.getMyScrapAdapter().submitList(it)
-        })
+        mainViewModel.getMyScrapData().observe(
+            viewLifecycleOwner,
+            Observer {
+                mainViewModel.getMyScrapAdapter().submitList(it)
+            }
+        )
 
-        mainViewModel.getOthersScrapData().observe(viewLifecycleOwner, Observer {
-            mainViewModel.getOthersScrapAdapter().submitList(it)
-        })
-
+        mainViewModel.getOthersScrapData().observe(
+            viewLifecycleOwner,
+            Observer {
+                mainViewModel.getOthersScrapAdapter().submitList(it)
+            }
+        )
 
         viewLifecycleOwner.lifecycleScope.launch {
 
@@ -79,9 +83,6 @@ class HomeFragment :
                     visibility = GONE
                 }
             }
-
         }
-
-
     }
 }

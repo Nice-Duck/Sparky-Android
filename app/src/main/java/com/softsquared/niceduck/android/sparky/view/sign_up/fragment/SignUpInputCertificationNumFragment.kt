@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputCertificationNumBinding
@@ -24,8 +23,6 @@ class SignUpInputCertificationNumFragment :
 
         signUpViewModel.progress.value = 35
 
-
-
         binding.signUpInputCertificationNumBtnNext.setOnClickListener {
             signUpViewModel.postCertificationCheck(
                 "${binding.signUpInputCertificationEditTxt1.text}" +
@@ -33,14 +30,12 @@ class SignUpInputCertificationNumFragment :
                     "${binding.signUpInputCertificationEditTxt3.text}" +
                     "${binding.signUpInputCertificationEditTxt4.text}" +
                     "${binding.signUpInputCertificationEditTxt5.text}" +
-                    "${binding.signUpInputCertificationEditTxt6.text}")
+                    "${binding.signUpInputCertificationEditTxt6.text}"
+            )
         }
-
-
 
         binding.signUpInputCertificationEditTxt1.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -54,13 +49,11 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
 
         binding.signUpInputCertificationEditTxt2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -74,13 +67,11 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
 
         binding.signUpInputCertificationEditTxt3.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -94,13 +85,11 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
 
         binding.signUpInputCertificationEditTxt4.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -114,13 +103,11 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
 
         binding.signUpInputCertificationEditTxt5.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -134,13 +121,11 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
 
         binding.signUpInputCertificationEditTxt6.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -153,11 +138,8 @@ class SignUpInputCertificationNumFragment :
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
         })
-
-
 
         signUpViewModel.certificationCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
@@ -179,7 +161,6 @@ class SignUpInputCertificationNumFragment :
                 binding.signUpInputCertificationEditTxt4.setBackgroundResource(R.drawable.sign_input_validation)
                 binding.signUpInputCertificationEditTxt5.setBackgroundResource(R.drawable.sign_input_validation)
                 binding.signUpInputCertificationEditTxt6.setBackgroundResource(R.drawable.sign_input_validation)
-
 
                 binding.signUpInputCertificationTxtValidation.visibility = VISIBLE
 
@@ -219,7 +200,8 @@ class SignUpInputCertificationNumFragment :
             binding.signUpInputCertificationEditTxt3.text.isNotEmpty() ||
             binding.signUpInputCertificationEditTxt4.text.isNotEmpty() ||
             binding.signUpInputCertificationEditTxt5.text.isNotEmpty() ||
-            binding.signUpInputCertificationEditTxt6.text.isNotEmpty()) {
+            binding.signUpInputCertificationEditTxt6.text.isNotEmpty()
+        ) {
 
             if (binding.signUpInputCertificationEditTxt1.text.isEmpty())
                 binding.signUpInputCertificationEditTxt1.setBackgroundResource(R.drawable.sign_input_selector)
@@ -243,7 +225,8 @@ class SignUpInputCertificationNumFragment :
             binding.signUpInputCertificationEditTxt3.text.isNotEmpty() &&
             binding.signUpInputCertificationEditTxt4.text.isNotEmpty() &&
             binding.signUpInputCertificationEditTxt5.text.isNotEmpty() &&
-            binding.signUpInputCertificationEditTxt6.text.isNotEmpty()) {
+            binding.signUpInputCertificationEditTxt6.text.isNotEmpty()
+        ) {
 
             binding.signUpInputCertificationNumBtnNext.apply {
                 isEnabled = true

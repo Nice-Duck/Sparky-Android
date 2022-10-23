@@ -1,6 +1,5 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -102,7 +101,6 @@ class SignUpViewModel : ViewModel() {
                 _certificationCheckFailure.setValue(response.code())
             }
         }
-
     }
 
     // 회원 가입
@@ -116,11 +114,13 @@ class SignUpViewModel : ViewModel() {
 
     fun postSignUp() {
         viewModelScope.launch {
-            val response = repository.postSignUp(SignUpRequest(
-                email,
-                name,
-                pwd
-            ))
+            val response = repository.postSignUp(
+                SignUpRequest(
+                    email,
+                    name,
+                    pwd
+                )
+            )
 
             if (response.isSuccessful) {
                 response.body()?.let { _signUpResponse.setValue(it) }
@@ -129,6 +129,4 @@ class SignUpViewModel : ViewModel() {
             }
         }
     }
-
-
 }

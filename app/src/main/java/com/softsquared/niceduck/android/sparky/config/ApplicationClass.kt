@@ -7,7 +7,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
-import java.util.prefs.Preferences
 
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
@@ -17,7 +16,6 @@ class ApplicationClass : Application() {
 
     // 테스트 서버 주소
     private val BASE_URL = "https://sparky-demo.herokuapp.com"
-
 
     companion object {
 
@@ -58,6 +56,4 @@ class ApplicationClass : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
-
-
 }

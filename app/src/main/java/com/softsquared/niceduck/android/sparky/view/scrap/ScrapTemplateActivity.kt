@@ -8,9 +8,6 @@ import android.util.Log.d
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -18,22 +15,17 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.ActivityScrapTemplateBinding
-import com.softsquared.niceduck.android.sparky.model.Tag
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
-import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
-import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(ActivityScrapTemplateBinding::inflate) {
     private val scrapTemplateViewModel: ScrapTemplateViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         binding.scrapTemplateBtnStore.setOnClickListener {
             scrapTemplateViewModel.postScrapStore()
@@ -46,18 +38,17 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             scrapTemplateViewModel.url.setValue(url)
 
             if (ogMap["image"].isNullOrEmpty()) {
-                scrapTemplateViewModel.img.setValue(intent.getStringExtra("ogImage")?:"")
-
+                scrapTemplateViewModel.img.setValue(intent.getStringExtra("ogImage") ?: "")
             } else {
                 ogMap["image"]?.let { scrapTemplateViewModel.img.setValue(it) }
             }
             if (ogMap["title"].isNullOrEmpty()) {
-                scrapTemplateViewModel.title.setValue(intent.getStringExtra("title") ?:"")
+                scrapTemplateViewModel.title.setValue(intent.getStringExtra("title") ?: "")
             } else {
                 ogMap["title"]?.let { scrapTemplateViewModel.title.setValue(it) }
             }
             if (ogMap["description"].isNullOrEmpty()) {
-                scrapTemplateViewModel.memo.setValue(intent.getStringExtra("ogDescription") ?:"")
+                scrapTemplateViewModel.memo.setValue(intent.getStringExtra("ogDescription") ?: "")
             } else {
                 ogMap["description"]?.let { scrapTemplateViewModel.memo.setValue(it) }
             }
@@ -67,13 +58,16 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
         setScrapTemplateRecyclerview()
 
-        scrapTemplateViewModel.scrapTemplateDataSet.observe(this, Observer { it ->
-            scrapTemplateViewModel.scrapTemplateRecyclerviewAdapter.submitList(it.toMutableList())
-            scrapTemplateViewModel.tags.clear()
-            it.forEach { tag ->
-                if (tag.name != "") scrapTemplateViewModel.tags.add(tag.tagId)
+        scrapTemplateViewModel.scrapTemplateDataSet.observe(
+            this,
+            Observer { it ->
+                scrapTemplateViewModel.scrapTemplateRecyclerviewAdapter.submitList(it.toMutableList())
+                scrapTemplateViewModel.tags.clear()
+                it.forEach { tag ->
+                    if (tag.name != "") scrapTemplateViewModel.tags.add(tag.tagId)
+                }
             }
-        })
+        )
 
         scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
             if (it.code == "0000") {
@@ -87,20 +81,21 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             bottomDialogFragment.show(supportFragmentManager, bottomDialogFragment.tag)
         }
 
-        d("test_extras", "" +
+        d(
+            "test_extras",
+            "" +
                 "${intent}\n ${intent}\n" +
-                "${intent.getStringExtra(Intent.EXTRA_TEXT )}\n" +
+                "${intent.getStringExtra(Intent.EXTRA_TEXT)}\n" +
                 "${intent.extras}\n " +
                 "${intent.type}\n " +
                 "${intent.component}\n" +
-                "${intent.sourceBounds}")
+                "${intent.sourceBounds}"
+        )
 
         intent.getStringExtra(Intent.EXTRA_TEXT)?.let { d("test_extra_text", it) }
 
-
         binding.scrapTemplateEditTxtMemo.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -114,11 +109,8 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
             }
-
         })
-
 
         scrapTemplateViewModel.url.observe(this) {
         }
@@ -145,7 +137,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             binding.scrapTemplateEditTxtMemo.setText(it)
             binding.scrapTemplateEditTxtSummary.setText(it)
         }
-
     }
 
     private fun getScrapData() {
@@ -167,5 +158,4 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             visibility = VISIBLE
         }
     }
-
 }

@@ -4,9 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import androidx.activity.viewModels
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_REFRESH_TOKEN
@@ -32,7 +30,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         binding.signInEditTxtEmail.addTextChangedListener(object : TextWatcher {
             // 입력하기 전에
             override fun beforeTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
             }
 
             // 입력되는 텍스트에 변화가 있을 때
@@ -42,19 +39,16 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
                 } else {
                     binding.signInEditTxtEmail.setBackgroundResource(R.drawable.sign_input_selector)
                 }
-
             }
 
             // 입력이 끝났을 때
             override fun afterTextChanged(editable: Editable) {
-
             }
         })
 
         binding.signInEditTxtPwd.addTextChangedListener(object : TextWatcher {
             // 입력하기 전에
             override fun beforeTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
             }
 
             // 입력되는 텍스트에 변화가 있을 때
@@ -68,7 +62,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
             // 입력이 끝났을 때
             override fun afterTextChanged(editable: Editable) {
-
             }
         })
 
@@ -83,11 +76,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
                 startActivity(intent)
                 finish()
             }
-
         }
 
         signInViewModel.signInFailure.observe(this) {
-
         }
 
         binding.signInBtnSignIn.setOnClickListener {
@@ -95,8 +86,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
             signInViewModel.pwd = binding.signInEditTxtPwd.text.toString()
 
             signInViewModel.postSignIn()
-
         }
     }
-
 }

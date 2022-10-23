@@ -1,6 +1,5 @@
 package com.softsquared.niceduck.android.sparky.config
 
-
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import okhttp3.Interceptor

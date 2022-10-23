@@ -11,7 +11,7 @@ import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecycle
 import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 
-class MainViewModel(): ViewModel(), ItemEvent {
+class MainViewModel() : ViewModel(), ItemEvent {
     private lateinit var othersScrapRecyclerviewAdapter: OthersScrapRecyclerviewAdapter
 
     private val _othersScrapDataSet: MutableLiveData<ArrayList<ScrapDataModel>> = MutableLiveData()
@@ -23,27 +23,30 @@ class MainViewModel(): ViewModel(), ItemEvent {
     private lateinit var myScrapRecyclerviewAdapter3: MyScrapRecyclerviewAdapter3
 
     private val _myScrapDataSet: MutableLiveData<ArrayList<ScrapDataModel>> = MutableLiveData()
-    private val  myScrapDataSet: LiveData<ArrayList<ScrapDataModel>>
+    private val myScrapDataSet: LiveData<ArrayList<ScrapDataModel>>
         get() = _myScrapDataSet
-
 
     init {
 
         // 모델-레포를 통해 데이터 받아오기
 
-        val tags = listOf(Tag("#BEBDBD", "디자인", 0),
+        val tags = listOf(
+            Tag("#BEBDBD", "디자인", 0),
             Tag("#BEBDBD", "IT", 1),
             Tag("#BEBDBD", "안드로이드", 2),
-            Tag("#BEBDBD", "디자인", 3))
+            Tag("#BEBDBD", "디자인", 3)
+        )
 
-        val scrapDataModels = arrayListOf(ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"  ))
+        val scrapDataModels = arrayListOf(
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
+            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX")
+        )
 
         setOthersScrapAdapter(OthersScrapRecyclerviewAdapter(this))
         setOthersScrapDataSet(scrapDataModels)
@@ -54,7 +57,7 @@ class MainViewModel(): ViewModel(), ItemEvent {
         setMyScrapDataSet(scrapDataModels)
     }
 
-    private fun setOthersScrapDataSet(newList : List<ScrapDataModel>) {
+    private fun setOthersScrapDataSet(newList: List<ScrapDataModel>) {
         this._othersScrapDataSet.value = newList as ArrayList<ScrapDataModel>
         othersScrapRecyclerviewAdapter.submitList(newList)
     }
@@ -63,14 +66,11 @@ class MainViewModel(): ViewModel(), ItemEvent {
 
     fun getOthersScrapAdapter() = othersScrapRecyclerviewAdapter
 
-    private fun setOthersScrapAdapter(customAdapter : OthersScrapRecyclerviewAdapter) {
+    private fun setOthersScrapAdapter(customAdapter: OthersScrapRecyclerviewAdapter) {
         this.othersScrapRecyclerviewAdapter = customAdapter
     }
 
-
-
-
-    private fun setMyScrapDataSet(newList : List<ScrapDataModel>) {
+    private fun setMyScrapDataSet(newList: List<ScrapDataModel>) {
         this._myScrapDataSet.value = newList as ArrayList<ScrapDataModel>
         myScrapRecyclerviewAdapter.submitList(newList)
     }
@@ -79,23 +79,21 @@ class MainViewModel(): ViewModel(), ItemEvent {
 
     fun getMyScrapAdapter() = myScrapRecyclerviewAdapter
 
-    private fun setMyScrapAdapter(customAdapter : MyScrapRecyclerviewAdapter) {
+    private fun setMyScrapAdapter(customAdapter: MyScrapRecyclerviewAdapter) {
         this.myScrapRecyclerviewAdapter = customAdapter
     }
 
     fun getMyScrapAdapter2() = myScrapRecyclerviewAdapter2
 
-    private fun setMyScrapAdapter2(customAdapter : MyScrapRecyclerviewAdapter2) {
+    private fun setMyScrapAdapter2(customAdapter: MyScrapRecyclerviewAdapter2) {
         this.myScrapRecyclerviewAdapter2 = customAdapter
     }
 
     fun getMyScrapAdapter3() = myScrapRecyclerviewAdapter3
 
-    private fun setMyScrapAdapter3(customAdapter : MyScrapRecyclerviewAdapter3) {
+    private fun setMyScrapAdapter3(customAdapter: MyScrapRecyclerviewAdapter3) {
         this.myScrapRecyclerviewAdapter3 = customAdapter
     }
-
-
 
     override fun removeItem(position: Int) {
         TODO("Not yet implemented")
@@ -108,5 +106,4 @@ class MainViewModel(): ViewModel(), ItemEvent {
     override fun selectItem(position: Int) {
         TODO("Not yet implemented")
     }
-
 }
