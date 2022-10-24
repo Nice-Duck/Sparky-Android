@@ -122,7 +122,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         scrapTemplateViewModel.img.observe(this) {
             // Glide 옵션 fitCenter() or centerCrop()
             if (it == "") {
-                Glide.with(this@ScrapTemplateActivity).load(getDrawable(R.drawable.sparky)).transform(
+                Glide.with(this@ScrapTemplateActivity).load(R.drawable.scrap_default_img3).transform(
                     CenterCrop(), RoundedCorners(8)
                 ).into(binding.scrapTemplateImgThumbnail)
             } else {

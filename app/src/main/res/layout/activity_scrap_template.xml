@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
                 android:layout_marginTop="16dp"
-                android:background="@color/gray_300" />
+                android:background="@color/gray_200" />
 
             <TextView
                 android:id="@+id/scrap_template_txt_tags_title"
@@ -133,7 +133,14 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/gray_300"/>
+
     <Button
+        android:layout_marginBottom="20dp"
         android:id="@+id/scrap_template_btn_store"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

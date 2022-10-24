@@ -2,6 +2,8 @@ package com.softsquared.niceduck.android.sparky.view.main.fragment
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
@@ -25,9 +27,13 @@ class ScrapViewHolder2(
             }
 
             if (item.imgUrl != null) {
-                Glide.with(itemView.context).load(item.imgUrl).centerCrop().into(scrapItem2Img)
+                Glide.with(itemView.context).load(item.imgUrl).transform(
+                    CenterCrop(), RoundedCorners(8)
+                ).into(scrapItem2Img)
             } else {
-                Glide.with(itemView.context).load(R.drawable.test_img).centerCrop().into(scrapItem2Img)
+                Glide.with(itemView.context).load(R.drawable.scrap_default_img2).transform(
+                    CenterCrop(), RoundedCorners(8)
+                ).into(scrapItem2Img)
             }
 
             val tags = item.tags
