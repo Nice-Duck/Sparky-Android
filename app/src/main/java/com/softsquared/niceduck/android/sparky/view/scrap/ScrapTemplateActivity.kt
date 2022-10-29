@@ -35,7 +35,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             val url = it.first
             val ogMap = it.second
 
-            scrapTemplateViewModel.url.setValue(url)
+            scrapTemplateViewModel.url = url
 
             if (ogMap["image"].isNullOrEmpty()) {
                 scrapTemplateViewModel.img.setValue(intent.getStringExtra("ogImage") ?: "")
@@ -48,9 +48,9 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                 ogMap["title"]?.let { scrapTemplateViewModel.title.setValue(it) }
             }
             if (ogMap["description"].isNullOrEmpty()) {
-                scrapTemplateViewModel.memo.setValue(intent.getStringExtra("ogDescription") ?: "")
+                scrapTemplateViewModel.subTitle.setValue(intent.getStringExtra("ogDescription") ?: "")
             } else {
-                ogMap["description"]?.let { scrapTemplateViewModel.memo.setValue(it) }
+                ogMap["description"]?.let { scrapTemplateViewModel.subTitle.setValue(it) }
             }
         }
 
@@ -74,6 +74,13 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                 it.result.tagResponses?.let { response -> scrapTemplateViewModel.lastTags.setValue(response) }
             }
         }
+        scrapTemplateViewModel.scrapStoreResponse.observe(this) {
+            if (it.code == "0000") {
+                finish()
+            }
+        }
+
+
 
         scrapTemplateViewModel.showBottomSheetCall.observe(this) {
             scrapTemplateViewModel.tagColor.setValue(scrapTemplateViewModel.randomColor())
@@ -100,6 +107,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 binding.scrapTemplateEditTxtMemo.run {
+                    scrapTemplateViewModel.memo = text.toString()
                     if (text.isNotEmpty()) {
                         setBackgroundResource(R.drawable.sign_input_focused)
                     } else {
@@ -111,9 +119,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             override fun afterTextChanged(p0: Editable?) {
             }
         })
-
-        scrapTemplateViewModel.url.observe(this) {
-        }
 
         scrapTemplateViewModel.title.observe(this) {
             binding.scrapTemplateEditTxtTitle.setText(it)
@@ -133,8 +138,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             }
         }
 
-        scrapTemplateViewModel.memo.observe(this) {
-            binding.scrapTemplateEditTxtMemo.setText(it)
+        scrapTemplateViewModel.subTitle.observe(this) {
             binding.scrapTemplateEditTxtSummary.setText(it)
         }
     }

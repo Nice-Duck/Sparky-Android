@@ -5,5 +5,6 @@ data class ScrapStoreRequest(
     val memo: String? = null,
     val scpUrl: String? = null,
     val tags: ArrayList<Int>? = null,
-    val title: String? = null
+    val title: String? = null,
+    val subTitle: String? = null
 )

@@ -21,9 +21,10 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val scrapTemplateRepository = ScrapTemplateRepository()
 
     // 저장할 스크랩 데이터
-    val url = MutableSingleLiveData<String>()
+    var url: String = ""
+    var memo: String = ""
     val title = MutableSingleLiveData<String>()
-    val memo = MutableSingleLiveData<String>()
+    val subTitle = MutableSingleLiveData<String>()
     val img = MutableSingleLiveData<String>()
     val tags = ArrayList<Int>()
 
@@ -131,15 +132,24 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
 
     fun postScrapStore() {
         viewModelScope.launch {
-            scrapTemplateRepository.postStoreScrap(
+            val response = scrapTemplateRepository.postStoreScrap(
                 ScrapStoreRequest(
                     img.getValue(),
-                    memo.getValue(),
-                    url.getValue(),
+                    memo,
+                    url,
                     tags,
-                    title.getValue()
+                    title.getValue(),
+                    subTitle.getValue()
                 )
             )
+
+            if (response.isSuccessful) {
+                response.body()?.let { _scrapStoreResponse.setValue(it) }
+            } else {
+                _scrapStoreFailure.setValue(response.code())
+            }
+
+
         }
     }
 
