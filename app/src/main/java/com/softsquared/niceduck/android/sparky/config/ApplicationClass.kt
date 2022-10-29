@@ -15,7 +15,7 @@ class ApplicationClass : Application() {
     // val BASE_URL = ""
 
     // 테스트 서버 주소
-    private val BASE_URL = "https://sparky-demo.herokuapp.com"
+    private val BASE_URL = "http://18.232.254.197"
 
     companion object {
 
