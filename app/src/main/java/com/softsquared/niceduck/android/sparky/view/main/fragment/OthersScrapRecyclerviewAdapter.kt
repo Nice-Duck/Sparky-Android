@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem2Binding
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem3Binding
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem4Binding
+import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
 class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
-    ListAdapter<ScrapDataModel, RecyclerView.ViewHolder>(MyDiffUtil) {
+    ListAdapter<Scrap, RecyclerView.ViewHolder>(MyDiffUtil) {
 
     companion object {
         const val ITEM1 = 1
@@ -62,12 +63,12 @@ class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
             }
         }
 
-    object MyDiffUtil : DiffUtil.ItemCallback<ScrapDataModel>() {
-        override fun areItemsTheSame(oldItem: ScrapDataModel, newItem: ScrapDataModel): Boolean {
+    object MyDiffUtil : DiffUtil.ItemCallback<Scrap>() {
+        override fun areItemsTheSame(oldItem: Scrap, newItem: Scrap): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: ScrapDataModel, newItem: ScrapDataModel): Boolean {
+        override fun areContentsTheSame(oldItem: Scrap, newItem: Scrap): Boolean {
             return oldItem == newItem
         }
     }

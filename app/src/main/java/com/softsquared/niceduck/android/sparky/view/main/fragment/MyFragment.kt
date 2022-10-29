@@ -25,12 +25,10 @@ class MyFragment :
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.getMyScrapData().observe(
-            viewLifecycleOwner,
-            Observer {
+            viewLifecycleOwner) {
                 mainViewModel.getMyScrapAdapter2().submitList(it)
                 mainViewModel.getMyScrapAdapter3().submitList(it)
             }
-        )
 
         binding.myRadioBtn2.isChecked = true
 

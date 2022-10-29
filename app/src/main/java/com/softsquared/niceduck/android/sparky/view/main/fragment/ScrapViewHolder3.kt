@@ -8,6 +8,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.*
+import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
@@ -16,7 +17,7 @@ class ScrapViewHolder3(
     private val mainViewModel: MainViewModel
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: ScrapDataModel) {
+    fun bind(item: Scrap) {
         with(binding) {
 
             scrapItem3TxtTitle.text = item.title
@@ -36,7 +37,7 @@ class ScrapViewHolder3(
                 ).into(scrapItem3Img)
             }
 
-            val tags = item.tags
+            val tags = item.tagsResponse
 
             if (tags != null) {
                 if (tags.size > 4) {

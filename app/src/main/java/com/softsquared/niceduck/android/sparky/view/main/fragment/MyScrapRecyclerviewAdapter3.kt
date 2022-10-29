@@ -5,11 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem4Binding
+import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
 class MyScrapRecyclerviewAdapter3(private val viewModel: MainViewModel) :
-    ListAdapter<ScrapDataModel, ScrapViewHolder4>(MyDiffUtil) {
+    ListAdapter<Scrap, ScrapViewHolder4>(MyDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrapViewHolder4 {
         return ScrapViewHolder4(
@@ -21,12 +22,12 @@ class MyScrapRecyclerviewAdapter3(private val viewModel: MainViewModel) :
     override fun onBindViewHolder(holder: ScrapViewHolder4, position: Int) =
         holder.bind(getItem(position))
 
-    object MyDiffUtil : DiffUtil.ItemCallback<ScrapDataModel>() {
-        override fun areItemsTheSame(oldItem: ScrapDataModel, newItem: ScrapDataModel): Boolean {
+    object MyDiffUtil : DiffUtil.ItemCallback<Scrap>() {
+        override fun areItemsTheSame(oldItem: Scrap, newItem: Scrap): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: ScrapDataModel, newItem: ScrapDataModel): Boolean {
+        override fun areContentsTheSame(oldItem: Scrap, newItem: Scrap): Boolean {
             return oldItem == newItem
         }
     }

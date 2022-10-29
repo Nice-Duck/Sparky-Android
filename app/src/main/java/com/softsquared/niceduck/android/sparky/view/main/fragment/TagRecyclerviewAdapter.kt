@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.model.Tag
+import com.softsquared.niceduck.android.sparky.model.TagsResponse
 
-class TagRecyclerviewAdapter(private val tags: List<Tag>) :
+class TagRecyclerviewAdapter(private val tags: List<TagsResponse>) :
     RecyclerView.Adapter<TagRecyclerviewAdapter.TagViewHolder>() {
 
     class TagViewHolder(view: View) : RecyclerView.ViewHolder(view) {

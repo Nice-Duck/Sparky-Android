@@ -28,18 +28,15 @@ class HomeFragment :
         super.onViewCreated(view, savedInstanceState)
 
         mainViewModel.getMyScrapData().observe(
-            viewLifecycleOwner,
-            Observer {
+            viewLifecycleOwner) {
                 mainViewModel.getMyScrapAdapter().submitList(it)
             }
-        )
 
         mainViewModel.getOthersScrapData().observe(
-            viewLifecycleOwner,
-            Observer {
+            viewLifecycleOwner) {
                 mainViewModel.getOthersScrapAdapter().submitList(it)
             }
-        )
+
 
         viewLifecycleOwner.lifecycleScope.launch {
 

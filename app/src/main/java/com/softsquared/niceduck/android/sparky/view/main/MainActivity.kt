@@ -8,6 +8,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMainBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
+import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter
+import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter2
+import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter3
+import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {

@@ -3,62 +3,72 @@ package com.softsquared.niceduck.android.sparky.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
-import com.softsquared.niceduck.android.sparky.model.Tag
+import androidx.lifecycle.viewModelScope
+import com.softsquared.niceduck.android.sparky.model.*
+import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter2
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter3
 import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
+import kotlinx.coroutines.launch
 
 class MainViewModel() : ViewModel(), ItemEvent {
+    private val mainRepository = MainRepository()
+
+    private val _scrapLoadResponse: MutableLiveData<ScrapRoadResponse> = MutableLiveData()
+    private val scrapLoadResponse: LiveData<ScrapRoadResponse>
+        get() = _scrapLoadResponse
+
+    private val _scrapLoadFailure = MutableLiveData<Int>()
+    val scrapLoadFailure: LiveData<Int>
+        get() = _scrapLoadFailure
+
     private lateinit var othersScrapRecyclerviewAdapter: OthersScrapRecyclerviewAdapter
 
-    private val _othersScrapDataSet: MutableLiveData<ArrayList<ScrapDataModel>> = MutableLiveData()
-    private val othersScrapDataSet: LiveData<ArrayList<ScrapDataModel>>
+    private val _othersScrapDataSet: MutableLiveData<ArrayList<Scrap>> = MutableLiveData()
+    private val othersScrapDataSet: LiveData<ArrayList<Scrap>>
         get() = _othersScrapDataSet
 
     private lateinit var myScrapRecyclerviewAdapter: MyScrapRecyclerviewAdapter
     private lateinit var myScrapRecyclerviewAdapter2: MyScrapRecyclerviewAdapter2
     private lateinit var myScrapRecyclerviewAdapter3: MyScrapRecyclerviewAdapter3
 
-    private val _myScrapDataSet: MutableLiveData<ArrayList<ScrapDataModel>> = MutableLiveData()
-    private val myScrapDataSet: LiveData<ArrayList<ScrapDataModel>>
+    private val _myScrapDataSet: MutableLiveData<ArrayList<Scrap>> = MutableLiveData()
+    private val myScrapDataSet: LiveData<ArrayList<Scrap>>
         get() = _myScrapDataSet
+
+    private fun getScrapLoad(type: String? = null) {
+        viewModelScope.launch {
+            val response = mainRepository.getScrap(type)
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    setOthersScrapAdapter(OthersScrapRecyclerviewAdapter(this@MainViewModel))
+                    it.result.recScraps?.let { scrap -> setOthersScrapDataSet(scrap) }
+
+                    setMyScrapAdapter(MyScrapRecyclerviewAdapter(this@MainViewModel))
+                    setMyScrapAdapter2(MyScrapRecyclerviewAdapter2(this@MainViewModel))
+                    setMyScrapAdapter3(MyScrapRecyclerviewAdapter3(this@MainViewModel))
+                    it.result.myScraps?.let { scrap -> setMyScrapDataSet(scrap) }
+
+                }
+            } else {
+                _scrapLoadFailure.setValue(response.code())
+            }
+        }
+    }
+
 
     init {
 
         // 모델-레포를 통해 데이터 받아오기
-
-        val tags = listOf(
-            Tag("#BEBDBD", "디자인", 0),
-            Tag("#BEBDBD", "IT", 1),
-            Tag("#BEBDBD", "안드로이드", 2),
-            Tag("#BEBDBD", "디자인", 3)
-        )
-
-        val scrapDataModels = arrayListOf(
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX"),
-            ScrapDataModel(null, "바야흐로 개인화(Personalization)의 시대가 도래했습니다.사람은 누구나 자기만의 고유한", "www.naver.com", tags, "나만을 위한 취향 맞춤형 UX나만을 위한 취향 맞춤형 UX")
-        )
-
-        setOthersScrapAdapter(OthersScrapRecyclerviewAdapter(this))
-        setOthersScrapDataSet(scrapDataModels)
-
-        setMyScrapAdapter(MyScrapRecyclerviewAdapter(this))
-        setMyScrapAdapter2(MyScrapRecyclerviewAdapter2(this))
-        setMyScrapAdapter3(MyScrapRecyclerviewAdapter3(this))
-        setMyScrapDataSet(scrapDataModels)
+        getScrapLoad()
     }
 
-    private fun setOthersScrapDataSet(newList: List<ScrapDataModel>) {
-        this._othersScrapDataSet.value = newList as ArrayList<ScrapDataModel>
+    private fun setOthersScrapDataSet(newList: List<Scrap>) {
+        this._othersScrapDataSet.value = newList as ArrayList<Scrap>
         othersScrapRecyclerviewAdapter.submitList(newList)
     }
 
@@ -70,8 +80,8 @@ class MainViewModel() : ViewModel(), ItemEvent {
         this.othersScrapRecyclerviewAdapter = customAdapter
     }
 
-    private fun setMyScrapDataSet(newList: List<ScrapDataModel>) {
-        this._myScrapDataSet.value = newList as ArrayList<ScrapDataModel>
+    private fun setMyScrapDataSet(newList: List<Scrap>) {
+        this._myScrapDataSet.value = newList as ArrayList<Scrap>
         myScrapRecyclerviewAdapter.submitList(newList)
     }
 
@@ -96,14 +106,14 @@ class MainViewModel() : ViewModel(), ItemEvent {
     }
 
     override fun removeItem(position: Int) {
-        TODO("Not yet implemented")
+        // 여기선 사용하지 않음
     }
 
     override fun addItem() {
-        TODO("Not yet implemented")
+        // 여기선 사용하지 않음
     }
 
     override fun selectItem(position: Int) {
-        TODO("Not yet implemented")
+       // 해당 아이템의 url로 이동
     }
 }
