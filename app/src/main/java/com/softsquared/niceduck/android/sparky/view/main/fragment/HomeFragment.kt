@@ -1,5 +1,6 @@
 package com.softsquared.niceduck.android.sparky.view.main.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
@@ -12,6 +13,7 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentHomeBinding
 import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
+import com.softsquared.niceduck.android.sparky.view.my_page.MyPageActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,24 +31,26 @@ class HomeFragment :
         mainViewModel.getHomeScrapLoad()
 
         mainViewModel.homeScrapLoadResponse.observe(
-            viewLifecycleOwner) { response ->
-               when (response.code) {
-                   "0000" -> {
-                       val myScrapDataSet = response.result.myScraps
-                       val othersScrapDataSet = response.result.recScraps
-                       setMyRecyclerview(myScrapDataSet)
-                       setOthersRecyclerview(othersScrapDataSet)
-                   }
-                   else -> {
-                       binding.homeRecyclerviewMyScrap.visibility = INVISIBLE
-                       showCustomToast("네트워크 연결이 원활하지 않습니다.")
-                   }
-               }
-            hideLoading()
+            viewLifecycleOwner
+        ) { response ->
+            when (response.code) {
+                "0000" -> {
+                    val myScrapDataSet = response.result.myScraps
+                    val othersScrapDataSet = response.result.recScraps
+                    setMyRecyclerview(myScrapDataSet)
+                    setOthersRecyclerview(othersScrapDataSet)
+                }
+                else -> {
+                    binding.homeRecyclerviewMyScrap.visibility = INVISIBLE
+                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                }
             }
+            hideLoading()
+        }
 
         mainViewModel.homeScrapLoadFailure.observe(
-            viewLifecycleOwner) { code ->
+            viewLifecycleOwner
+        ) { code ->
             when (code) {
                 401 -> {
                     CoroutineScope(Dispatchers.Main).launch {
@@ -59,6 +63,11 @@ class HomeFragment :
                 }
             }
             hideLoading()
+        }
+
+        binding.homeImgMyPage.setOnClickListener {
+            val intent = Intent(activity, MyPageActivity::class.java)
+            startActivity(intent)
         }
     }
 
