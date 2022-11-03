@@ -49,6 +49,31 @@ class MyFragment :
                     binding.myRadioBtn2.setOnClickListener {
                         onRadioButtonClicked(it)
                     }
+
+                    // 검색 기능을 위한 watcher
+                    binding.myEditTxt.addTextChangedListener {
+                        if (binding.myEditTxt.text.isNotEmpty()) {
+                            binding.myImgSearchDeleteBtn.visibility = VISIBLE
+                            binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
+                                Color.parseColor(
+                                    "#FF000000"
+                                )
+                            )
+                            binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
+                        } else {
+                            binding.myImgSearchDeleteBtn.visibility = View.GONE
+                            binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
+                                Color.parseColor(
+                                    "#BEBDBD"
+                                )
+                            )
+                            binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
+                        }
+
+                        mainViewModel.searchType = 1
+                        mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
+                        mainViewModel.postScrapSearch()
+                    }
                 }
                 else -> {
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
@@ -112,30 +137,6 @@ class MyFragment :
             binding.myEditTxt.text.clear()
         }
 
-        // 검색 기능을 위한 watcher
-        binding.myEditTxt.addTextChangedListener {
-            if (binding.myEditTxt.text.isNotEmpty()) {
-                binding.myImgSearchDeleteBtn.visibility = VISIBLE
-                binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
-                    Color.parseColor(
-                        "#FF000000"
-                    )
-                )
-                binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
-            } else {
-                binding.myImgSearchDeleteBtn.visibility = View.GONE
-                binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
-                    Color.parseColor(
-                        "#BEBDBD"
-                    )
-                )
-                binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
-            }
-
-            mainViewModel.searchType = 1
-            mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
-            mainViewModel.postScrapSearch()
-        }
 
         binding.myRadioBtn2.isChecked = true
     }

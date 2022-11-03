@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -16,10 +17,24 @@ import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.main.fragment.TagRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.main.fragment.TagRecyclerviewAdapter2
+import com.softsquared.niceduck.android.sparky.viewmodel.ScrapDetailViewModel
+import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
 
 class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(ActivityMyScrapDetailBinding::inflate) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val scrapDetailViewModel: ScrapDetailViewModel by viewModels()
+
+        scrapDetailViewModel.scrapDeleteResponse.observe(this) {
+            // TODO: 실패 코드 추가
+            if (it.code == "0000") {
+                finish()
+            }
+        }
+
+        scrapDetailViewModel.scrapDeleteFailure.observe(this) {
+
+        }
 
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
@@ -27,6 +42,11 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
                 val intent = Intent(this, ScrapModifyActivity::class.java)
                 intent.putExtra("scrap", scrap)
                 startActivity(intent)
+                finish()
+            }
+
+            binding.myScrapDetailTxtUrlDelete.setOnClickListener {
+                scrapDetailViewModel.deleteScrap(scrap.scrapId.toString())
             }
 
             binding.myScrapDetailEditTxtTitle.text = scrap.title
