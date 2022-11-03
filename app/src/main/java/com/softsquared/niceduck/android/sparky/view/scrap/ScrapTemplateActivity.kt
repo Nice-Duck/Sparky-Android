@@ -162,7 +162,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                     scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))
                 }
             } else {
-                scrapTemplateViewModel.getScrapData(intent.getStringExtra(intent.getStringExtra("add")))
+                scrapTemplateViewModel.getScrapData(intent.getStringExtra("add"))
             }
         }
     }
