@@ -161,6 +161,8 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                 if ("text/plain" == intent.type) {
                     scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))
                 }
+            } else {
+                scrapTemplateViewModel.getScrapData(intent.getStringExtra(intent.getStringExtra("add")))
             }
         }
     }
