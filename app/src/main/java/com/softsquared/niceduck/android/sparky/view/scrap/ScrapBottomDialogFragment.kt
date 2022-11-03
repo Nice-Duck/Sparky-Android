@@ -18,8 +18,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentScrapBottomDialogBinding
-import com.softsquared.niceduck.android.sparky.model.Tag
 import com.softsquared.niceduck.android.sparky.model.TagRequest
+import com.softsquared.niceduck.android.sparky.model.TagsResponse
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -50,6 +50,10 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.scrapBottomDialogImgBackBtn.setOnClickListener {
+            dismiss()
+        }
+
         scrapTemplateViewModel.tagColor.observe(viewLifecycleOwner) {
             binding.scrapBottomDialogLLNewTagName.backgroundTintList = ColorStateList.valueOf(
                 Color.parseColor(
@@ -59,6 +63,8 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagLastLoadFailure.observe(viewLifecycleOwner) {
+
+            // TODO: 실패 코드 추가
         }
 
         scrapTemplateViewModel.lastTags.observe(viewLifecycleOwner) {
@@ -82,12 +88,13 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagSaveResponse.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 val i = scrapTemplateViewModel.scrapTemplateDataSet.value!!.size - 1
 
                 scrapTemplateViewModel.scrapTemplateDataSet.value!!.add(
                     i,
-                    Tag(it.result.color, it.result.name, it.result.tagId)
+                    TagsResponse(it.result.color, it.result.name, it.result.tagId)
                 )
 
                 val newTagList = scrapTemplateViewModel.scrapTemplateDataSet.value
@@ -99,6 +106,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagSaveFailure.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
         }
 
         binding.scrapBottomDialogImgSearchDeleteBtn.setOnClickListener {
@@ -124,7 +132,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
                 binding.scrapBottomDialogEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
             }
 
-            if (scrapTemplateViewModel.lastTags.getValue() != null) {
+            if (scrapTemplateViewModel.lastTags.value != null) {
                 updateList(binding.scrapBottomDialogEditTxt.text.toString())
                 if (scrapTemplateViewModel.updatedList.isNotEmpty()) {
                     binding.scrapBottomDialogLL.visibility = GONE
@@ -143,8 +151,8 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
 
     private fun updateList(str: String) {
         if (str.isNotBlank())
-            scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.getValue()!!.filter { it.name.contains(str) } as ArrayList<Tag>
-        else scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.getValue()!!
+            scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.value!!.filter { it.name.contains(str) } as ArrayList<TagsResponse>
+        else scrapTemplateViewModel.updatedList = scrapTemplateViewModel.lastTags.value!!
     }
 
     override fun onDestroyView() {
@@ -160,7 +168,11 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
             adapter = scrapTemplateViewModel.tagAddRecyclerviewAdapter
             visibility = View.VISIBLE
         }
+
         binding.scrapBottomDialogLL.visibility = GONE
-        binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
+
+        if (scrapTemplateViewModel.lastTags.value == null || scrapTemplateViewModel.lastTags.value!!.size == 0)
+            binding.scrapBottomDialogTxtLastTagTitle.visibility = GONE
+        else binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
     }
 }

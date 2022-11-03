@@ -4,14 +4,14 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.softsquared.niceduck.android.sparky.databinding.TagItemBinding
-import com.softsquared.niceduck.android.sparky.model.Tag
+import com.softsquared.niceduck.android.sparky.model.TagsResponse
 
 class ScrapTemplateViewHolder(
     private val binding: TagItemBinding,
     private val onItemClick: (position: Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Tag) {
+    fun bind(item: TagsResponse) {
         with(binding) {
             tagItemLL.backgroundTintList = ColorStateList.valueOf(Color.parseColor(item.color))
             tagItemTxt.text = item.name

@@ -2,6 +2,7 @@ package com.softsquared.niceduck.android.sparky.config
 
 import android.app.Application
 import android.content.SharedPreferences
+import com.softsquared.niceduck.android.sparky.model.AuthRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -11,16 +12,9 @@ import java.util.concurrent.TimeUnit
 // 앱이 실행될때 1번만 실행이 됩니다.
 class ApplicationClass : Application() {
 
-    // 실서버 주소
-    // val BASE_URL = ""
-
-    // 테스트 서버 주소
-    private val BASE_URL = "http://18.232.254.197"
-
     companion object {
-
         lateinit var sSharedPreferences: SharedPreferences
-
+        const val BASE_URL = "http://sparkyapi.tk"
         const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
         const val X_REFRESH_TOKEN = "X-REFRESH-TOKEN"
 
@@ -43,7 +37,6 @@ class ApplicationClass : Application() {
         val client: OkHttpClient = OkHttpClient.Builder()
             .readTimeout(5000, TimeUnit.MILLISECONDS)
             .connectTimeout(5000, TimeUnit.MILLISECONDS)
-            // 로그캣에 okhttp.OkHttpClient로 검색하면 http 통신 내용을 보여줍니다.
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addNetworkInterceptor(XAccessTokenInterceptor()) // JWT 자동 헤더 전송
             .build()

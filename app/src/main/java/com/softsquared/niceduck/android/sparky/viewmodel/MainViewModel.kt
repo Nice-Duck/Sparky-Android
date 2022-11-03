@@ -1,9 +1,14 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
@@ -12,108 +17,143 @@ import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecycle
 import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter3
 import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class MainViewModel() : ViewModel(), ItemEvent {
+class MainViewModel() : ViewModel() {
     private val mainRepository = MainRepository()
 
-    private val _scrapLoadResponse: MutableLiveData<ScrapRoadResponse> = MutableLiveData()
-    private val scrapLoadResponse: LiveData<ScrapRoadResponse>
-        get() = _scrapLoadResponse
+    // 스크랩 추가 바텀 시트
+    val scrapAddBottomSheetShow: MutableSingleLiveData<Boolean> = MutableSingleLiveData()
 
-    private val _scrapLoadFailure = MutableLiveData<Int>()
-    val scrapLoadFailure: LiveData<Int>
-        get() = _scrapLoadFailure
+    // 토큰 갱신
+    private val _reissueAccessTokenResponse: MutableSingleLiveData<TokenResponse> = MutableSingleLiveData()
+    val reissueAccessTokenResponse: SingleLiveData<TokenResponse>
+        get() = _reissueAccessTokenResponse
 
-    private lateinit var othersScrapRecyclerviewAdapter: OthersScrapRecyclerviewAdapter
+    private val _reissueAccessTokenFailure = MutableSingleLiveData<Int>()
+    val reissueAccessTokenFailure: SingleLiveData<Int>
+        get() = _reissueAccessTokenFailure
 
-    private val _othersScrapDataSet: MutableLiveData<ArrayList<Scrap>> = MutableLiveData()
-    private val othersScrapDataSet: LiveData<ArrayList<Scrap>>
-        get() = _othersScrapDataSet
+    // 마이 화면 검색 관련 변수
+    var searchType = 1
+    var searchTitle: String = ""
+    var searchTags: ArrayList<Int> = ArrayList()
+    var myScrapDataSet: List<Scrap>? = null
 
-    private lateinit var myScrapRecyclerviewAdapter: MyScrapRecyclerviewAdapter
-    private lateinit var myScrapRecyclerviewAdapter2: MyScrapRecyclerviewAdapter2
-    private lateinit var myScrapRecyclerviewAdapter3: MyScrapRecyclerviewAdapter3
+    // 마이 화면 네트워크 통신 결과
+    private val _myScrapLoadResponse: MutableLiveData<ScrapRoadResponse> = MutableLiveData()
+    val myScrapLoadResponse: LiveData<ScrapRoadResponse>
+        get() = _myScrapLoadResponse
 
-    private val _myScrapDataSet: MutableLiveData<ArrayList<Scrap>> = MutableLiveData()
-    private val myScrapDataSet: LiveData<ArrayList<Scrap>>
-        get() = _myScrapDataSet
+    private val _myScrapLoadFailure = MutableLiveData<Int>()
+    val myScrapLoadFailure: LiveData<Int>
+        get() = _myScrapLoadFailure
 
-    private fun getScrapLoad(type: String? = null) {
-        viewModelScope.launch {
-            val response = mainRepository.getScrap(type)
+    private val _myScrapSearchResponse: MutableSingleLiveData<SearchScrapResponse> = MutableSingleLiveData()
+    val myScrapSearchResponse: SingleLiveData<SearchScrapResponse>
+        get() = _myScrapSearchResponse
+
+    private val _myScrapSearchFailure = MutableSingleLiveData<Int>()
+    val myScrapSearchFailure: SingleLiveData<Int>
+        get() = _myScrapSearchFailure
+
+
+    // 홈 화면 네트워크 통신 결과
+    private val _homeScrapLoadResponse: MutableLiveData<ScrapRoadResponse> = MutableLiveData()
+    val homeScrapLoadResponse: LiveData<ScrapRoadResponse>
+        get() = _homeScrapLoadResponse
+
+    private val _homeScrapLoadFailure = MutableLiveData<Int>()
+    val homeScrapLoadFailure: LiveData<Int>
+        get() = _homeScrapLoadFailure
+
+    private val _homeScrapSearchResponse: MutableSingleLiveData<ScrapRoadResponse> = MutableSingleLiveData()
+    val homeScrapSearchResponse: SingleLiveData<ScrapRoadResponse>
+        get() = _homeScrapSearchResponse
+
+    private val _homeScrapSearchFailure = MutableSingleLiveData<Int>()
+    val homeScrapSearchFailure: SingleLiveData<Int>
+        get() = _homeScrapSearchFailure
+
+
+    // 토큰 갱신
+    suspend fun postReissueAccessToken(): Int {
+        val editor = sSharedPreferences.edit()
+        editor.putString(X_ACCESS_TOKEN, null)
+        editor.apply()
+
+        val scope = viewModelScope.async {
+            val response = mainRepository.postReissueAccessToken()
 
             if (response.isSuccessful) {
                 response.body()?.let {
-                    setOthersScrapAdapter(OthersScrapRecyclerviewAdapter(this@MainViewModel))
-                    it.result.recScraps?.let { scrap -> setOthersScrapDataSet(scrap) }
-
-                    setMyScrapAdapter(MyScrapRecyclerviewAdapter(this@MainViewModel))
-                    setMyScrapAdapter2(MyScrapRecyclerviewAdapter2(this@MainViewModel))
-                    setMyScrapAdapter3(MyScrapRecyclerviewAdapter3(this@MainViewModel))
-                    it.result.myScraps?.let { scrap -> setMyScrapDataSet(scrap) }
+                    _reissueAccessTokenResponse.setValue(it)
 
                 }
+                1
             } else {
-                _scrapLoadFailure.setValue(response.code())
+                _reissueAccessTokenFailure.setValue(response.code())
+                0
+            }
+
+        }
+        return scope.await()
+    }
+
+
+    // 홈 화면 스크랩 조회
+    fun getHomeScrapLoad() {
+        viewModelScope.launch {
+            val response = mainRepository.getScrap()
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _homeScrapLoadResponse.value = response.body()
+                }
+            } else {
+                _homeScrapLoadFailure.setValue(response.code())
+            }
+        }
+    }
+
+    // 마이 화면 스크랩 조회
+    fun getMyScrapLoad() {
+        viewModelScope.launch {
+            val response = mainRepository.getScrap("1")
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _myScrapLoadResponse.value = it
+                }
+            } else {
+                _myScrapLoadFailure.setValue(response.code())
+            }
+        }
+    }
+
+    // 마이 화면 스크랩 검색
+    fun postScrapSearch() {
+        viewModelScope.launch {
+            Log.d("테스트", "$searchTags, $searchTitle, $searchType")
+            val response = mainRepository.postScrapSearch(
+                ScrapSearchRequest(
+                tags = searchTags,
+                title = searchTitle,
+                type = searchType
+            )
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _myScrapSearchResponse.setValue(it)
+                }
+            } else {
+                _myScrapSearchFailure.setValue(response.code())
             }
         }
     }
 
 
-    init {
-
-        // 모델-레포를 통해 데이터 받아오기
-        getScrapLoad()
-    }
-
-    private fun setOthersScrapDataSet(newList: List<Scrap>) {
-        this._othersScrapDataSet.value = newList as ArrayList<Scrap>
-        othersScrapRecyclerviewAdapter.submitList(newList)
-    }
-
-    fun getOthersScrapData() = othersScrapDataSet
-
-    fun getOthersScrapAdapter() = othersScrapRecyclerviewAdapter
-
-    private fun setOthersScrapAdapter(customAdapter: OthersScrapRecyclerviewAdapter) {
-        this.othersScrapRecyclerviewAdapter = customAdapter
-    }
-
-    private fun setMyScrapDataSet(newList: List<Scrap>) {
-        this._myScrapDataSet.value = newList as ArrayList<Scrap>
-        myScrapRecyclerviewAdapter.submitList(newList)
-    }
-
-    fun getMyScrapData() = myScrapDataSet
-
-    fun getMyScrapAdapter() = myScrapRecyclerviewAdapter
-
-    private fun setMyScrapAdapter(customAdapter: MyScrapRecyclerviewAdapter) {
-        this.myScrapRecyclerviewAdapter = customAdapter
-    }
-
-    fun getMyScrapAdapter2() = myScrapRecyclerviewAdapter2
-
-    private fun setMyScrapAdapter2(customAdapter: MyScrapRecyclerviewAdapter2) {
-        this.myScrapRecyclerviewAdapter2 = customAdapter
-    }
-
-    fun getMyScrapAdapter3() = myScrapRecyclerviewAdapter3
-
-    private fun setMyScrapAdapter3(customAdapter: MyScrapRecyclerviewAdapter3) {
-        this.myScrapRecyclerviewAdapter3 = customAdapter
-    }
-
-    override fun removeItem(position: Int) {
-        // 여기선 사용하지 않음
-    }
-
-    override fun addItem() {
-        // 여기선 사용하지 않음
-    }
-
-    override fun selectItem(position: Int) {
-       // 해당 아이템의 url로 이동
-    }
 }

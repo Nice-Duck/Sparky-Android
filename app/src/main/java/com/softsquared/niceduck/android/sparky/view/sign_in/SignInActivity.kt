@@ -79,6 +79,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         }
 
         signInViewModel.signInFailure.observe(this) {
+            // TODO: 로그인 실패 처리 코드
         }
 
         binding.signInBtnSignIn.setOnClickListener {

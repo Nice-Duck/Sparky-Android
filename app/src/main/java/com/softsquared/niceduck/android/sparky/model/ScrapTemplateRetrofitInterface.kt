@@ -2,9 +2,7 @@ package com.softsquared.niceduck.android.sparky.model
 
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ScrapTemplateRetrofitInterface {
 
@@ -19,4 +17,8 @@ interface ScrapTemplateRetrofitInterface {
     // 스크랩 저장
     @POST("/api/v1/scraps")
     suspend fun postStoreScrap(@Body request: ScrapStoreRequest): Response<BaseResponse>
+
+    // 스크랩 수정
+    @PATCH("/api/v1/scraps")
+    suspend fun patchScrap(@Query("scrapId") scrapId: String, @Body request: ScrapStoreRequest): Response<BaseResponse>
 }

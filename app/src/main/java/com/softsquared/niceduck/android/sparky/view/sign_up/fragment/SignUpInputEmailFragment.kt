@@ -38,20 +38,17 @@ class SignUpInputEmailFragment :
                     val p = Pattern.matches(emailValidation, binding.signUpInputEmailEditTxtEmail.text.toString())
                     if (p) {
                         binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_selector)
-                        binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                         binding.signUpInputEmailTxtValidation.visibility = GONE
                         binding.signUpInputEmailBtnNext.isEnabled = true
                         binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button)
                     } else {
                         binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                        binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
                         binding.signUpInputEmailTxtValidation.visibility = VISIBLE
                         binding.signUpInputEmailBtnNext.isEnabled = false
                         binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
                     }
                 } else {
                     binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_selector)
-                    binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     binding.signUpInputEmailTxtValidation.visibility = GONE
                     binding.signUpInputEmailBtnNext.isEnabled = false
                     binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
@@ -67,13 +64,8 @@ class SignUpInputEmailFragment :
             if (it.code == "0000") {
                 signUpViewModel.postCertificationSend()
             } else if (it.code == "0001") {
+                // TODO: 실패 코드 추가
                 binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(
-                    0,
-                    0,
-                    R.drawable.edit_txt_inner,
-                    0
-                )
                 binding.signUpInputEmailTxtValidation.text = "이미 가입된 이메일입니다"
                 binding.signUpInputEmailTxtValidation.visibility = VISIBLE
                 binding.signUpInputEmailBtnNext.isEnabled = false
@@ -82,10 +74,10 @@ class SignUpInputEmailFragment :
         }
 
         signUpViewModel.duplicationEmailCheckFailure.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
             when (it) {
                 409 -> {
                     binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                    binding.signUpInputEmailEditTxtEmail.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
                     binding.signUpInputEmailTxtValidation.text = "이미 가입된 이메일입니다"
                     binding.signUpInputEmailTxtValidation.visibility = VISIBLE
                     binding.signUpInputEmailBtnNext.isEnabled = false
@@ -96,6 +88,7 @@ class SignUpInputEmailFragment :
 
         signUpViewModel.certificationSendResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
+                // TODO: 실패 코드 추가
                 val action =
                     SignUpInputEmailFragmentDirections
                         .actionSignUpInputEmailFragmentToSignUpInputCertificationNumFragment()
@@ -104,6 +97,7 @@ class SignUpInputEmailFragment :
         }
 
         signUpViewModel.certificationSendFailure.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
         }
 
         binding.signUpInputEmailBtnNext.setOnClickListener {

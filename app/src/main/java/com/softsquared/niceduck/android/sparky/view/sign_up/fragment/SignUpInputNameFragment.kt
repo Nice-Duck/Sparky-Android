@@ -25,7 +25,7 @@ class SignUpInputNameFragment :
 
         signUpViewModel.progress.value = 100
 
-        val nameValidation = "^[가-힣ㄱ-ㅎa-zA-Z0-9]{2,16}$"
+        val nameValidation = "^[가-힣ㄱ-ㅎa-zA-Z0-9]{1,16}$"
 
         binding.signUpInputNameEditTxtName.addTextChangedListener(object : TextWatcher {
             // 입력하기 전에
@@ -39,20 +39,19 @@ class SignUpInputNameFragment :
                     binding.signUpInputNameTxtValidation.text = "특수문자는 사용할 수 없습니다"
                     if (p) {
                         binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_selector)
-                        binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                         binding.signUpInputNameTxtValidation.visibility = View.GONE
-                        binding.signUpInputNameBtnNext.isEnabled = true
-                        binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button)
+                        if (binding.signUpInputNameEditTxtName.text.length >= 2) {
+                            binding.signUpInputNameBtnNext.isEnabled = true
+                            binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button)
+                        }
                     } else {
-                        binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
-                        binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
-                        binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
                         binding.signUpInputNameBtnNext.isEnabled = false
                         binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
+                        binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
+                        binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
                     }
                 } else {
                     binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_selector)
-                    binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     binding.signUpInputNameTxtValidation.visibility = View.GONE
                     binding.signUpInputNameBtnNext.isEnabled = false
                     binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
@@ -65,11 +64,11 @@ class SignUpInputNameFragment :
         })
 
         signUpViewModel.duplicationNameCheckResponse.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 signUpViewModel.postSignUp()
             } else if (it.code == "0004") {
                 binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
                 binding.signUpInputNameBtnNext.isEnabled = false
                 binding.signUpInputNameTxtValidation.text = "이미 존재하는 닉네임입니다"
                 binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
@@ -78,8 +77,8 @@ class SignUpInputNameFragment :
         }
 
         signUpViewModel.duplicationNameCheckFailure.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
             binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
-            binding.signUpInputNameEditTxtName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
             binding.signUpInputNameBtnNext.isEnabled = false
             binding.signUpInputNameTxtValidation.text = "이미 존재하는 닉네임입니다"
             binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
@@ -87,6 +86,7 @@ class SignUpInputNameFragment :
         }
 
         signUpViewModel.signUpResponse.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 val editor = ApplicationClass.sSharedPreferences.edit()
                 editor.putString(ApplicationClass.X_ACCESS_TOKEN, it.result?.accessToken)
@@ -100,6 +100,7 @@ class SignUpInputNameFragment :
         }
 
         signUpViewModel.signUpFailure.observe(viewLifecycleOwner) {
+            // TODO: 실패 코드 추가
         }
 
         binding.signUpInputNameBtnNext.setOnClickListener {

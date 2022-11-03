@@ -11,21 +11,22 @@
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="40dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginBottom="32dp"
         android:src="@drawable/sparky"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="아이디/이메일"
-        android:layout_marginVertical="7dp"
+        android:text="@string/id"
+        android:layout_marginBottom="7dp"
         android:textColor="@color/black"/>
 
     <EditText
         android:id="@+id/sign_in_edit_txt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="17dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/sign_input_selector"
         android:hint="example@sparky.com"
         android:inputType="textEmailAddress"
@@ -39,8 +40,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호"
-        android:layout_marginVertical="7dp"
+        android:text="@string/password"
+        android:layout_marginBottom="7dp"
         android:textColor="@color/black"/>
 
     <EditText
@@ -48,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/sign_input_selector"
-        android:hint="영문/숫자포함 8~20자"
+        android:hint="@string/password_rule"
         android:maxLength="20"
         android:paddingVertical="15dp"
         android:paddingStart="18dp"
@@ -56,14 +57,14 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp"
-        android:layout_marginBottom="21dp"/>
+        android:layout_marginBottom="20dp"/>
 
     <Button
         android:id="@+id/sign_in_btn_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button"
-        android:text="로그인"
+        android:text="@string/login"
         android:textStyle="bold"
         android:paddingVertical="15dp"
         android:textColor="@color/white"/>
@@ -80,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:text="이메일 회원가입"/>
+            android:text="@string/email_sign_up"/>
 
         <ImageView
             android:layout_gravity="center_vertical"
@@ -94,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:text="비밀번호 찾기"/>
+            android:text="@string/password_find"/>
     </LinearLayout>
 
 </LinearLayout>

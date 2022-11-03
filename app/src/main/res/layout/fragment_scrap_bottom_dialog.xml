@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="태그추가"
+        android:text="@string/tag_add_title"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -50,10 +50,11 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/gray_400"
             android:drawableStart="@drawable/edit_txt_inner_search"
-            android:hint="검색할 태그를 입력해주세요 (최대 7글자)"
+            android:hint="@string/tag_input_request"
             android:maxLength="7"
             android:textColor="@color/black"
             android:textSize="14sp"
+            android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +66,7 @@
             android:layout_marginEnd="10dp"
             android:layout_width="8dp"
             android:layout_height="8dp"
-            android:src="@drawable/ic_search_inner_close"
+            android:src="@drawable/ic_delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -86,6 +87,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:visibility="gone"
+        tools:itemCount="10"
         android:id="@+id/scrap_bottom_dialog_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -101,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="60dp"
-            android:text="검색결과가 없어요"
+            android:text="@string/none_search_result"
             android:textColor="@color/black"
             android:textSize="12sp" />
 
@@ -141,20 +143,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="새 태그 생성하기"
+                android:text="@string/new_tag_add"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
         </LinearLayout>
 
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
-            android:text="태그 컬러는 마이페이지>태그 목록에서 변경할 수 있어요"
+            android:text="@string/tag_text"
             android:textColor="@color/gray_600"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textSize="12sp" />
 
     </LinearLayout>
 </LinearLayout>

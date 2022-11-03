@@ -48,9 +48,10 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:layout_marginBottom="16dp"
+        android:id="@+id/main_img_scrap_add_btn"
         android:layout_width="59dp"
         android:layout_height="59dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/bottom_nav_plus_btn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

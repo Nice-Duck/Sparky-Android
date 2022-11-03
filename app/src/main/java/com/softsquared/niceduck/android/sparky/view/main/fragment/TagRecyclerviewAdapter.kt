@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.softsquared.niceduck.android.sparky.R
-import com.softsquared.niceduck.android.sparky.model.Tag
 import com.softsquared.niceduck.android.sparky.model.TagsResponse
 
 class TagRecyclerviewAdapter(private val tags: List<TagsResponse>) :
@@ -34,8 +33,13 @@ class TagRecyclerviewAdapter(private val tags: List<TagsResponse>) :
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.textView.text = tags[position].name
-        holder.linearLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(tags[position].color))
+        holder.linearLayout.backgroundTintList = ColorStateList.valueOf(Color.parseColor(tags[position].color?: "#DFDFDF"))
     }
 
-    override fun getItemCount() = tags.size
+    override fun getItemCount(): Int {
+        return if (tags.size > 10)
+            10
+        else
+            tags.size
+    }
 }

@@ -28,8 +28,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val img = MutableSingleLiveData<String>()
     val tags = ArrayList<Int>()
 
-    val lastTags = MutableLiveData<ArrayList<Tag>>()
-    var updatedList = ArrayList<Tag>()
+    val lastTags = MutableLiveData<ArrayList<TagsResponse>>()
+    var updatedList = ArrayList<TagsResponse>()
 
     private val tagColorList = listOf(
         "#FFDDDA", "#FFE8D3", "#FFFDCC", "#D8F5D6", "#D5E7E0", "#DFF1F5",
@@ -41,7 +41,7 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapTemplateRecyclerviewAdapter: ScrapTemplateRecyclerviewAdapter
 
     // 템플릿 화면 어댑터 데이터셋
-    val scrapTemplateDataSet: MutableLiveData<ArrayList<Tag>> = MutableLiveData()
+    val scrapTemplateDataSet: MutableLiveData<ArrayList<TagsResponse>> = MutableLiveData()
 
     // 바텀 시트 화면 어댑터
     val tagAddRecyclerviewAdapter: TagAddRecyclerviewAdapter
@@ -80,6 +80,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
             }
         }
     }
+
+
 
     // 태그 조회
     private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
@@ -130,6 +132,7 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapStoreFailure: SingleLiveData<Int>
         get() = _scrapStoreFailure
 
+
     fun postScrapStore() {
         viewModelScope.launch {
             val response = scrapTemplateRepository.postStoreScrap(
@@ -153,9 +156,41 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
         }
     }
 
+    // 스크랩 수정
+    private val _scrapUpdateResponse = MutableSingleLiveData<BaseResponse>()
+    val scrapUpdateResponse: SingleLiveData<BaseResponse>
+        get() = _scrapUpdateResponse
+    private val _scrapUpdateFailure = MutableSingleLiveData<Int>()
+    val scrapUpdateFailure: SingleLiveData<Int>
+        get() = _scrapUpdateFailure
+
+    fun patchScrap(scrapId: String) {
+        viewModelScope.launch {
+            val response = scrapTemplateRepository.patchScrap(
+                scrapId,
+                ScrapStoreRequest(
+                    img.getValue(),
+                    memo,
+                    url,
+                    tags,
+                    title.getValue(),
+                    subTitle.getValue()
+                )
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let { _scrapUpdateResponse.setValue(it) }
+            } else {
+                _scrapUpdateFailure.setValue(response.code())
+            }
+
+
+        }
+    }
+
     init {
 
-        val tags = arrayListOf(Tag("", "", 0))
+        val tags = arrayListOf(TagsResponse("", "", 0))
 
         scrapTemplateRecyclerviewAdapter = ScrapTemplateRecyclerviewAdapter(this) // 템플릿 화면 어댑터 생성
         scrapTemplateDataSet.value = tags // 탬플릿 화면 어댑터 데이터
@@ -183,18 +218,10 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
         val newList = tagAddRecyclerviewAdapter.currentList.toMutableList()
         val i = scrapTemplateDataSet.value!!.size - 1
 
-        d(
-            "선택 테스트",
-            Tag(
-                newList[position].color,
-                newList[position].name,
-                newList[position].tagId
-            ).toString()
-        )
 
         scrapTemplateDataSet.value!!.add(
             i,
-            Tag(
+            TagsResponse(
                 newList[position].color,
                 newList[position].name,
                 newList[position].tagId

@@ -1,5 +1,7 @@
 package com.softsquared.niceduck.android.sparky.view.main.fragment
 
+import android.content.Intent
+import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -9,25 +11,22 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.*
 import com.softsquared.niceduck.android.sparky.model.Scrap
-import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
-import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
+import com.softsquared.niceduck.android.sparky.view.detail.MyScrapDetailActivity
+import com.softsquared.niceduck.android.sparky.view.detail.OthersScrapDetailActivity
+import java.io.Serializable
 
 class ScrapViewHolder3(
-    private val binding: ScrapItem3Binding,
-    private val mainViewModel: MainViewModel
+    private val binding: ScrapItem3Binding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Scrap) {
         with(binding) {
 
             scrapItem3TxtTitle.text = item.title
-            scrapItem3TxtSummary.text = item.memo
+            scrapItem3TxtSummary.text = item.subTitle
 
-            scrapItem3ImgMoreBtn.setOnClickListener {
-                mainViewModel.selectItem(adapterPosition)
-            }
 
-            if (item.imgUrl != null) {
+            if (item.imgUrl != null && item.imgUrl != "") {
                 Glide.with(itemView.context).load(item.imgUrl).transform(
                     CenterCrop(), RoundedCorners(8)
                 ).into(scrapItem3Img)
@@ -59,6 +58,22 @@ class ScrapViewHolder3(
                         adapter = tagAdapter
                     }
                 }
+            }
+
+            scrapItem3ImgMoreBtn.setOnClickListener {
+                val intent: Intent = if (item.type == 1) {
+                    Intent(itemView.context, MyScrapDetailActivity::class.java)
+                } else {
+                    Intent(itemView.context, OthersScrapDetailActivity::class.java)
+                }
+                intent.putExtra("scrap", item)
+                itemView.context.startActivity(intent)
+            }
+
+            itemView.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse(item.scpUrl)
+                itemView.context.startActivity(intent)
             }
         }
     }

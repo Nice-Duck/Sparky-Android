@@ -148,6 +148,8 @@ class SignUpInputCertificationNumFragment :
                         .actionSignUpInputCertificationNumFragmentToSignUpInputPwdFragment()
                 view.findNavController().navigate(action)
             } else if (it.code == "0004") {
+
+                // TODO: 실패 처리 액션 추가
                 binding.signUpInputCertificationEditTxt1.text.clear()
                 binding.signUpInputCertificationEditTxt2.text.clear()
                 binding.signUpInputCertificationEditTxt3.text.clear()
@@ -188,6 +190,8 @@ class SignUpInputCertificationNumFragment :
             binding.signUpInputCertificationTxtValidation.visibility = VISIBLE
 
             binding.signUpInputCertificationEditTxt1.isFocusable = true
+
+            binding.signUpInputCertificationEditTxt1.requestFocus()
 
             binding.signUpInputCertificationNumBtnNext.isEnabled = false
         }

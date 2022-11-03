@@ -14,8 +14,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.databinding.ActivityScrapTemplateBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
+import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +30,12 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (sSharedPreferences.getString(X_ACCESS_TOKEN, null) == null) {
+            val intent = Intent(this, SignInActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         binding.scrapTemplateBtnStore.setOnClickListener {
             scrapTemplateViewModel.postScrapStore()
@@ -70,11 +80,13 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         )
 
         scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
+            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 it.result.tagResponses?.let { response -> scrapTemplateViewModel.lastTags.setValue(response) }
             }
         }
         scrapTemplateViewModel.scrapStoreResponse.observe(this) {
+            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 finish()
             }

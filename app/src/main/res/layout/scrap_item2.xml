@@ -9,7 +9,6 @@
 
     <LinearLayout
         android:gravity="center_vertical"
-        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -29,6 +28,7 @@
     </LinearLayout>
 
     <ImageView
+        android:layout_marginTop="8dp"
         android:background="@drawable/template_img_background"
         android:layout_marginBottom="12dp"
         android:id="@+id/scrap_item2_img"
@@ -39,7 +39,7 @@
         android:id="@+id/scrap_item2_txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:maxLines="2"
         android:textColor="@color/black"

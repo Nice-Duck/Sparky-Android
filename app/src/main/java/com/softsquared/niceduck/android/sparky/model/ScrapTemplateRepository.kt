@@ -22,4 +22,9 @@ class ScrapTemplateRepository {
     // 스크랩 저장
     suspend fun postStoreScrap(request: ScrapStoreRequest) =
         scrapTemplateService.postStoreScrap(request)
+
+    // 스크랩 수정
+    suspend fun patchScrap(scrapId: String, request: ScrapStoreRequest) =
+        scrapTemplateService.patchScrap(scrapId, request)
+
 }

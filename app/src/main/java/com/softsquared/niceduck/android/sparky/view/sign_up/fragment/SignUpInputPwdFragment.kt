@@ -35,20 +35,17 @@ class SignUpInputPwdFragment :
                     val p = Pattern.matches(pwdValidation, binding.signUpInputPwdEditTxtPwd.text.toString())
                     if (p) {
                         binding.signUpInputPwdEditTxtPwd.setBackgroundResource(R.drawable.sign_input_selector)
-                        binding.signUpInputPwdEditTxtPwd.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                         binding.signUpInputPwdTxtValidation.visibility = View.GONE
                         binding.signUpInputPwdBtnNext.isEnabled = true
                         binding.signUpInputPwdBtnNext.setBackgroundResource(R.drawable.button)
                     } else {
                         binding.signUpInputPwdEditTxtPwd.setBackgroundResource(R.drawable.sign_input_validation)
-                        binding.signUpInputPwdEditTxtPwd.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.edit_txt_inner, 0)
                         binding.signUpInputPwdTxtValidation.visibility = View.VISIBLE
                         binding.signUpInputPwdBtnNext.isEnabled = false
                         binding.signUpInputPwdBtnNext.setBackgroundResource(R.drawable.button2)
                     }
                 } else {
                     binding.signUpInputPwdEditTxtPwd.setBackgroundResource(R.drawable.sign_input_selector)
-                    binding.signUpInputPwdEditTxtPwd.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
                     binding.signUpInputPwdTxtValidation.visibility = View.GONE
                     binding.signUpInputPwdBtnNext.isEnabled = false
                     binding.signUpInputPwdBtnNext.setBackgroundResource(R.drawable.button2)

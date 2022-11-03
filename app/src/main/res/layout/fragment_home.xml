@@ -8,10 +8,13 @@
     android:scrollbars="none"
     tools:context=".view.main.fragment.HomeFragment">
 
+
     <LinearLayout
+        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_marginHorizontal="20dp"
@@ -58,11 +61,11 @@
 
             <ImageView
                 android:visibility="gone"
-                android:id="@+id/my_img_search_delete_btn"
+                android:id="@+id/home_img_search_delete_btn"
                 android:layout_marginEnd="10dp"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
-                android:src="@drawable/ic_search_inner_close"
+                android:src="@drawable/ic_delete"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -111,11 +114,17 @@
         <LinearLayout
             android:visibility="gone"
             android:paddingVertical="12dp"
+            android:layout_marginBottom="32dp"
             android:id="@+id/home_LL_none_my_scrap"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/test_img"/>
             <TextView
                 android:gravity="center"
                 android:layout_width="wrap_content"
@@ -125,12 +134,14 @@
                 android:layout_marginVertical="12dp"
                 android:text="최근 저장한 스크랩이 없어요\n아래 버튼을 눌러 스크랩을 추가해 보세요"/>
             <Button
+                android:id="@+id/home_btn_scrap_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp"
-                android:text="스크랩 추가하기    +"
+                android:text="스크랩 추가하기   "
+                android:drawableRight="@drawable/ic_plus_white"
                 android:textColor="@color/white"
                 android:textStyle="bold"/>
         </LinearLayout>

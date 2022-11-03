@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.softsquared.niceduck.android.sparky.databinding.TagItem2Binding
-import com.softsquared.niceduck.android.sparky.model.Tag
+import com.softsquared.niceduck.android.sparky.model.TagsResponse
 
 class TagAddRecyclerviewAdapter(private val viewModel: ItemEvent) :
-    ListAdapter<Tag, TagAddViewHolder>(MyDiffUtil) {
+    ListAdapter<TagsResponse, TagAddViewHolder>(MyDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagAddViewHolder {
         return TagAddViewHolder(
@@ -23,12 +23,12 @@ class TagAddRecyclerviewAdapter(private val viewModel: ItemEvent) :
 
     override fun onBindViewHolder(holder: TagAddViewHolder, position: Int) = holder.bind(getItem(position))
 
-    object MyDiffUtil : DiffUtil.ItemCallback<Tag>() {
-        override fun areItemsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+    object MyDiffUtil : DiffUtil.ItemCallback<TagsResponse>() {
+        override fun areItemsTheSame(oldItem: TagsResponse, newItem: TagsResponse): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Tag, newItem: Tag): Boolean {
+        override fun areContentsTheSame(oldItem: TagsResponse, newItem: TagsResponse): Boolean {
             return oldItem == newItem
         }
     }

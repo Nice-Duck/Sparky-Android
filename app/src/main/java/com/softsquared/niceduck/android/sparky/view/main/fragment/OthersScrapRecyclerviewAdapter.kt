@@ -9,10 +9,8 @@ import com.softsquared.niceduck.android.sparky.databinding.ScrapItem2Binding
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem3Binding
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem4Binding
 import com.softsquared.niceduck.android.sparky.model.Scrap
-import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
-import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
-class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
+class OthersScrapRecyclerviewAdapter() :
     ListAdapter<Scrap, RecyclerView.ViewHolder>(MyDiffUtil) {
 
     companion object {
@@ -34,20 +32,17 @@ class OthersScrapRecyclerviewAdapter(private val viewModel: MainViewModel) :
         return when (viewType) {
             ITEM1 -> {
                 ScrapViewHolder2(
-                    ScrapItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    viewModel
+                    ScrapItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
             }
             ITEM2 -> {
                 ScrapViewHolder3(
-                    ScrapItem3Binding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    viewModel
+                    ScrapItem3Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
             }
             else -> {
                 ScrapViewHolder4(
-                    ScrapItem4Binding.inflate(LayoutInflater.from(parent.context), parent, false),
-                    viewModel
+                    ScrapItem4Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 )
             }
         }

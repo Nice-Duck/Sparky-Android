@@ -6,16 +6,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.softsquared.niceduck.android.sparky.databinding.ScrapItem3Binding
 import com.softsquared.niceduck.android.sparky.model.Scrap
-import com.softsquared.niceduck.android.sparky.model.ScrapDataModel
-import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 
-class MyScrapRecyclerviewAdapter2(private val viewModel: MainViewModel) :
+class MyScrapRecyclerviewAdapter2() :
     ListAdapter<Scrap, ScrapViewHolder3>(MyDiffUtil) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScrapViewHolder3 {
         return ScrapViewHolder3(
-            ScrapItem3Binding.inflate(LayoutInflater.from(parent.context), parent, false),
-            viewModel
+            ScrapItem3Binding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
