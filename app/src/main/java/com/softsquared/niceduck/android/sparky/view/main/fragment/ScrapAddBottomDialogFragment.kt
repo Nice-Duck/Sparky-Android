@@ -53,7 +53,7 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
 
         binding.scrapAddBottomDialogBtn.setOnClickListener {
             val intent = Intent(activity, ScrapTemplateActivity::class.java)
-            intent.putExtra("add", binding.scrapAddBottomDialogEditTxtEmail.text)
+            intent.putExtra("add", binding.scrapAddBottomDialogEditTxtEmail.text.toString())
             startActivity(intent)
         }
 

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Log.d
 import android.view.View.VISIBLE
 import androidx.activity.viewModels
@@ -162,6 +163,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                     scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))
                 }
             } else {
+                Log.d("테스트", "${intent.getStringExtra("add")}")
                 scrapTemplateViewModel.getScrapData(intent.getStringExtra("add"))
             }
         }
