@@ -21,4 +21,7 @@ class MainRepository {
          mainService.postReissueAccessToken(
             sSharedPreferences.getString(
                 X_REFRESH_TOKEN, null))
+
+    suspend fun getScrapValidation(url: String) =
+        mainService.getScrapValidation(url)
 }

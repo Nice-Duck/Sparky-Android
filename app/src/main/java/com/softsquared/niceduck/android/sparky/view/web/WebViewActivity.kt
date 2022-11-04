@@ -31,6 +31,7 @@ class WebViewActivity : BaseActivity<ActivityWebViewBinding>(
                 val intent = Intent(this, ScrapTemplateActivity::class.java)
                 intent.putExtra("add", binding.webView.url)
                 startActivity(intent)
+                finish()
             }
         } else {
             showCustomToast("올바른 URL 형식이 아닙니다.")

@@ -2,20 +2,28 @@ package com.softsquared.niceduck.android.sparky.view.main.fragment
 
 import android.app.Dialog
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentScrapAddBottomDialogBinding
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateActivity
+import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
+    private val mainViewModel: MainViewModel by activityViewModels()
     private var _binding: FragmentScrapAddBottomDialogBinding? = null
     private val binding get() = _binding!!
 
@@ -39,6 +47,29 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mainViewModel.scrapValidationResponse.observe(viewLifecycleOwner) { response ->
+            when (response.code) {
+                "0000" -> {
+
+
+                }
+            }
+        }
+
+        mainViewModel.scrapValidationFailure.observe(viewLifecycleOwner) { code ->
+            when (code) {
+                401 -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        mainViewModel.postReissueAccessToken()
+                        mainViewModel.getScrapValidation(binding.scrapAddBottomDialogEditTxtEmail.text.toString())
+                    }
+                } else -> {
+                    binding.scrapAddBottomDialogTxtValidation.visibility = VISIBLE
+                }
+            }
+
+        }
 
         binding.scrapAddBottomDialogEditTxtEmail.addTextChangedListener {
             if (binding.scrapAddBottomDialogEditTxtEmail.text.isNotEmpty()) {

@@ -57,10 +57,20 @@
         android:paddingStart="18dp"
         android:singleLine="true"
         android:textColor="@color/black"
-        android:textSize="15sp"
-        android:layout_marginBottom="20dp"/>
+        android:textSize="15sp" />
+    <TextView
+        android:id="@+id/scrap_add_bottom_dialog_txt_validation"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="스크랩 정보를 가져올 수 없습니다"
+        android:textColor="@color/sparky_orange"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        />
 
     <Button
+        android:layout_marginTop="20dp"
         android:id="@+id/scrap_add_bottom_dialog__btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
