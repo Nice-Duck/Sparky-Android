@@ -65,6 +65,11 @@ class HomeFragment :
             hideLoading()
         }
 
+        binding.homeBtnScrapAdd.setOnClickListener {
+            val bottomDialogFragment = ScrapAddBottomDialogFragment()
+            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+        }
+
         binding.homeImgMyPage.setOnClickListener {
             val intent = Intent(activity, MyPageActivity::class.java)
             startActivity(intent)

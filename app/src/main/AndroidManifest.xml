@@ -18,13 +18,17 @@
         android:theme="@style/Theme.Sparky"
         tools:targetApi="31">
         <activity
-            android:name=".view.my_page.MyPageActivity"
+            android:name=".view.web.WebViewActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
+            android:name=".view.my_page.MyPageActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.detail.ScrapModifyActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.detail.OthersScrapDetailActivity"
             android:exported="false"

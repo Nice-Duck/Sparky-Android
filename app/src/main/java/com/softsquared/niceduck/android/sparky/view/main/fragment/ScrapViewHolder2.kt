@@ -13,6 +13,7 @@ import com.softsquared.niceduck.android.sparky.databinding.*
 import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.view.detail.MyScrapDetailActivity
 import com.softsquared.niceduck.android.sparky.view.detail.OthersScrapDetailActivity
+import com.softsquared.niceduck.android.sparky.view.web.WebViewActivity
 import java.io.Serializable
 
 class ScrapViewHolder2(
@@ -60,8 +61,8 @@ class ScrapViewHolder2(
             }
 
             itemView.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(item.scpUrl)
+                val intent = Intent(itemView.context, WebViewActivity::class.java)
+                intent.putExtra("url", item.scpUrl)
                 itemView.context.startActivity(intent)
             }
         }

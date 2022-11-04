@@ -22,13 +22,30 @@ import com.softsquared.niceduck.android.sparky.view.main.fragment.*
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapBottomDialogFragment
 import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
+import kotlinx.coroutines.*
 
 class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::inflate) {
     private val mainViewModel: MainViewModel by viewModels()
 
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.getMyScrapLoad()
+        mainViewModel.getHomeScrapLoad()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.mainRefresh.setOnRefreshListener {
+            mainViewModel.getMyScrapLoad()
+            mainViewModel.getHomeScrapLoad()
+
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(300)
+                binding.mainRefresh.isRefreshing = false
+            }
+
+        }
 
         binding.mainImgScrapAddBtn.setOnClickListener {
             val bottomDialogFragment = ScrapAddBottomDialogFragment()

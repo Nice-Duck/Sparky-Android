@@ -24,8 +24,6 @@ import kotlinx.coroutines.launch
 class MainViewModel() : ViewModel() {
     private val mainRepository = MainRepository()
 
-    // 스크랩 추가 바텀 시트
-    val scrapAddBottomSheetShow: MutableSingleLiveData<Boolean> = MutableSingleLiveData()
 
     // 토큰 갱신
     private val _reissueAccessTokenResponse: MutableSingleLiveData<TokenResponse> = MutableSingleLiveData()
