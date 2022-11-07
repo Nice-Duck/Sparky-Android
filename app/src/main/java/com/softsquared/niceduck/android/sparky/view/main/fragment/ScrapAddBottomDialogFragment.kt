@@ -6,6 +6,7 @@ import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -51,8 +52,16 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
         mainViewModel.scrapValidationResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {
+                    val intent = Intent(activity, ScrapTemplateActivity::class.java)
+                    intent.putExtra("add", binding.scrapAddBottomDialogEditTxtEmail.text.toString())
+                    startActivity(intent)
+                }
 
-
+                "F002" -> {
+                    binding.scrapAddBottomDialogEditTxtEmail.text.clear()
+                    binding.scrapAddBottomDialogBtn.setBackgroundResource(R.drawable.button2)
+                    binding.scrapAddBottomDialogTxtValidation.visibility = VISIBLE
+                    binding.scrapAddBottomDialogBtn.isEnabled = false
                 }
             }
         }
@@ -64,15 +73,19 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.getScrapValidation(binding.scrapAddBottomDialogEditTxtEmail.text.toString())
                     }
-                } else -> {
+                }
+                else -> {
+                    binding.scrapAddBottomDialogEditTxtEmail.text.clear()
+                    binding.scrapAddBottomDialogBtn.setBackgroundResource(R.drawable.button2)
                     binding.scrapAddBottomDialogTxtValidation.visibility = VISIBLE
+                    binding.scrapAddBottomDialogBtn.isEnabled = false
                 }
             }
-
         }
 
         binding.scrapAddBottomDialogEditTxtEmail.addTextChangedListener {
             if (binding.scrapAddBottomDialogEditTxtEmail.text.isNotEmpty()) {
+                binding.scrapAddBottomDialogTxtValidation.visibility = GONE
                 binding.scrapAddBottomDialogEditTxtEmail.setBackgroundResource(R.drawable.sign_input_selector)
                 binding.scrapAddBottomDialogBtn.isEnabled = true
                 binding.scrapAddBottomDialogBtn.setBackgroundResource(R.drawable.button)
@@ -83,11 +96,8 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         binding.scrapAddBottomDialogBtn.setOnClickListener {
-            val intent = Intent(activity, ScrapTemplateActivity::class.java)
-            intent.putExtra("add", binding.scrapAddBottomDialogEditTxtEmail.text.toString())
-            startActivity(intent)
+            mainViewModel.getScrapValidation(binding.scrapAddBottomDialogEditTxtEmail.text.toString())
         }
-
     }
 
     override fun onDestroyView() {

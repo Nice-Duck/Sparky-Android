@@ -22,6 +22,7 @@ class SignUpInputPwdFragment :
 
         signUpViewModel.progress.value = 70
 
+        signUpViewModel.isChecked = true
         val pwdValidation = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,16}$" // 영문, 숫자 8 ~ 16자 패턴
 
         binding.signUpInputPwdEditTxtPwd.addTextChangedListener(object : TextWatcher {

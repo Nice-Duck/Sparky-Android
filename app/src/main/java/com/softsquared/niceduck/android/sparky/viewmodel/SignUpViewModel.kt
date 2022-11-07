@@ -11,6 +11,9 @@ import kotlinx.coroutines.*
 
 class SignUpViewModel : ViewModel() {
     private val repository = AuthRepository()
+    // 이메일 인증 여부
+    var isChecked = false
+
     // 프로그래스바
     val progress = MutableLiveData<Int>()
 

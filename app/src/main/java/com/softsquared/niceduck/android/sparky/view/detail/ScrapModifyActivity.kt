@@ -1,9 +1,18 @@
 package com.softsquared.niceduck.android.sparky.view.detail
 
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -24,6 +33,12 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.scrapModifyImgThumbnail.setOnClickListener {
+
+        }
+
+
 
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
@@ -171,4 +186,5 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
             visibility = android.view.View.VISIBLE
         }
     }
+
 }

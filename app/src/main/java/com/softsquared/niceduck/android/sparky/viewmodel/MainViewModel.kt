@@ -91,8 +91,8 @@ class MainViewModel() : ViewModel() {
     val homeScrapLoadFailure: LiveData<Int>
         get() = _homeScrapLoadFailure
 
-    private val _homeScrapSearchResponse: MutableSingleLiveData<ScrapRoadResponse> = MutableSingleLiveData()
-    val homeScrapSearchResponse: SingleLiveData<ScrapRoadResponse>
+    private val _homeScrapSearchResponse: MutableSingleLiveData<SearchScrapResponse> = MutableSingleLiveData()
+    val homeScrapSearchResponse: SingleLiveData<SearchScrapResponse>
         get() = _homeScrapSearchResponse
 
     private val _homeScrapSearchFailure = MutableSingleLiveData<Int>()
@@ -173,6 +173,32 @@ class MainViewModel() : ViewModel() {
                 }
             } else {
                 _myScrapSearchFailure.setValue(response.code())
+            }
+        }
+    }
+
+    // 홈 화면 검색
+    var homeSearchType = 0
+    var homeSearchTitle: String = ""
+    var homeScrapDataSet: List<Scrap>? = null
+
+    fun postHomeScrapSearch() {
+        viewModelScope.launch {
+            Log.d("테스트", "$homeSearchTitle, $homeSearchType")
+            val response = mainRepository.postScrapSearch(
+                ScrapSearchRequest(
+                    tags = null,
+                    title = homeSearchTitle,
+                    type = homeSearchType
+                )
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _homeScrapSearchResponse.setValue(it)
+                }
+            } else {
+                _homeScrapSearchFailure.setValue(response.code())
             }
         }
     }

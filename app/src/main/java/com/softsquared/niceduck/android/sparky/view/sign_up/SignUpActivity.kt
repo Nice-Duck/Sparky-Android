@@ -20,5 +20,9 @@ class SignUpActivity : BaseActivity<ActivitySignUpBinding>(ActivitySignUpBinding
                 binding.signUpLinearProgressIndicator.progress = it
             }
         )
+
+        binding.signUpImgBackBtn.setOnClickListener {
+            finish()
+        }
     }
 }

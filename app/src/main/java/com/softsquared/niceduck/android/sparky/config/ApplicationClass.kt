@@ -14,7 +14,7 @@ class ApplicationClass : Application() {
 
     companion object {
         lateinit var sSharedPreferences: SharedPreferences
-        const val BASE_URL = "http://sparkyapi.tk"
+        const val BASE_URL = "https://sparkyapi.tk"
         const val X_ACCESS_TOKEN = "X-ACCESS-TOKEN"
         const val X_REFRESH_TOKEN = "X-REFRESH-TOKEN"
 

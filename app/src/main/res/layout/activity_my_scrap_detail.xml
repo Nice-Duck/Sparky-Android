@@ -164,6 +164,7 @@
             android:gravity="top"
             android:enabled="false"
             android:minHeight="100dp"
+            android:textColor="@color/black"
             android:padding="12dp"
             android:textSize="12sp" />
 

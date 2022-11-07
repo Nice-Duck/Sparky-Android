@@ -38,7 +38,7 @@ class ScrapViewHolder1(
 
             val tags = item.tagsResponse
 
-            if (tags != null) {
+            if (!tags.isNullOrEmpty()) {
                 if (tags.size > 3) {
                     val tagAdapter = TagRecyclerviewAdapter(tags.subList(0, 3))
                     val layoutManager = FlexboxLayoutManager(itemView.context)

@@ -64,6 +64,8 @@
     android:orientation="vertical"
     android:background="@drawable/sign_input_normal">
     <LinearLayout
+        android:id="@+id/my_page_LL_profile_setting"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -87,6 +89,8 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:id="@+id/my_page_LL_my_tags"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -110,6 +114,8 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:id="@+id/my_page_LL_service_setting"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -136,6 +142,7 @@
     android:orientation="vertical"
     android:background="@drawable/sign_input_normal">
     <TextView
+        android:id="@+id/my_page_LL_center"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_width="wrap_content"
@@ -150,6 +157,7 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:id="@+id/my_page_LL_profile_share"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_width="wrap_content"
@@ -164,6 +172,7 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:id="@+id/my_page_LL_logout"
         android:textColor="@color/black"
         android:textSize="12sp"
         android:layout_width="wrap_content"
@@ -180,6 +189,7 @@
     android:orientation="vertical"
     android:background="@drawable/sign_input_normal">
     <TextView
+        android:id="@+id/my_page_LL_withdraw"
         android:textColor="@color/sparky_orange"
         android:textSize="12sp"
         android:layout_width="wrap_content"

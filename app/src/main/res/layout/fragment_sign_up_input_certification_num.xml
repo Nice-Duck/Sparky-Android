@@ -96,6 +96,13 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/sign_up_input_certification_txt_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="@color/black" />
+
+    <TextView
         android:id="@+id/sign_up_input_certification_txt_validation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

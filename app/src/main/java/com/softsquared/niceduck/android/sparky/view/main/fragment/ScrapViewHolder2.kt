@@ -39,14 +39,25 @@ class ScrapViewHolder2(
 
             val tags = item.tagsResponse
 
-            if (tags != null) {
-                val tagAdapter = TagRecyclerviewAdapter(tags.subList(0, 1))
-                val layoutManager = FlexboxLayoutManager(itemView.context)
+            if (!tags.isNullOrEmpty()) {
+                if (tags.size > 1) {
+                    val tagAdapter = TagRecyclerviewAdapter(tags.subList(0, 1))
+                    val layoutManager = FlexboxLayoutManager(itemView.context)
 
-                layoutManager.flexDirection = FlexDirection.ROW
-                with(scrapItem2Recyclerview) {
-                    this.layoutManager = layoutManager
-                    adapter = tagAdapter
+                    layoutManager.flexDirection = FlexDirection.ROW
+                    with(scrapItem2Recyclerview) {
+                        this.layoutManager = layoutManager
+                        adapter = tagAdapter
+                    }
+                } else {
+                    val tagAdapter = TagRecyclerviewAdapter(tags)
+                    val layoutManager = FlexboxLayoutManager(itemView.context)
+
+                    layoutManager.flexDirection = FlexDirection.ROW
+                    with(scrapItem2Recyclerview) {
+                        this.layoutManager = layoutManager
+                        adapter = tagAdapter
+                    }
                 }
             }
 

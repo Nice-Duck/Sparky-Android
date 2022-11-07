@@ -154,6 +154,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
+            android:letterSpacing="-0.01"
             android:text="@string/tag_text"
             android:textColor="@color/gray_600"
             android:textSize="12sp" />

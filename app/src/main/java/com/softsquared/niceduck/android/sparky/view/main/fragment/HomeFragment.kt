@@ -1,9 +1,12 @@
 package com.softsquared.niceduck.android.sparky.view.main.fragment
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +30,35 @@ class HomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mainViewModel.homeScrapSearchResponse.observe(viewLifecycleOwner) { response ->
+            when (response.code) {
+                "0000" -> {
+                    mainViewModel.homeScrapDataSet = response.result
+                    val othersScrapDataSet = response.result
+                    setOthersRecyclerview(othersScrapDataSet)
+                }
+                else -> {
+                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                }
+            }
+        }
+
+        mainViewModel.homeScrapSearchFailure.observe(viewLifecycleOwner) { code ->
+            when (code) {
+                401 -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        mainViewModel.postReissueAccessToken()
+                        mainViewModel.postScrapSearch()
+                    }
+                }
+                else -> {
+                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                }
+            }
+        }
+
+
         // 스크랩 조회
         mainViewModel.getHomeScrapLoad()
 
@@ -35,17 +67,46 @@ class HomeFragment :
         ) { response ->
             when (response.code) {
                 "0000" -> {
+                    binding.homeEditTxt.text.clear()
                     val myScrapDataSet = response.result.myScraps
-                    val othersScrapDataSet = response.result.recScraps
+                    mainViewModel.homeScrapDataSet = response.result.recScraps
+                    val othersScrapDataSet =  response.result.recScraps
                     setMyRecyclerview(myScrapDataSet)
                     setOthersRecyclerview(othersScrapDataSet)
+
+                    // 검색 기능을 위한 watcher
+                    binding.homeEditTxt.addTextChangedListener {
+                        if (binding.homeEditTxt.text.isNotEmpty()) {
+                            binding.homeImgSearchDeleteBtn.visibility = VISIBLE
+                            binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
+                                Color.parseColor(
+                                    "#FF000000"
+                                )
+                            )
+                            binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
+                        } else {
+                            binding.homeImgSearchDeleteBtn.visibility = View.GONE
+                            binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
+                                Color.parseColor(
+                                    "#BEBDBD"
+                                )
+                            )
+                            binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
+                        }
+
+                        mainViewModel.homeSearchType = 0
+                        mainViewModel.homeSearchTitle =  binding.homeEditTxt.text.toString()
+                        mainViewModel.postHomeScrapSearch()
+                    }
+
+                    hideLoading()
                 }
                 else -> {
                     binding.homeRecyclerviewMyScrap.visibility = INVISIBLE
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                    hideLoading()
                 }
             }
-            hideLoading()
         }
 
         mainViewModel.homeScrapLoadFailure.observe(
@@ -60,9 +121,9 @@ class HomeFragment :
                 }
                 else -> {
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                    hideLoading()
                 }
             }
-            hideLoading()
         }
 
         binding.homeBtnScrapAdd.setOnClickListener {
@@ -95,7 +156,7 @@ class HomeFragment :
     }
 
     private fun setOthersRecyclerview(othersScrapDataSet: List<Scrap>?) {
-        if (!othersScrapDataSet.isNullOrEmpty()) {
+        if (othersScrapDataSet != null) {
             val layoutManager = GridLayoutManager(activity, 2)
             layoutManager.spanSizeLookup = object : SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {

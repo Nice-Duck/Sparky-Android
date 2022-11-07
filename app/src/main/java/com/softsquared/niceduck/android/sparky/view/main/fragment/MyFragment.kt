@@ -17,6 +17,7 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.FragmentMyBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
+import com.softsquared.niceduck.android.sparky.view.scrap.ScrapBottomDialogFragment
 import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -33,12 +34,19 @@ class MyFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.myRecyclerviewFilter.setOnClickListener {
+            val bottomDialogFragment = ScrapBottomDialogFragment()
+            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+        }
+
         // 스크랩 데이터 조회
         mainViewModel.getMyScrapLoad()
+
 
         mainViewModel.myScrapLoadResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {
+                    binding.myEditTxt.text.clear()
                     mainViewModel.myScrapDataSet = response.result.myScraps
                     setMyRecyclerview()
 
@@ -49,6 +57,9 @@ class MyFragment :
                     binding.myRadioBtn2.setOnClickListener {
                         onRadioButtonClicked(it)
                     }
+
+                    binding.myRadioBtn2.isChecked = true
+
 
                     // 검색 기능을 위한 watcher
                     binding.myEditTxt.addTextChangedListener {
@@ -103,14 +114,6 @@ class MyFragment :
                 "0000" -> {
                     mainViewModel.myScrapDataSet = response.result
                     setMyRecyclerview()
-
-                    binding.myRadioBtn1.setOnClickListener {
-                        onRadioButtonClicked(it)
-                    }
-
-                    binding.myRadioBtn2.setOnClickListener {
-                        onRadioButtonClicked(it)
-                    }
                 }
                 else -> {
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
@@ -138,7 +141,6 @@ class MyFragment :
         }
 
 
-        binding.myRadioBtn2.isChecked = true
     }
 
     private fun hideLoading() {
@@ -166,12 +168,10 @@ class MyFragment :
 
     private fun onRadioButtonClicked(view: View) {
         if (view is RadioButton) {
-            val checked = view.isChecked
             val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
             when (view.getId()) {
-                R.id.my_radio_btn1 ->
-                    if (checked) {
+                R.id.my_radio_btn1 -> {
                         val myScrapRecyclerviewAdapter = MyScrapRecyclerviewAdapter3()
                         myScrapRecyclerviewAdapter.submitList(mainViewModel.myScrapDataSet)
                         with(binding.myRecyclerview) {
@@ -181,8 +181,7 @@ class MyFragment :
                         }
                         binding.myTxtCount.text = "총 ${mainViewModel.myScrapDataSet!!.size}개"
                     }
-                R.id.my_radio_btn2 ->
-                    if (checked) {
+                R.id.my_radio_btn2 -> {
                         val myScrapRecyclerviewAdapter = MyScrapRecyclerviewAdapter2()
                         myScrapRecyclerviewAdapter.submitList(mainViewModel.myScrapDataSet)
                         binding.myRadioBtn1.isChecked = false

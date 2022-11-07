@@ -22,6 +22,7 @@ class SignUpInputEmailFragment :
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
+        signUpViewModel.isChecked = false
         signUpViewModel.progress.value = 0
 
         binding.signUpInputEmailEditTxtEmail.addTextChangedListener(object : TextWatcher {

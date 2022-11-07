@@ -152,6 +152,7 @@
             android:layout_marginBottom="18dp"
             android:background="@drawable/sign_input_selector"
             android:gravity="top"
+            android:textColor="@color/black"
             android:enabled="false"
             android:minHeight="100dp"
             android:padding="12dp"

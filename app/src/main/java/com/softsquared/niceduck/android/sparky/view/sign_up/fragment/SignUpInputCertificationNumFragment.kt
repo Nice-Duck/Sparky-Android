@@ -1,13 +1,16 @@
 package com.softsquared.niceduck.android.sparky.view.sign_up.fragment
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputCertificationNumBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
@@ -15,11 +18,38 @@ import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
 
 class SignUpInputCertificationNumFragment :
     BaseFragment<FragmentSignUpInputCertificationNumBinding>(FragmentSignUpInputCertificationNumBinding::bind, R.layout.fragment_sign_up_input_certification_num) {
+    lateinit var countDownTimer: CountDownTimer
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
+
+        countDownTimer = object : CountDownTimer(180000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                var minutes = (millisUntilFinished / 1000 / 60 % 60).toString()
+                var seconds = (millisUntilFinished / 1000 % 60).toString()
+                if (minutes.length < 2) {
+                    minutes = "0$minutes"
+                }
+                if (seconds.length < 2) {
+                    seconds = "0$seconds"
+                }
+                binding.signUpInputCertificationTxtTimer.text = "$minutes:$seconds"
+            }
+
+            override fun onFinish() {
+                binding.signUpInputCertificationTxtTimer.visibility = GONE
+                binding.signUpInputCertificationNumBtnNext.isEnabled = false
+                showCustomToast("인증 시간이 초과되었습니다.")
+                findNavController().popBackStack()
+            }
+        }
+
+        if (!signUpViewModel.isChecked) {
+            binding.signUpInputCertificationTxtTimer.visibility = VISIBLE
+            countDownTimer.start()
+        }
 
         signUpViewModel.progress.value = 35
 
@@ -51,6 +81,7 @@ class SignUpInputCertificationNumFragment :
             override fun afterTextChanged(p0: Editable?) {
             }
         })
+
 
         binding.signUpInputCertificationEditTxt2.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -141,8 +172,55 @@ class SignUpInputCertificationNumFragment :
             }
         })
 
+        binding.signUpInputCertificationEditTxt2.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (binding.signUpInputCertificationEditTxt2.text.isEmpty()) {
+                    binding.signUpInputCertificationEditTxt1.requestFocus()
+                }
+            }
+            return@setOnKeyListener false
+        }
+
+        binding.signUpInputCertificationEditTxt3.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (binding.signUpInputCertificationEditTxt3.text.isEmpty()) {
+                    binding.signUpInputCertificationEditTxt2.requestFocus()
+                }
+            }
+            return@setOnKeyListener false
+        }
+
+        binding.signUpInputCertificationEditTxt4.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (binding.signUpInputCertificationEditTxt4.text.isEmpty()) {
+                    binding.signUpInputCertificationEditTxt3.requestFocus()
+                }
+            }
+            return@setOnKeyListener false
+        }
+
+        binding.signUpInputCertificationEditTxt5.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (binding.signUpInputCertificationEditTxt5.text.isEmpty()) {
+                    binding.signUpInputCertificationEditTxt4.requestFocus()
+                }
+            }
+            return@setOnKeyListener false
+        }
+
+        binding.signUpInputCertificationEditTxt6.setOnKeyListener { view, keyCode, keyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                if (binding.signUpInputCertificationEditTxt6.text.isEmpty()) {
+                    binding.signUpInputCertificationEditTxt5.requestFocus()
+                }
+            }
+            return@setOnKeyListener false
+        }
+
         signUpViewModel.certificationCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
+                countDownTimer.cancel()
+                binding.signUpInputCertificationTxtTimer.visibility = GONE
                 val action =
                     SignUpInputCertificationNumFragmentDirections
                         .actionSignUpInputCertificationNumFragmentToSignUpInputPwdFragment()
@@ -242,5 +320,10 @@ class SignUpInputCertificationNumFragment :
                 setBackgroundResource(R.drawable.button2)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        countDownTimer.cancel()
     }
 }

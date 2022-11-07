@@ -62,8 +62,18 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
             )
         }
 
-        scrapTemplateViewModel.tagLastLoadFailure.observe(viewLifecycleOwner) {
+        scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
+            // TODO: 실패 코드 추가
+            if (it.code == "0000") {
+                it.result.tagResponses?.let { response ->
+                    if (response.isNullOrEmpty()) {
+                        binding.scrapBottomDialogLL.visibility = GONE
+                    }
+                }
+            }
+        }
 
+        scrapTemplateViewModel.tagLastLoadFailure.observe(viewLifecycleOwner) {
             // TODO: 실패 코드 추가
         }
 
@@ -75,6 +85,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         scrapTemplateViewModel.hideBottomSheetCall.observe(viewLifecycleOwner) {
             dismiss()
         }
+
 
         binding.scrapBottomDialogLLTagAddBtn.setOnClickListener {
             val color = scrapTemplateViewModel.tagColor.getValue() ?: "#DFDFDF"
@@ -123,6 +134,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
                 )
                 binding.scrapBottomDialogEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
             } else {
+                binding.scrapBottomDialogLL.visibility = GONE
                 binding.scrapBottomDialogImgSearchDeleteBtn.visibility = GONE
                 binding.scrapBottomDialogEditTxt.backgroundTintList = ColorStateList.valueOf(
                     Color.parseColor(
@@ -132,20 +144,22 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
                 binding.scrapBottomDialogEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
             }
 
-            if (scrapTemplateViewModel.lastTags.value != null) {
-                updateList(binding.scrapBottomDialogEditTxt.text.toString())
-                if (scrapTemplateViewModel.updatedList.isNotEmpty()) {
-                    binding.scrapBottomDialogLL.visibility = GONE
-                    binding.scrapBottomDialogRecyclerview.visibility = VISIBLE
-                    binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
-                    scrapTemplateViewModel.tagAddRecyclerviewAdapter.submitList(scrapTemplateViewModel.updatedList)
-                } else {
+            updateList(binding.scrapBottomDialogEditTxt.text.toString())
+            if (scrapTemplateViewModel.updatedList.isNotEmpty()) {
+                binding.scrapBottomDialogLL.visibility = GONE
+                binding.scrapBottomDialogRecyclerview.visibility = VISIBLE
+                binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
+                scrapTemplateViewModel.tagAddRecyclerviewAdapter.submitList(scrapTemplateViewModel.updatedList)
+            } else {
+                if (binding.scrapBottomDialogEditTxt.text.isNotEmpty()) {
                     binding.scrapBottomDialogLL.visibility = VISIBLE
                     binding.scrapBottomDialogTxtNewTagName.text = binding.scrapBottomDialogEditTxt.text.toString()
                     binding.scrapBottomDialogRecyclerview.visibility = GONE
                     binding.scrapBottomDialogTxtLastTagTitle.visibility = GONE
                 }
             }
+
+
         }
     }
 

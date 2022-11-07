@@ -35,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/gray_400"
                     android:drawableStart="@drawable/edit_txt_inner_search"
-                    android:hint="검색어를 입력해주세요"
+                    android:hint="@string/input_require_search"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
