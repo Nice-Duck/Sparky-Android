@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import kotlinx.coroutines.*
 
@@ -27,8 +28,8 @@ class SignUpViewModel : ViewModel() {
     val duplicationEmailCheckResponse: SingleLiveData<BaseResponse>
         get() = _duplicationEmailCheckResponse
 
-    private val _duplicationEmailCheckFailure = MutableSingleLiveData<Int>()
-    val duplicationEmailCheckFailure: SingleLiveData<Int>
+    private val _duplicationEmailCheckFailure = MutableSingleLiveData<BaseResponse>()
+    val duplicationEmailCheckFailure: SingleLiveData<BaseResponse>
         get() = _duplicationEmailCheckFailure
 
     fun getDuplicationEmailCheck() {
@@ -38,7 +39,10 @@ class SignUpViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _duplicationEmailCheckResponse.setValue(it) }
             } else {
-                _duplicationEmailCheckFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _duplicationEmailCheckFailure.setValue(error) }
+                }
             }
         }
     }
@@ -48,8 +52,8 @@ class SignUpViewModel : ViewModel() {
     val duplicationNameCheckResponse: SingleLiveData<BaseResponse>
         get() = _duplicationNameCheckResponse
 
-    private val _duplicationNameCheckFailure = MutableSingleLiveData<Int>()
-    val duplicationNameCheckFailure: SingleLiveData<Int>
+    private val _duplicationNameCheckFailure = MutableSingleLiveData<BaseResponse>()
+    val duplicationNameCheckFailure: SingleLiveData<BaseResponse>
         get() = _duplicationNameCheckFailure
 
     fun getDuplicationNameCheck() {
@@ -59,7 +63,10 @@ class SignUpViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _duplicationNameCheckResponse.setValue(it) }
             } else {
-                _duplicationNameCheckFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _duplicationNameCheckFailure.setValue(error) }
+                }
             }
         }
     }
@@ -69,8 +76,8 @@ class SignUpViewModel : ViewModel() {
     val certificationSendResponse: SingleLiveData<BaseResponse>
         get() = _certificationSendResponse
 
-    private val _certificationSendFailure = MutableSingleLiveData<Int>()
-    val certificationSendFailure: SingleLiveData<Int>
+    private val _certificationSendFailure = MutableSingleLiveData<BaseResponse>()
+    val certificationSendFailure: SingleLiveData<BaseResponse>
         get() = _certificationSendFailure
 
     fun postCertificationSend() {
@@ -80,7 +87,10 @@ class SignUpViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _certificationSendResponse.setValue(it) }
             } else {
-                _certificationSendFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _certificationSendFailure.setValue(error) }
+                }
             }
         }
     }
@@ -90,8 +100,8 @@ class SignUpViewModel : ViewModel() {
     val certificationCheckResponse: SingleLiveData<BaseResponse>
         get() = _certificationCheckResponse
 
-    private val _certificationCheckFailure = MutableSingleLiveData<Int>()
-    val certificationCheckFailure: SingleLiveData<Int>
+    private val _certificationCheckFailure = MutableSingleLiveData<BaseResponse>()
+    val certificationCheckFailure: SingleLiveData<BaseResponse>
         get() = _certificationCheckFailure
 
     fun postCertificationCheck(number: String) {
@@ -101,7 +111,10 @@ class SignUpViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _certificationCheckResponse.setValue(it) }
             } else {
-                _certificationCheckFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _certificationCheckFailure.setValue(error) }
+                }
             }
         }
     }
@@ -111,8 +124,8 @@ class SignUpViewModel : ViewModel() {
     val signUpResponse: SingleLiveData<SignResponse>
         get() = _signUpResponse
 
-    private val _signUpFailure = MutableSingleLiveData<Int>()
-    val signUpFailure: SingleLiveData<Int>
+    private val _signUpFailure = MutableSingleLiveData<BaseResponse>()
+    val signUpFailure: SingleLiveData<BaseResponse>
         get() = _signUpFailure
 
     fun postSignUp() {
@@ -128,7 +141,10 @@ class SignUpViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _signUpResponse.setValue(it) }
             } else {
-                _signUpFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _signUpFailure.setValue(error) }
+                }
             }
         }
     }

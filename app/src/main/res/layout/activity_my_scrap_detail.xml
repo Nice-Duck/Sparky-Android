@@ -28,7 +28,7 @@
             android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/my_scrap_detail_img_back"
@@ -118,11 +118,7 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/gray_200" />
+
 
         <TextView
             android:id="@+id/my_scrap_detail_txt_tags_title"
@@ -160,19 +156,18 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="11dp"
             android:layout_marginBottom="18dp"
-            android:background="@drawable/sign_input_selector"
-            android:gravity="top"
+            android:background="@drawable/template_background"
             android:enabled="false"
+            android:gravity="top"
             android:minHeight="100dp"
-            android:textColor="@color/black"
             android:padding="12dp"
+            android:textColor="@color/black"
             android:textSize="12sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="6dp"
-            android:layout_marginBottom="15dp"
-            android:background="@color/gray_300"/>
+            android:background="@color/gray_200"/>
 
         <LinearLayout
             android:layout_marginTop="18dp"
@@ -181,7 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/sign_input_normal">
+            android:background="@drawable/template_background">
             <TextView
                 android:id="@+id/my_scrap_detail_txt_share"
                 android:textColor="@color/black"
@@ -213,7 +208,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/sign_input_normal">
+            android:background="@drawable/template_background">
             <TextView
                 android:id="@+id/my_scrap_detail_txt_url_delete"
                 android:textColor="@color/sparky_orange"

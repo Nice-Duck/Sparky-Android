@@ -6,11 +6,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.View.VISIBLE
+import android.view.inputmethod.EditorInfo
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.softsquared.niceduck.android.sparky.R
@@ -34,14 +36,29 @@ class MyFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.myRecyclerviewFilter.setOnClickListener {
+        binding.myLLFilterAddBtn.setOnClickListener {
             val bottomDialogFragment = ScrapBottomDialogFragment()
             bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+        }
+
+        binding.myLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
+
+        binding.myEditTxt.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i== EditorInfo.IME_ACTION_DONE){
+                binding.myLL.clearFocus()
+            }
+            return@setOnEditorActionListener false
         }
 
         // 스크랩 데이터 조회
         mainViewModel.getMyScrapLoad()
 
+        binding.myImgSearchDeleteBtn.setOnClickListener {
+            binding.myEditTxt.text.clear()
+        }
 
         mainViewModel.myScrapLoadResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
@@ -64,6 +81,9 @@ class MyFragment :
                     // 검색 기능을 위한 watcher
                     binding.myEditTxt.addTextChangedListener {
                         if (binding.myEditTxt.text.isNotEmpty()) {
+                            mainViewModel.searchType = 1
+                            mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
+                            mainViewModel.postScrapSearch()
                             binding.myImgSearchDeleteBtn.visibility = VISIBLE
                             binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor(
@@ -72,6 +92,7 @@ class MyFragment :
                             )
                             binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
                         } else {
+                            mainViewModel.getMyScrapLoad()
                             binding.myImgSearchDeleteBtn.visibility = View.GONE
                             binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor(
@@ -80,10 +101,6 @@ class MyFragment :
                             )
                             binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
                         }
-
-                        mainViewModel.searchType = 1
-                        mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
-                        mainViewModel.postScrapSearch()
                     }
                 }
                 else -> {
@@ -96,7 +113,7 @@ class MyFragment :
         mainViewModel.myScrapLoadFailure.observe(viewLifecycleOwner) { code ->
             when (code) {
                 401 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.getMyScrapLoad()
                     }
@@ -124,7 +141,7 @@ class MyFragment :
         mainViewModel.myScrapSearchFailure.observe(viewLifecycleOwner) { code ->
             when (code) {
                 401 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch  {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.postScrapSearch()
                     }

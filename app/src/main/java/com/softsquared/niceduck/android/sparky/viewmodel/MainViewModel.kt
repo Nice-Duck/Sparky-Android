@@ -5,20 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
-import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter
-import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter2
-import com.softsquared.niceduck.android.sparky.view.main.fragment.MyScrapRecyclerviewAdapter3
-import com.softsquared.niceduck.android.sparky.view.main.fragment.OthersScrapRecyclerviewAdapter
-import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 

@@ -1,14 +1,18 @@
 package com.softsquared.niceduck.android.sparky.view.scrap
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.util.Log.d
 import android.view.View.VISIBLE
+import android.view.Window
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -24,6 +28,7 @@ import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(ActivityScrapTemplateBinding::inflate) {
@@ -31,6 +36,12 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val dlg = Dialog(this)
+        dlg.setCancelable(false)
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg.setContentView(R.layout.dialog_lottie_loading)
+        dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         if (sSharedPreferences.getString(X_ACCESS_TOKEN, null) == null) {
             val intent = Intent(this, SignInActivity::class.java)
@@ -40,11 +51,17 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
         binding.scrapTemplateBtnStore.setOnClickListener {
             scrapTemplateViewModel.postScrapStore()
+            dlg.show()
         }
 
         scrapTemplateViewModel.setDataViewCall.observe(this) {
             val url = it.first
             val ogMap = it.second
+
+            lifecycleScope.launch {
+                delay(1000)
+                dlg.dismiss()
+            }
 
             scrapTemplateViewModel.url = url
 
@@ -66,6 +83,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         }
 
         getScrapData()
+        dlg.show()
 
         setScrapTemplateRecyclerview()
 
@@ -81,16 +99,53 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         )
 
         scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
-            // TODO: 실패 코드 추가
+
             if (it.code == "0000") {
                 it.result.tagResponses?.let { response -> scrapTemplateViewModel.lastTags.setValue(response) }
             }
         }
+
+        scrapTemplateViewModel.tagLastLoadFailure.observe(this) {
+            it.message?.let { it1 -> showCustomToast(it1) }
+
+            when (it.code) {
+                "U000" -> {
+                    lifecycleScope.launch {
+                        scrapTemplateViewModel.postReissueAccessToken()
+                        scrapTemplateViewModel.getTagLastLoad()
+                    }
+                }
+            }
+        }
+
         scrapTemplateViewModel.scrapStoreResponse.observe(this) {
-            // TODO: 실패 코드 추가
+            lifecycleScope.launch  {
+                delay(1000)
+                dlg.dismiss()
+            }
             if (it.code == "0000") {
                 finish()
             }
+        }
+
+        scrapTemplateViewModel.scrapStoreFailure.observe(this) {
+            lifecycleScope.launch  {
+                delay(1000)
+                dlg.dismiss()
+            }
+
+            when (it.code) {
+                "U000" -> {
+                    lifecycleScope.launch  {
+                        scrapTemplateViewModel.postReissueAccessToken()
+                        scrapTemplateViewModel.postScrapStore()
+                    }
+                }
+                else -> {
+                    it.message?.let { it1 -> showCustomToast(it1) }
+                }
+            }
+
         }
 
 
@@ -154,7 +209,36 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         scrapTemplateViewModel.subTitle.observe(this) {
             binding.scrapTemplateEditTxtSummary.setText(it)
         }
+
+        // 토큰 갱신
+        scrapTemplateViewModel.reissueAccessTokenResponse.observe(this) { response ->
+            when (response.code) {
+                "0000" -> {
+                    val newToken = response.result?.accessToken
+                    val editor = sSharedPreferences.edit()
+                    editor.putString(ApplicationClass.X_ACCESS_TOKEN, newToken)
+                    editor.apply()
+                }
+                else -> {
+                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                }
+            }
+
+        }
+
+        scrapTemplateViewModel.reissueAccessTokenFailure.observe(this) { response ->
+            val editor = sSharedPreferences.edit()
+            editor.clear()
+            editor.apply()
+
+            val intent = Intent(this, SignInActivity::class.java)
+            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        }
     }
+
+
 
     private fun getScrapData() {
         CoroutineScope(Dispatchers.IO).launch {

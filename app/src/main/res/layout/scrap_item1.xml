@@ -37,6 +37,7 @@
 
     <TextView
         android:id="@+id/scrap_item1_txt_title"
+        android:letterSpacing="-0.05"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

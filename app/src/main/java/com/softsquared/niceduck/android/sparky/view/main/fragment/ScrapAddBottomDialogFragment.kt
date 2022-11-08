@@ -49,6 +49,10 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.scrapAddBottomDialogImgBackBtn.setOnClickListener {
+            dismiss()
+        }
+
         mainViewModel.scrapValidationResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {

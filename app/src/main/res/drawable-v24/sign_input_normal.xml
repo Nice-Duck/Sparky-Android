@@ -4,7 +4,7 @@
         android:color="@color/background" />
     <stroke
         android:width="2px"
-        android:color="@color/input_stroke_gray" />
+        android:color="@color/gray_300" />
     <corners
         android:radius="8dp"/>
 </shape>

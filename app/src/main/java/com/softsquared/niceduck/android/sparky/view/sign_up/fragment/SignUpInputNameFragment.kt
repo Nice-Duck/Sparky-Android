@@ -1,17 +1,27 @@
 package com.softsquared.niceduck.android.sparky.view.sign_up.fragment
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.Window
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputNameBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.view.sign_up.SignUpSuccessActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import java.util.regex.Pattern
 
@@ -23,7 +33,25 @@ class SignUpInputNameFragment :
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
+        val dlg = activity?.let { Dialog(it) }
+        dlg?.setCancelable(false)
+        dlg?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg?.setContentView(R.layout.dialog_lottie_loading)
+        dlg?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         signUpViewModel.progress.value = 100
+
+        binding.signUpInputNameEditTxtName.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i== EditorInfo.IME_ACTION_DONE){
+                binding.signUpInputNameLL.clearFocus()
+            }
+            return@setOnEditorActionListener false
+        }
+
+        binding.signUpInputNameLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
 
         val nameValidation = "^[가-힣ㄱ-ㅎa-zA-Z0-9]{1,16}$"
 
@@ -64,29 +92,26 @@ class SignUpInputNameFragment :
         })
 
         signUpViewModel.duplicationNameCheckResponse.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+
             if (it.code == "0000") {
+                dlg?.show()
                 signUpViewModel.postSignUp()
-            } else if (it.code == "0004") {
-                binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputNameBtnNext.isEnabled = false
-                binding.signUpInputNameTxtValidation.text = "이미 존재하는 닉네임입니다"
-                binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
-                binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
             }
         }
 
         signUpViewModel.duplicationNameCheckFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
             binding.signUpInputNameEditTxtName.setBackgroundResource(R.drawable.sign_input_validation)
             binding.signUpInputNameBtnNext.isEnabled = false
-            binding.signUpInputNameTxtValidation.text = "이미 존재하는 닉네임입니다"
+            binding.signUpInputNameTxtValidation.text = it.message
             binding.signUpInputNameTxtValidation.visibility = View.VISIBLE
             binding.signUpInputNameBtnNext.setBackgroundResource(R.drawable.button2)
         }
 
         signUpViewModel.signUpResponse.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+            lifecycleScope.launch  {
+                delay(1000)
+                dlg?.dismiss()
+            }
             if (it.code == "0000") {
                 val editor = ApplicationClass.sSharedPreferences.edit()
                 editor.putString(ApplicationClass.X_ACCESS_TOKEN, it.result?.accessToken)
@@ -100,7 +125,11 @@ class SignUpInputNameFragment :
         }
 
         signUpViewModel.signUpFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                dlg?.dismiss()
+                it.message?.let { message -> showCustomToast(message) }
+            }
         }
 
         binding.signUpInputNameBtnNext.setOnClickListener {

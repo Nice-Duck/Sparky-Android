@@ -2,9 +2,12 @@ package com.softsquared.niceduck.android.sparky.viewmodel
 
 import androidx.lifecycle.*
 import com.softsquared.niceduck.android.sparky.model.*
+import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import kotlinx.coroutines.*
+import okhttp3.internal.wait
 
 class SignInViewModel : ViewModel() {
     private val repository = AuthRepository()
@@ -16,8 +19,8 @@ class SignInViewModel : ViewModel() {
     val signInResponse: SingleLiveData<SignResponse>
         get() = _signInResponse
 
-    private val _signInFailure = MutableSingleLiveData<Int>()
-    val signInFailure: SingleLiveData<Int>
+    private val _signInFailure = MutableSingleLiveData<BaseResponse>()
+    val signInFailure: SingleLiveData<BaseResponse>
         get() = _signInFailure
 
     fun postSignIn() {
@@ -32,7 +35,12 @@ class SignInViewModel : ViewModel() {
             if (response.isSuccessful) {
                 response.body()?.let { _signInResponse.setValue(it) }
             } else {
-                _signInFailure.setValue(response.code())
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _signInFailure.setValue(error) }
+                    }
+
+
             }
         }
     }

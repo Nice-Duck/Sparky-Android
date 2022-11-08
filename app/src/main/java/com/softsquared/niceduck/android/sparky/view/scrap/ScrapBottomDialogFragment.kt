@@ -3,12 +3,15 @@ package com.softsquared.niceduck.android.sparky.view.scrap
 import android.app.Dialog
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.google.android.flexbox.FlexDirection
@@ -21,6 +24,10 @@ import com.softsquared.niceduck.android.sparky.databinding.FragmentScrapBottomDi
 import com.softsquared.niceduck.android.sparky.model.TagRequest
 import com.softsquared.niceduck.android.sparky.model.TagsResponse
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -50,6 +57,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         binding.scrapBottomDialogImgBackBtn.setOnClickListener {
             dismiss()
         }
@@ -63,7 +71,6 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagLastLoadResponse.observe(this) {
-            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 it.result.tagResponses?.let { response ->
                     if (response.isNullOrEmpty()) {
@@ -74,7 +81,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagLastLoadFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+            Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
         }
 
         scrapTemplateViewModel.lastTags.observe(viewLifecycleOwner) {
@@ -99,7 +106,6 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagSaveResponse.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 val i = scrapTemplateViewModel.scrapTemplateDataSet.value!!.size - 1
 
@@ -117,7 +123,24 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         }
 
         scrapTemplateViewModel.tagSaveFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+            when (it.code) {
+                "U000" -> {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        scrapTemplateViewModel.postReissueAccessToken()
+                        val color = scrapTemplateViewModel.tagColor.getValue() ?: "#DFDFDF"
+
+                        scrapTemplateViewModel.postTagSave(
+                            TagRequest(
+                                binding.scrapBottomDialogEditTxt.text.toString(),
+                                color
+                            )
+                        )
+                    }
+                }
+                else -> {
+                    Toast.makeText(activity, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         binding.scrapBottomDialogImgSearchDeleteBtn.setOnClickListener {
@@ -183,10 +206,13 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
             visibility = View.VISIBLE
         }
 
-        binding.scrapBottomDialogLL.visibility = GONE
-
-        if (scrapTemplateViewModel.lastTags.value == null || scrapTemplateViewModel.lastTags.value!!.size == 0)
+        if (scrapTemplateViewModel.lastTags.value == null || scrapTemplateViewModel.lastTags.value!!.size == 0) {
             binding.scrapBottomDialogTxtLastTagTitle.visibility = GONE
-        else binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
+            binding.scrapBottomDialogLL.visibility = VISIBLE
+        }
+        else {
+            binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
+            binding.scrapBottomDialogLL.visibility = GONE
+        }
     }
 }

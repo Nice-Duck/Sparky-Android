@@ -28,7 +28,7 @@
         android:id="@+id/tag_item_img"
         android:layout_width="10dp"
         android:layout_height="10dp"
-        android:src="@drawable/ic_delete" />
+        android:src="@drawable/ic_delete_tag" />
 
 </LinearLayout>
 

@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -24,6 +25,11 @@ class SignUpInputCertificationNumFragment :
         super.onViewCreated(view, savedInstanceState)
 
         val signUpViewModel: SignUpViewModel by activityViewModels()
+
+        binding.signUpInputCertificationLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
 
         countDownTimer = object : CountDownTimer(180000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -217,6 +223,13 @@ class SignUpInputCertificationNumFragment :
             return@setOnKeyListener false
         }
 
+        binding.signUpInputCertificationEditTxt6.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i== EditorInfo.IME_ACTION_DONE){
+                binding.signUpInputCertificationLL.clearFocus()
+            }
+            return@setOnEditorActionListener false
+        }
+
         signUpViewModel.certificationCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
                 countDownTimer.cancel()
@@ -225,32 +238,11 @@ class SignUpInputCertificationNumFragment :
                     SignUpInputCertificationNumFragmentDirections
                         .actionSignUpInputCertificationNumFragmentToSignUpInputPwdFragment()
                 view.findNavController().navigate(action)
-            } else if (it.code == "0004") {
-
-                // TODO: 실패 처리 액션 추가
-                binding.signUpInputCertificationEditTxt1.text.clear()
-                binding.signUpInputCertificationEditTxt2.text.clear()
-                binding.signUpInputCertificationEditTxt3.text.clear()
-                binding.signUpInputCertificationEditTxt4.text.clear()
-                binding.signUpInputCertificationEditTxt5.text.clear()
-                binding.signUpInputCertificationEditTxt6.text.clear()
-
-                binding.signUpInputCertificationEditTxt1.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputCertificationEditTxt2.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputCertificationEditTxt3.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputCertificationEditTxt4.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputCertificationEditTxt5.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputCertificationEditTxt6.setBackgroundResource(R.drawable.sign_input_validation)
-
-                binding.signUpInputCertificationTxtValidation.visibility = VISIBLE
-
-                binding.signUpInputCertificationEditTxt1.requestFocus()
-
-                binding.signUpInputCertificationNumBtnNext.isEnabled = false
             }
         }
 
         signUpViewModel.certificationCheckFailure.observe(viewLifecycleOwner) {
+            it.message?.let { message -> showCustomToast(message) }
             binding.signUpInputCertificationEditTxt1.text.clear()
             binding.signUpInputCertificationEditTxt2.text.clear()
             binding.signUpInputCertificationEditTxt3.text.clear()

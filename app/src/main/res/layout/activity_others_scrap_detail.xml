@@ -28,7 +28,7 @@
             android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp">
+            android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/others_scrap_detail_img_back"
@@ -108,12 +108,6 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="6dp"
-            android:layout_marginTop="16dp"
-            android:background="@color/gray_200" />
-
         <TextView
             android:id="@+id/others_scrap_detail_txt_tags_title"
             android:layout_width="wrap_content"
@@ -150,7 +144,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="11dp"
             android:layout_marginBottom="18dp"
-            android:background="@drawable/sign_input_selector"
+            android:background="@drawable/template_background"
             android:gravity="top"
             android:textColor="@color/black"
             android:enabled="false"
@@ -161,8 +155,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="6dp"
-            android:layout_marginBottom="15dp"
-            android:background="@color/gray_300"/>
+            android:background="@color/gray_200"/>
 
         <LinearLayout
             android:layout_marginTop="18dp"
@@ -171,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/sign_input_normal">
+            android:background="@drawable/template_background">
             <TextView
                 android:id="@+id/others_scrap_detail_txt_scrap_add"
                 android:textColor="@color/black"

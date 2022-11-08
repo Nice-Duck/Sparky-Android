@@ -12,7 +12,7 @@
     android:paddingHorizontal="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="32dp">
+    android:layout_marginTop="15dp">
 
     <ImageView
         android:id="@+id/my_page_img_back"
@@ -62,23 +62,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/sign_input_normal">
+    android:background="@drawable/template_background">
     <LinearLayout
         android:id="@+id/my_page_LL_profile_setting"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_setting"/>
+            android:layout_weight="1"
+            android:text="@string/profile_setting"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
         <ImageView
-            android:layout_width="5dp"
-            android:layout_height="9dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_arrow"/>
     </LinearLayout>
 
@@ -102,8 +103,8 @@
             android:layout_height="wrap_content"
             android:text="@string/my_tag_list"/>
         <ImageView
-            android:layout_width="5dp"
-            android:layout_height="9dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_arrow"/>
     </LinearLayout>
 
@@ -127,8 +128,8 @@
             android:layout_height="wrap_content"
             android:text="@string/setting"/>
         <ImageView
-            android:layout_width="5dp"
-            android:layout_height="9dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:src="@drawable/ic_arrow"/>
     </LinearLayout>
 </LinearLayout>
@@ -140,7 +141,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/sign_input_normal">
+    android:background="@drawable/template_background">
     <TextView
         android:id="@+id/my_page_LL_center"
         android:textColor="@color/black"
@@ -187,7 +188,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/sign_input_normal">
+    android:background="@drawable/template_background">
     <TextView
         android:id="@+id/my_page_LL_withdraw"
         android:textColor="@color/sparky_orange"

@@ -1,18 +1,28 @@
 package com.softsquared.niceduck.android.sparky.view.sign_up.fragment
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
+import android.view.Window
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputEmailBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.regex.Pattern
+
 
 class SignUpInputEmailFragment :
     BaseFragment<FragmentSignUpInputEmailBinding>(FragmentSignUpInputEmailBinding::bind, R.layout.fragment_sign_up_input_email) {
@@ -20,10 +30,29 @@ class SignUpInputEmailFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val dlg = activity?.let { Dialog(it) }
+        dlg?.setCancelable(false)
+        dlg?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg?.setContentView(R.layout.dialog_lottie_loading)
+        dlg?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         val signUpViewModel: SignUpViewModel by activityViewModels()
 
         signUpViewModel.isChecked = false
         signUpViewModel.progress.value = 0
+
+        binding.signUpInputEmailLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
+
+        binding.signUpInputEmailEditTxtEmail.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i== EditorInfo.IME_ACTION_DONE){
+                binding.signUpInputEmailLL.clearFocus()
+            }
+            return@setOnEditorActionListener false
+        }
+
 
         binding.signUpInputEmailEditTxtEmail.addTextChangedListener(object : TextWatcher {
             // 이메일 정규식
@@ -63,33 +92,27 @@ class SignUpInputEmailFragment :
 
         signUpViewModel.duplicationEmailCheckResponse.observe(viewLifecycleOwner) {
             if (it.code == "0000") {
+                dlg?.show()
                 signUpViewModel.postCertificationSend()
-            } else if (it.code == "0001") {
-                // TODO: 실패 코드 추가
-                binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                binding.signUpInputEmailTxtValidation.text = "이미 가입된 이메일입니다"
-                binding.signUpInputEmailTxtValidation.visibility = VISIBLE
-                binding.signUpInputEmailBtnNext.isEnabled = false
-                binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
+
             }
         }
 
         signUpViewModel.duplicationEmailCheckFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
-            when (it) {
-                409 -> {
-                    binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
-                    binding.signUpInputEmailTxtValidation.text = "이미 가입된 이메일입니다"
-                    binding.signUpInputEmailTxtValidation.visibility = VISIBLE
-                    binding.signUpInputEmailBtnNext.isEnabled = false
-                    binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
-                }
-            }
+            binding.signUpInputEmailEditTxtEmail.setBackgroundResource(R.drawable.sign_input_validation)
+            binding.signUpInputEmailTxtValidation.text = it.message
+            binding.signUpInputEmailTxtValidation.visibility = VISIBLE
+            binding.signUpInputEmailBtnNext.isEnabled = false
+            binding.signUpInputEmailBtnNext.setBackgroundResource(R.drawable.button2)
+
         }
 
         signUpViewModel.certificationSendResponse.observe(viewLifecycleOwner) {
+            lifecycleScope.launch  {
+                delay(1000)
+                dlg?.dismiss()
+            }
             if (it.code == "0000") {
-                // TODO: 실패 코드 추가
                 val action =
                     SignUpInputEmailFragmentDirections
                         .actionSignUpInputEmailFragmentToSignUpInputCertificationNumFragment()
@@ -98,7 +121,12 @@ class SignUpInputEmailFragment :
         }
 
         signUpViewModel.certificationSendFailure.observe(viewLifecycleOwner) {
-            // TODO: 실패 코드 추가
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(1000)
+                dlg?.dismiss()
+            }
+            it.message?.let { message -> showCustomToast(message) }
+
         }
 
         binding.signUpInputEmailBtnNext.setOnClickListener {

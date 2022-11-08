@@ -1,10 +1,16 @@
 package com.softsquared.niceduck.android.sparky.view.sign_in
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Window
+import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_ACCESS_TOKEN
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.X_REFRESH_TOKEN
@@ -14,6 +20,11 @@ import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.main.MainActivity
 import com.softsquared.niceduck.android.sparky.view.sign_up.SignUpActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.SignInViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
 
@@ -21,6 +32,25 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         super.onCreate(savedInstanceState)
 
         val signInViewModel: SignInViewModel by viewModels()
+
+        val dlg = Dialog(this)
+        dlg.setCancelable(false)
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg.setContentView(R.layout.dialog_lottie_loading)
+        dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        binding.signInEditTxtPwd.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i==EditorInfo.IME_ACTION_DONE){ // 뷰의 id를 식별, 키보드의 완료 키 입력 검출
+                binding.signInEditTxtPwd.clearFocus()
+            }
+            return@setOnEditorActionListener false
+        }
+
+        binding.signInLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
 
         binding.signInTxtSignUpBtn.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
@@ -66,6 +96,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         })
 
         signInViewModel.signInResponse.observe(this) {
+            lifecycleScope.launch  {
+                delay(1000)
+                dlg.dismiss()
+            }
             if (it.code == "0000") {
                 val editor = sSharedPreferences.edit()
                 editor.putString(X_ACCESS_TOKEN, it.result?.accessToken)
@@ -78,13 +112,19 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
             }
         }
 
-        signInViewModel.signInFailure.observe(this) {
-            // TODO: 로그인 실패 처리 코드
+        signInViewModel.signInFailure.observe(this) { errorResponse ->
+            lifecycleScope.launch {
+                delay(1000)
+                dlg.dismiss()
+                errorResponse.message?.let { showCustomToast(it) }
+            }
         }
 
         binding.signInBtnSignIn.setOnClickListener {
             signInViewModel.email = binding.signInEditTxtEmail.text.toString()
             signInViewModel.pwd = binding.signInEditTxtPwd.text.toString()
+
+            dlg.show()
 
             signInViewModel.postSignIn()
         }

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.View.*
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +32,18 @@ class HomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.homeLL.setOnClickListener {
+            hideKeyboard()
+            it.clearFocus()
+        }
+
+        binding.homeEditTxt.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i== EditorInfo.IME_ACTION_DONE){
+                binding.homeLL.clearFocus()
+            }
+            return@setOnEditorActionListener false
+        }
+
         mainViewModel.homeScrapSearchResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {
@@ -47,7 +60,7 @@ class HomeFragment :
         mainViewModel.homeScrapSearchFailure.observe(viewLifecycleOwner) { code ->
             when (code) {
                 401 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch  {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.postScrapSearch()
                     }
@@ -56,6 +69,10 @@ class HomeFragment :
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
                 }
             }
+        }
+
+        binding.homeImgSearchDeleteBtn.setOnClickListener {
+            binding.homeEditTxt.text.clear()
         }
 
 
@@ -76,7 +93,12 @@ class HomeFragment :
 
                     // 검색 기능을 위한 watcher
                     binding.homeEditTxt.addTextChangedListener {
+
+
                         if (binding.homeEditTxt.text.isNotEmpty()) {
+                            mainViewModel.homeSearchType = 0
+                            mainViewModel.homeSearchTitle =  binding.homeEditTxt.text.toString()
+                            mainViewModel.postHomeScrapSearch()
                             binding.homeImgSearchDeleteBtn.visibility = VISIBLE
                             binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor(
@@ -85,6 +107,8 @@ class HomeFragment :
                             )
                             binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
                         } else {
+
+                            mainViewModel.getHomeScrapLoad()
                             binding.homeImgSearchDeleteBtn.visibility = View.GONE
                             binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor(
@@ -93,12 +117,7 @@ class HomeFragment :
                             )
                             binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
                         }
-
-                        mainViewModel.homeSearchType = 0
-                        mainViewModel.homeSearchTitle =  binding.homeEditTxt.text.toString()
-                        mainViewModel.postHomeScrapSearch()
                     }
-
                     hideLoading()
                 }
                 else -> {
@@ -114,7 +133,7 @@ class HomeFragment :
         ) { code ->
             when (code) {
                 401 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.getHomeScrapLoad()
                     }

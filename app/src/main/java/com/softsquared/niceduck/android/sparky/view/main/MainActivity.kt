@@ -2,24 +2,16 @@ package com.softsquared.niceduck.android.sparky.view.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
-import android.view.Gravity
-import android.widget.LinearLayout
 import androidx.activity.viewModels
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetBehavior.*
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMainBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.main.fragment.*
-import com.softsquared.niceduck.android.sparky.view.scrap.ScrapBottomDialogFragment
 import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
 import kotlinx.coroutines.*
@@ -35,6 +27,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
 
         binding.mainRefresh.setOnRefreshListener {
             mainViewModel.getMyScrapLoad()

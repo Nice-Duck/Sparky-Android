@@ -3,7 +3,6 @@ package com.softsquared.niceduck.android.sparky.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.model.ScrapDetailRepository
-import com.softsquared.niceduck.android.sparky.model.ScrapStoreRequest
 import com.softsquared.niceduck.android.sparky.model.ScrapTemplateRepository
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData

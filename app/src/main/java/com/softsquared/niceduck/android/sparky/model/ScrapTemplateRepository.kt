@@ -27,4 +27,10 @@ class ScrapTemplateRepository {
     suspend fun patchScrap(scrapId: String, request: ScrapStoreRequest) =
         scrapTemplateService.patchScrap(scrapId, request)
 
+    // 토큰 갱신
+    suspend fun postReissueAccessToken() =
+        scrapTemplateService.postReissueAccessToken(
+            ApplicationClass.sSharedPreferences.getString(
+                ApplicationClass.X_REFRESH_TOKEN, null))
+
 }

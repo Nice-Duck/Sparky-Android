@@ -1,20 +1,19 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
-import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.TagAddRecyclerviewAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
+import org.jsoup.Connection
 import kotlin.random.Random
 
 class ScrapTemplateViewModel : ViewModel(), ItemEvent {
@@ -64,8 +63,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val _tagSaveResponse = MutableSingleLiveData<TagResponse>()
     val tagSaveResponse: SingleLiveData<TagResponse>
         get() = _tagSaveResponse
-    private val _tagSaveFailure = MutableSingleLiveData<Int>()
-    val tagSaveFailure: SingleLiveData<Int>
+    private val _tagSaveFailure = MutableSingleLiveData<BaseResponse>()
+    val tagSaveFailure: SingleLiveData<BaseResponse>
         get() = _tagSaveFailure
 
     // 태그 저장
@@ -76,7 +75,10 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
             if (response.isSuccessful) {
                 response.body()?.let { _tagSaveResponse.setValue(it) }
             } else {
-                _tagSaveFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _tagSaveFailure.setValue(error) }
+                }
             }
         }
     }
@@ -87,18 +89,21 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
     val tagLastLoadResponse: SingleLiveData<TagLastLoadResponse>
         get() = _tagLastLoadResponse
-    private val _tagLastLoadFailure = MutableSingleLiveData<Int>()
-    val tagLastLoadFailure: SingleLiveData<Int>
+    private val _tagLastLoadFailure = MutableSingleLiveData<BaseResponse>()
+    val tagLastLoadFailure: SingleLiveData<BaseResponse>
         get() = _tagLastLoadFailure
 
-    private fun getTagLastLoad() {
+    fun getTagLastLoad() {
         viewModelScope.launch {
             val response = scrapTemplateRepository.getTagLastLoad()
 
             if (response.isSuccessful) {
                 response.body()?.let { _tagLastLoadResponse.setValue(it) }
             } else {
-                _tagLastLoadFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                }
             }
         }
     }
@@ -128,8 +133,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val _scrapStoreResponse = MutableSingleLiveData<BaseResponse>()
     val scrapStoreResponse: SingleLiveData<BaseResponse>
         get() = _scrapStoreResponse
-    private val _scrapStoreFailure = MutableSingleLiveData<Int>()
-    val scrapStoreFailure: SingleLiveData<Int>
+    private val _scrapStoreFailure = MutableSingleLiveData<BaseResponse>()
+    val scrapStoreFailure: SingleLiveData<BaseResponse>
         get() = _scrapStoreFailure
 
 
@@ -149,7 +154,10 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
             if (response.isSuccessful) {
                 response.body()?.let { _scrapStoreResponse.setValue(it) }
             } else {
-                _scrapStoreFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _scrapStoreFailure.setValue(error) }
+                }
             }
 
 
@@ -160,8 +168,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val _scrapUpdateResponse = MutableSingleLiveData<BaseResponse>()
     val scrapUpdateResponse: SingleLiveData<BaseResponse>
         get() = _scrapUpdateResponse
-    private val _scrapUpdateFailure = MutableSingleLiveData<Int>()
-    val scrapUpdateFailure: SingleLiveData<Int>
+    private val _scrapUpdateFailure = MutableSingleLiveData<BaseResponse>()
+    val scrapUpdateFailure: SingleLiveData<BaseResponse>
         get() = _scrapUpdateFailure
 
     fun patchScrap(scrapId: String) {
@@ -181,7 +189,10 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
             if (response.isSuccessful) {
                 response.body()?.let { _scrapUpdateResponse.setValue(it) }
             } else {
-                _scrapUpdateFailure.setValue(response.code())
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _scrapUpdateFailure.setValue(error) }
+                }
             }
 
 
@@ -234,4 +245,39 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
 
         _hideBottomSheetCall.setValue(true)
     }
+
+    // 토큰 갱신
+    private val _reissueAccessTokenResponse: MutableSingleLiveData<TokenResponse> = MutableSingleLiveData()
+    val reissueAccessTokenResponse: SingleLiveData<TokenResponse>
+        get() = _reissueAccessTokenResponse
+
+    private val _reissueAccessTokenFailure = MutableSingleLiveData<Int>()
+    val reissueAccessTokenFailure: SingleLiveData<Int>
+        get() = _reissueAccessTokenFailure
+
+    // 토큰 갱신
+    suspend fun postReissueAccessToken(): Int {
+        val editor = ApplicationClass.sSharedPreferences.edit()
+        editor.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+        editor.apply()
+
+        val scope = viewModelScope.async {
+            val response = scrapTemplateRepository.postReissueAccessToken()
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _reissueAccessTokenResponse.setValue(it)
+
+                }
+                1
+            } else {
+                _reissueAccessTokenFailure.setValue(response.code())
+                0
+            }
+
+        }
+        return scope.await()
+    }
+
+
 }

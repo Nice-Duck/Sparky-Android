@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/sign_up_input_email_LL"
     android:padding="@dimen/parent_layout_padding"
     tools:context=".view.sign_up.fragment.SignUpInputEmailFragment">
 

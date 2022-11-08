@@ -3,7 +3,9 @@ package com.softsquared.niceduck.android.sparky.config
 import android.app.Application
 import android.content.SharedPreferences
 import com.softsquared.niceduck.android.sparky.model.AuthRepository
+import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
