@@ -10,19 +10,20 @@
 
         <LinearLayout
             android:id="@+id/my_LL"
-            android:padding="20dp"
+            android:paddingHorizontal="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
             <TextView
+                android:layout_marginTop="23dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="내 스크랩"
                 android:textSize="16sp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:layout_marginBottom="23dp"
+                android:layout_marginBottom="33dp"
                 android:layout_gravity="center_horizontal"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
