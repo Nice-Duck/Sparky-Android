@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
@@ -45,9 +46,15 @@ class MyFragment :
             it.clearFocus()
         }
 
-        binding.myEditTxt.setOnEditorActionListener { textView, i, keyEvent ->
-            if (i== EditorInfo.IME_ACTION_DONE){
+        binding.myEditTxt.setOnEditorActionListener { textView, i, event ->
+            if ((i == EditorInfo.IME_ACTION_DONE) ||
+                (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER)) {
                 binding.myLL.clearFocus()
+                if (binding.myEditTxt.text.isNotEmpty()) {
+                    mainViewModel.searchType = 1
+                    mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
+                    mainViewModel.postScrapSearch()
+                }
             }
             return@setOnEditorActionListener false
         }
@@ -80,9 +87,6 @@ class MyFragment :
                     // 검색 기능을 위한 watcher
                     binding.myEditTxt.addTextChangedListener {
                         if (binding.myEditTxt.text.isNotEmpty()) {
-                            mainViewModel.searchType = 1
-                            mainViewModel.searchTitle =  binding.myEditTxt.text.toString()
-                            mainViewModel.postScrapSearch()
                             binding.myImgSearchDeleteBtn.visibility = VISIBLE
                             binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
                                 Color.parseColor(
