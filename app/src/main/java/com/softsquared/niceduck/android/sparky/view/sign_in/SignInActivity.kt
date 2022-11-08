@@ -27,13 +27,13 @@ import kotlinx.coroutines.launch
 
 
 class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding::inflate) {
-
+    private lateinit var dlg: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val signInViewModel: SignInViewModel by viewModels()
 
-        val dlg = Dialog(this)
+        dlg = Dialog(this)
         dlg.setCancelable(false)
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_lottie_loading)
@@ -96,11 +96,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
         })
 
         signInViewModel.signInResponse.observe(this) {
-            lifecycleScope.launch  {
+            val scope = lifecycleScope.launch  {
                 delay(1000)
                 dlg.dismiss()
             }
             if (it.code == "0000") {
+                scope.cancel()
+
                 val editor = sSharedPreferences.edit()
                 editor.putString(X_ACCESS_TOKEN, it.result?.accessToken)
                 editor.putString(X_REFRESH_TOKEN, it.result?.refreshToken)
@@ -128,5 +130,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(ActivitySignInBinding
 
             signInViewModel.postSignIn()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        dlg.dismiss()
     }
 }

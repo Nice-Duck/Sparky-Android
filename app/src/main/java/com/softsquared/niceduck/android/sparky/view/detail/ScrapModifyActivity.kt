@@ -31,12 +31,13 @@ import kotlinx.coroutines.launch
 
 class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
     ActivityScrapModifyBinding::inflate) {
+    lateinit var dlg: Dialog
     private val scrapTemplateViewModel: ScrapTemplateViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dlg = Dialog(this)
+        dlg = Dialog(this)
         dlg.setCancelable(false)
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_lottie_loading)
@@ -85,12 +86,12 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
             scrapTemplateViewModel.img.setValue(scrap.imgUrl)
 
             binding.scrapModifyBtnStore.setOnClickListener {
-                scrapTemplateViewModel.patchScrap(scrap.scrapId.toString())
                 dlg.show()
+                scrapTemplateViewModel.patchScrap(scrap.scrapId.toString())
             }
 
-            binding.scrapModifyEditTxtTitle.text = scrap.title
-            binding.scrapModifyEditTxtSummary.text = scrap.subTitle
+            binding.scrapModifyEditTxtTitle.setText(scrap.title)
+            binding.scrapModifyEditTxtSummary.setText(scrap.subTitle)
             binding.scrapModifyEditTxtMemo.setText(scrap.memo)
 
             if (scrap.imgUrl != null && scrap.imgUrl != "") {
@@ -121,11 +122,12 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
         setScrapTemplateRecyclerview()
 
         scrapTemplateViewModel.scrapUpdateResponse.observe(this) {
-            lifecycleScope.launch {
+            val scope = lifecycleScope.launch {
                 delay(1000)
                 dlg.dismiss()
             }
             if (it.code == "0000") {
+                scope.cancel()
                 finish()
             }
         }
@@ -241,5 +243,12 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
             visibility = android.view.View.VISIBLE
         }
     }
+
+
+    override fun onStop() {
+        super.onStop()
+        dlg.dismiss()
+    }
+
 
 }

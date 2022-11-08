@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
+                <EditText
                     android:id="@+id/scrap_modify_edit_txt_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,7 +95,7 @@
                     android:textSize="14sp"
                     android:textStyle="bold" />
 
-                <TextView
+                <EditText
                     android:id="@+id/scrap_modify_edit_txt_summary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

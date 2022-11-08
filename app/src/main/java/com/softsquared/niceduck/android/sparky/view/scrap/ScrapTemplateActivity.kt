@@ -33,11 +33,11 @@ import kotlinx.coroutines.launch
 
 class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(ActivityScrapTemplateBinding::inflate) {
     private val scrapTemplateViewModel: ScrapTemplateViewModel by viewModels()
-
+    private lateinit var dlg: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val dlg = Dialog(this)
+        dlg = Dialog(this)
         dlg.setCancelable(false)
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_lottie_loading)
@@ -261,4 +261,11 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
             visibility = VISIBLE
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        dlg.dismiss()
+    }
+
+
 }

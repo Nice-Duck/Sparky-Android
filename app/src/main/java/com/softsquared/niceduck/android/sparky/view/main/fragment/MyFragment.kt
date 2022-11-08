@@ -37,8 +37,7 @@ class MyFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.myLLFilterAddBtn.setOnClickListener {
-            val bottomDialogFragment = ScrapBottomDialogFragment()
-            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+            showCustomToast("아직 개발 중입니다.")
         }
 
         binding.myLL.setOnClickListener {
