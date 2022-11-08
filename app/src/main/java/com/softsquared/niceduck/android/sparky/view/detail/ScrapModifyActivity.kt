@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 
 class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
     ActivityScrapModifyBinding::inflate) {
+
     lateinit var dlg: Dialog
     private val scrapTemplateViewModel: ScrapTemplateViewModel by viewModels()
 
@@ -42,6 +43,10 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
         dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dlg.setContentView(R.layout.dialog_lottie_loading)
         dlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding.scrapModifyImgBack.setOnClickListener {
+            finish()
+        }
 
         // 토큰 갱신
         scrapTemplateViewModel.reissueAccessTokenResponse.observe(this) { response ->

@@ -20,6 +20,10 @@ class OthersScrapDetailActivity: BaseActivity<ActivityOthersScrapDetailBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.othersScrapDetailImgBack.setOnClickListener {
+            finish()
+        }
+
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
             binding.othersScrapDetailEditTxtTitle.text = scrap.title

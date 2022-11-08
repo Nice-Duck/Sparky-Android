@@ -25,6 +25,10 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
         super.onCreate(savedInstanceState)
         val scrapDetailViewModel: ScrapDetailViewModel by viewModels()
 
+        binding.myScrapDetailImgBack.setOnClickListener {
+            finish()
+        }
+
         scrapDetailViewModel.scrapDeleteResponse.observe(this) {
             // TODO: 실패 코드 추가
             if (it.code == "0000") {
