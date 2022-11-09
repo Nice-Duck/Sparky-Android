@@ -210,9 +210,7 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     }
 
     fun randomColor(): String {
-        val randomIndex = Random.nextInt(tagColorList.size)
-
-        return tagColorList[randomIndex]
+        return tagColorList.shuffled()[0]
     }
 
     override fun addItem() {
