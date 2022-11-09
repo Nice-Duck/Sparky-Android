@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -208,11 +209,10 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
 
         if (scrapTemplateViewModel.lastTags.value == null || scrapTemplateViewModel.lastTags.value!!.size == 0) {
             binding.scrapBottomDialogTxtLastTagTitle.visibility = GONE
-            binding.scrapBottomDialogLL.visibility = VISIBLE
         }
         else {
             binding.scrapBottomDialogTxtLastTagTitle.visibility = VISIBLE
-            binding.scrapBottomDialogLL.visibility = GONE
+
         }
     }
 }
