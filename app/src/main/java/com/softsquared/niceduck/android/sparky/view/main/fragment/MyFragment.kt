@@ -59,6 +59,28 @@ class MyFragment :
             return@setOnEditorActionListener false
         }
 
+        // 검색 기능을 위한 watcher
+        binding.myEditTxt.addTextChangedListener {
+            if (binding.myEditTxt.text.isNotEmpty()) {
+                binding.myImgSearchDeleteBtn.visibility = VISIBLE
+                binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#FF000000"
+                    )
+                )
+                binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
+            } else {
+                mainViewModel.getMyScrapLoad()
+                binding.myImgSearchDeleteBtn.visibility = View.GONE
+                binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#BEBDBD"
+                    )
+                )
+                binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
+            }
+        }
+
         // 스크랩 데이터 조회
         mainViewModel.getMyScrapLoad()
 
@@ -83,31 +105,6 @@ class MyFragment :
 
                     binding.myRadioBtn2.isChecked = true
 
-
-                    // 검색 기능을 위한 watcher
-                    binding.myEditTxt.addTextChangedListener {
-                        if (binding.myEditTxt.text.isNotEmpty()) {
-                            binding.myImgSearchDeleteBtn.visibility = VISIBLE
-                            binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
-                                Color.parseColor(
-                                    "#FF000000"
-                                )
-                            )
-                            binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
-                        } else {
-                            mainViewModel.getMyScrapLoad()
-                            binding.myImgSearchDeleteBtn.visibility = View.GONE
-                            binding.myEditTxt.backgroundTintList = ColorStateList.valueOf(
-                                Color.parseColor(
-                                    "#BEBDBD"
-                                )
-                            )
-                            binding.myEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
-                        }
-                    }
-                }
-                else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
                 }
             }
             hideLoading()

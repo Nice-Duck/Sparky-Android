@@ -3,6 +3,7 @@ package com.softsquared.niceduck.android.sparky.view.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -34,11 +35,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
             mainViewModel.getMyScrapLoad()
             mainViewModel.getHomeScrapLoad()
 
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch {
                 delay(300)
                 binding.mainRefresh.isRefreshing = false
             }
-
         }
 
         binding.mainImgScrapAddBtn.setOnClickListener {

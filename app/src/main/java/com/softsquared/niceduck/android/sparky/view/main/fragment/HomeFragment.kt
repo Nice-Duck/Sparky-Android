@@ -52,15 +52,36 @@ class HomeFragment :
             return@setOnEditorActionListener false
         }
 
+        // 검색 기능을 위한 watcher
+        binding.homeEditTxt.addTextChangedListener {
+
+
+            if (binding.homeEditTxt.text.isNotEmpty()) {
+                binding.homeImgSearchDeleteBtn.visibility = VISIBLE
+                binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#FF000000"
+                    )
+                )
+                binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
+            } else {
+                mainViewModel.getHomeScrapLoad()
+                binding.homeImgSearchDeleteBtn.visibility = View.GONE
+                binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#BEBDBD"
+                    )
+                )
+                binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
+            }
+        }
+
         mainViewModel.homeScrapSearchResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {
                     mainViewModel.homeScrapDataSet = response.result
                     val othersScrapDataSet = response.result
                     setOthersRecyclerview(othersScrapDataSet)
-                }
-                else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
                 }
             }
         }
@@ -98,34 +119,6 @@ class HomeFragment :
                     val othersScrapDataSet =  response.result.recScraps
                     setMyRecyclerview(myScrapDataSet)
                     setOthersRecyclerview(othersScrapDataSet)
-
-                    // 검색 기능을 위한 watcher
-                    binding.homeEditTxt.addTextChangedListener {
-
-
-                        if (binding.homeEditTxt.text.isNotEmpty()) {
-/*                            mainViewModel.homeSearchType = 0
-                            mainViewModel.homeSearchTitle =  binding.homeEditTxt.text.toString()
-                            mainViewModel.postHomeScrapSearch()*/
-                            binding.homeImgSearchDeleteBtn.visibility = VISIBLE
-                            binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
-                                Color.parseColor(
-                                    "#FF000000"
-                                )
-                            )
-                            binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search2, 0, 0, 0)
-                        } else {
-
-                            mainViewModel.getHomeScrapLoad()
-                            binding.homeImgSearchDeleteBtn.visibility = View.GONE
-                            binding.homeEditTxt.backgroundTintList = ColorStateList.valueOf(
-                                Color.parseColor(
-                                    "#BEBDBD"
-                                )
-                            )
-                            binding.homeEditTxt.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit_txt_inner_search, 0, 0, 0)
-                        }
-                    }
                     hideLoading()
                 }
                 else -> {
