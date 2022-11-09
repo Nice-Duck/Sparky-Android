@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sparky</string>
+    <string name="app_name">sparky</string>
     <string name="id">아이디</string>
     <string name="password">비밀번호</string>
     <string name="password_rule">영문 / 숫자 포함 8~20자</string>
