@@ -125,7 +125,7 @@ class SignUpInputNameFragment :
         }
 
         signUpViewModel.signUpFailure.observe(viewLifecycleOwner) {
-            CoroutineScope(Dispatchers.Main).launch {
+            lifecycleScope.launch {
                 delay(1000)
                 dlg?.dismiss()
                 it.message?.let { message -> showCustomToast(message) }

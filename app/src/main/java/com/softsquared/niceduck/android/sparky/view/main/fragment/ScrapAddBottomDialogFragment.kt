@@ -11,6 +11,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -59,6 +60,7 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
                     val intent = Intent(activity, ScrapTemplateActivity::class.java)
                     intent.putExtra("add", binding.scrapAddBottomDialogEditTxtEmail.text.toString())
                     startActivity(intent)
+                    dismiss()
                 }
 
                 "F002" -> {
@@ -73,7 +75,7 @@ class ScrapAddBottomDialogFragment : BottomSheetDialogFragment() {
         mainViewModel.scrapValidationFailure.observe(viewLifecycleOwner) { code ->
             when (code) {
                 401 -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch {
                         mainViewModel.postReissueAccessToken()
                         mainViewModel.getScrapValidation(binding.scrapAddBottomDialogEditTxtEmail.text.toString())
                     }

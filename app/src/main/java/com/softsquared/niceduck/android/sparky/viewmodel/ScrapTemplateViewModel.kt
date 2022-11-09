@@ -112,12 +112,19 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     private val _setDataViewCall = MutableSingleLiveData<Pair<String, Map<String, String>>>()
     val setDataViewCall: SingleLiveData<Pair<String, Map<String, String>>>
         get() = _setDataViewCall
+    private val _setDataViewCallFailure = MutableSingleLiveData<String>()
+    val setDataViewCallFailure: SingleLiveData<String>
+        get() = _setDataViewCallFailure
 
     // 크롤링
     fun getScrapData(title: String?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            scrapTemplateRepository.handleSendText(title).apply {
-                setDataView(this)
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                scrapTemplateRepository.handleSendText(title).apply {
+                    setDataView(this)
+                }
+            } catch (e: Exception) {
+                _setDataViewCallFailure.postValue(e.message?: "crawling error")
             }
         }
     }

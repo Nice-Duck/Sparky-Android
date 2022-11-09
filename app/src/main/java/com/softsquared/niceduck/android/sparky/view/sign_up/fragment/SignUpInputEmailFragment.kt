@@ -121,7 +121,7 @@ class SignUpInputEmailFragment :
         }
 
         signUpViewModel.certificationSendFailure.observe(viewLifecycleOwner) {
-            CoroutineScope(Dispatchers.Main).launch {
+           lifecycleScope.launch {
                 delay(1000)
                 dlg?.dismiss()
             }

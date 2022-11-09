@@ -15,6 +15,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -126,7 +127,7 @@ class ScrapBottomDialogFragment : BottomSheetDialogFragment() {
         scrapTemplateViewModel.tagSaveFailure.observe(viewLifecycleOwner) {
             when (it.code) {
                 "U000" -> {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    lifecycleScope.launch {
                         scrapTemplateViewModel.postReissueAccessToken()
                         val color = scrapTemplateViewModel.tagColor.getValue() ?: "#DFDFDF"
 

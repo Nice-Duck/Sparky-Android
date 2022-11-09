@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Log.d
 import android.view.View.VISIBLE
 import android.view.Window
@@ -46,6 +47,12 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         if (sSharedPreferences.getString(X_ACCESS_TOKEN, null) == null) {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
+            finish()
+        }
+
+        scrapTemplateViewModel.setDataViewCallFailure.observe(this) {
+            d("테스트", it)
+            showCustomToast("스크랩 정보를 가져올 수 없습니다")
             finish()
         }
 
@@ -241,7 +248,7 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
 
 
     private fun getScrapData() {
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             if (intent?.action == Intent.ACTION_SEND) {
                 if ("text/plain" == intent.type) {
                     scrapTemplateViewModel.getScrapData(intent.getStringExtra(Intent.EXTRA_TEXT))
