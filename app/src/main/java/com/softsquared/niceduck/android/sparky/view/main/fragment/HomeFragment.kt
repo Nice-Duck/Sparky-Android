@@ -95,7 +95,7 @@ class HomeFragment :
                     }
                 }
                 else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+
                 }
             }
         }
@@ -123,7 +123,6 @@ class HomeFragment :
                 }
                 else -> {
                     binding.homeRecyclerviewMyScrap.visibility = INVISIBLE
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
                     hideLoading()
                 }
             }
@@ -140,7 +139,6 @@ class HomeFragment :
                     }
                 }
                 else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
                     hideLoading()
                 }
             }
@@ -159,8 +157,11 @@ class HomeFragment :
 
     private fun setMyRecyclerview(myScrapDataSet: List<Scrap>?) {
         if (myScrapDataSet.isNullOrEmpty()) {
+            binding.homeRecyclerviewMyScrap.visibility = GONE
             binding.homeLLNoneMyScrap.visibility = VISIBLE
         } else {
+            binding.homeRecyclerviewMyScrap.visibility = VISIBLE
+            binding.homeLLNoneMyScrap.visibility = GONE
             val layoutManager =
                 LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
 

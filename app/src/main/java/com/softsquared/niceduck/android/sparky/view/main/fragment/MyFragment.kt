@@ -119,7 +119,7 @@ class MyFragment :
                     }
                 }
                 else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+
                 }
             }
             hideLoading()
@@ -133,7 +133,7 @@ class MyFragment :
                     setMyRecyclerview()
                 }
                 else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+
                 }
             }
         }
@@ -147,7 +147,7 @@ class MyFragment :
                     }
                 }
                 else -> {
-                    showCustomToast("네트워크 연결이 원활하지 않습니다.")
+
                 }
             }
         }
