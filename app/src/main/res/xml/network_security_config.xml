@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <!--실서버용-->
-<!--    <base-config cleartextTrafficPermitted="false" />-->
-    <base-config cleartextTrafficPermitted="true" />
-<!--    테스트용-->
+    <base-config cleartextTrafficPermitted="false" />
+    <!--     <base-config cleartextTrafficPermitted="true" /> />-->
+    <!--    테스트용-->
 
 </network-security-config>
