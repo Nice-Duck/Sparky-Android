@@ -47,6 +47,7 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
                 val intent = Intent(this, ScrapModifyActivity::class.java)
                 intent.putExtra("scrap", scrap)
                 startActivity(intent)
+                finish()
             }
 
             binding.myScrapDetailTxtUrlDelete.setOnClickListener {
