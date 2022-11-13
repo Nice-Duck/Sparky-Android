@@ -15,6 +15,9 @@
     android:layout_marginTop="15dp">
 
     <ImageView
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:id="@+id/my_page_img_back"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -39,6 +42,9 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 <de.hdodenhof.circleimageview.CircleImageView
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:clickable="true"
     android:layout_marginTop="45dp"
     android:layout_marginBottom="12dp"
     android:id="@+id/my_page_img"
@@ -64,6 +70,9 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_profile_setting"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -77,6 +86,7 @@
             android:text="@string/profile_setting"
             android:textColor="@color/black"
             android:textSize="12sp" />
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -90,6 +100,9 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_my_tags"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -115,6 +128,9 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_service_setting"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -143,6 +159,9 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_center"
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -158,6 +177,9 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_profile_share"
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -173,6 +195,9 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_logout"
         android:textColor="@color/black"
         android:textSize="12sp"
@@ -190,6 +215,9 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_withdraw"
         android:textColor="@color/sparky_orange"
         android:textSize="12sp"

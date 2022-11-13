@@ -14,6 +14,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/web_view_img_close"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -23,6 +26,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/web_view_img_add"
             android:layout_width="24dp"
             android:layout_height="24dp"

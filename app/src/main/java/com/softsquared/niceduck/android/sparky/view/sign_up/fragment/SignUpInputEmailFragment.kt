@@ -17,8 +17,6 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputEmailBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern

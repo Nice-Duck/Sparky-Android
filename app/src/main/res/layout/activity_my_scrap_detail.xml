@@ -31,6 +31,9 @@
             android:layout_marginTop="20dp">
 
             <ImageView
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/my_scrap_detail_img_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -53,6 +56,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/my_scrap_detail_txt_modify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -181,6 +187,9 @@
                 android:id="@+id/my_scrap_detail_txt_share"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"/>
@@ -196,6 +205,9 @@
                 android:id="@+id/my_scrap_detail_txt_url_copy"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/url_copy"/>
@@ -213,6 +225,9 @@
                 android:id="@+id/my_scrap_detail_txt_url_delete"
                 android:textColor="@color/sparky_orange"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/delete"/>

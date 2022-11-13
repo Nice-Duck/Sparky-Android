@@ -22,6 +22,9 @@
             android:id="@+id/scrap_item3_recyclerview"/>
 
         <ImageView
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/scrap_item3_img_more_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"

@@ -33,6 +33,9 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:id="@+id/home_img_my_page"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
