@@ -45,6 +45,18 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
 
         if (scrap != null) {
+
+            binding.myScrapDetailTxtShare.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, scrap.scpUrl)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+
             binding.myScrapDetailTxtUrlCopy.setOnClickListener {
                 val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip : ClipData = ClipData.newPlainText("url", scrap.scpUrl)

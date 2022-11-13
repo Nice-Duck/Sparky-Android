@@ -3,6 +3,7 @@ package com.softsquared.niceduck.android.sparky.view.detail
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -17,6 +18,7 @@ import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.main.fragment.TagRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.main.fragment.TagRecyclerviewAdapter2
+import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateActivity
 
 class OthersScrapDetailActivity: BaseActivity<ActivityOthersScrapDetailBinding>(
     ActivityOthersScrapDetailBinding::inflate) {
@@ -29,6 +31,24 @@ class OthersScrapDetailActivity: BaseActivity<ActivityOthersScrapDetailBinding>(
 
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
+            binding.othersScrapDetailTxtShare.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, scrap.scpUrl)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+
+            binding.othersScrapDetailTxtScrapAdd.setOnClickListener {
+                val intent = Intent(this, ScrapTemplateActivity::class.java)
+                intent.putExtra("add", scrap.scpUrl)
+                startActivity(intent)
+                finish()
+            }
+
             binding.othersScrapDetailTxtUrlCopy.setOnClickListener {
                 val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip : ClipData = ClipData.newPlainText("url", scrap.scpUrl)
