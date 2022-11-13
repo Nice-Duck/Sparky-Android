@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.*
@@ -40,24 +41,13 @@ class ScrapViewHolder4(
             val tags = item.tagsResponse
 
             if (!tags.isNullOrEmpty()) {
-                if (tags.size > 4) {
-                    val tagAdapter = TagRecyclerviewAdapter(tags.subList(0, 4))
-                    val layoutManager = FlexboxLayoutManager(itemView.context)
+                val tagAdapter = TagRecyclerviewAdapter(tags)
+                val layoutManager = FlexboxLayoutManager(itemView.context)
 
-                    layoutManager.flexDirection = FlexDirection.ROW
-                    with(scrapItem4Recyclerview) {
-                        this.layoutManager = layoutManager
-                        adapter = tagAdapter
-                    }
-                } else {
-                    val tagAdapter = TagRecyclerviewAdapter(tags)
-                    val layoutManager = FlexboxLayoutManager(itemView.context)
-
-                    layoutManager.flexDirection = FlexDirection.ROW
-                    with(scrapItem4Recyclerview) {
-                        this.layoutManager = layoutManager
-                        adapter = tagAdapter
-                    }
+                layoutManager.flexDirection = FlexDirection.ROW
+                with(scrapItem4Recyclerview) {
+                    this.layoutManager = layoutManager
+                    adapter = tagAdapter
                 }
             }
 
