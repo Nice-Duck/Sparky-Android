@@ -1,5 +1,8 @@
 package com.softsquared.niceduck.android.sparky.view.detail
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -42,6 +45,13 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
 
         if (scrap != null) {
+            binding.myScrapDetailTxtUrlCopy.setOnClickListener {
+                val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip : ClipData = ClipData.newPlainText("url", scrap.scpUrl)
+                clipboardManager.setPrimaryClip(clip)
+                showCustomToast("URL이 복사되었습니다.")
+            }
+
             binding.myScrapDetailTxtModify.setOnClickListener {
                 val intent = Intent(this, ScrapModifyActivity::class.java)
                 intent.putExtra("scrap", scrap)

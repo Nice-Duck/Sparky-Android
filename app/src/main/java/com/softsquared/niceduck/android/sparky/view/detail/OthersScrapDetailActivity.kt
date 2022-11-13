@@ -1,5 +1,8 @@
 package com.softsquared.niceduck.android.sparky.view.detail
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
@@ -26,6 +29,13 @@ class OthersScrapDetailActivity: BaseActivity<ActivityOthersScrapDetailBinding>(
 
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
+            binding.othersScrapDetailTxtUrlCopy.setOnClickListener {
+                val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip : ClipData = ClipData.newPlainText("url", scrap.scpUrl)
+                showCustomToast("URL이 복사되었습니다.")
+                clipboardManager.setPrimaryClip(clip)
+            }
+
             binding.othersScrapDetailEditTxtTitle.text = scrap.title
             binding.othersScrapDetailTxtSummary.text = scrap.subTitle
             binding.othersScrapDetailEditTxtMemo.setText(scrap.memo)
