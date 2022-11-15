@@ -58,7 +58,6 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 마이 화면 검색 관련 변수
     var searchType = 1
     var searchTitle: String = ""
-    var searchTags: ArrayList<Int> = ArrayList()
     var myScrapDataSet: List<Scrap>? = null
 
     // 마이 화면 네트워크 통신 결과
@@ -155,10 +154,9 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 마이 화면 스크랩 검색
     fun postScrapSearch() {
         viewModelScope.launch {
-            Log.d("테스트", "$searchTags, $searchTitle, $searchType")
             val response = mainRepository.postScrapSearch(
                 ScrapSearchRequest(
-                tags = searchTags,
+                tags = tags,
                 title = searchTitle,
                 type = searchType
             )
@@ -205,11 +203,6 @@ class MainViewModel() : ViewModel(), ItemEvent {
     private val scrapTemplateRepository = ScrapTemplateRepository()
 
     // 저장할 스크랩 데이터
-    var url: String = ""
-    var memo: String = ""
-    val title = MutableSingleLiveData<String>()
-    val subTitle = MutableSingleLiveData<String>()
-    val img = MutableSingleLiveData<String>()
     val tags = ArrayList<Int>()
 
     val lastTags = MutableLiveData<ArrayList<TagsResponse>>()
@@ -295,10 +288,10 @@ class MainViewModel() : ViewModel(), ItemEvent {
 
     init {
 
-        val tags = arrayListOf(TagsResponse("", "", 0))
+        val initTags = ArrayList<TagsResponse>()
 
         scrapTemplateRecyclerviewAdapter = MyTagRecyclerviewAdapter(this) // 템플릿 화면 어댑터 생성
-        scrapTemplateDataSet.value = tags // 탬플릿 화면 어댑터 데이터
+        scrapTemplateDataSet.value = initTags // 탬플릿 화면 어댑터 데이터
         tagAddRecyclerviewAdapter = TagAddRecyclerviewAdapter(this) // 바텀 시트 어댑터 생성
         getTagLastLoad()
     }

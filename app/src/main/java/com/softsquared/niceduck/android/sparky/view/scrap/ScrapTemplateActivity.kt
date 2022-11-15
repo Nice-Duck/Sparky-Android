@@ -113,7 +113,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         }
 
         scrapTemplateViewModel.tagLastLoadFailure.observe(this) {
-            it.message?.let { it1 -> showCustomToast(it1) }
 
             when (it.code) {
                 "U000" -> {
@@ -121,6 +120,8 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                         scrapTemplateViewModel.postReissueAccessToken()
                         scrapTemplateViewModel.getTagLastLoad()
                     }
+                } else -> {
+                    it.message?.let { it1 -> showCustomToast(it1) }
                 }
             }
         }

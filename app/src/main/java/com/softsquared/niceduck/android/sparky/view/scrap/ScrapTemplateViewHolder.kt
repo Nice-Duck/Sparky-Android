@@ -19,7 +19,7 @@ class ScrapTemplateViewHolder(
                 tagItemLL.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#DFDFDF"))
             }
             tagItemTxt.text = item.name
-            tagItemImg.setOnClickListener {
+            tagItemLL.setOnClickListener {
                 onItemClick(adapterPosition)
             }
         }
