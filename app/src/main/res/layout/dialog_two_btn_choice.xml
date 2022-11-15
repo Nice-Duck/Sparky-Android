@@ -3,7 +3,7 @@
     android:id="@+id/two_choice_dialog"
     android:layout_width="340dp"
     android:layout_height="wrap_content"
-    android:background="@drawable/template_background"
+    android:background="@drawable/dialog_background"
     android:elevation="5dp"
     android:orientation="vertical">
 

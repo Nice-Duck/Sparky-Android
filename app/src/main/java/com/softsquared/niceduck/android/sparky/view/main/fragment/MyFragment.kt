@@ -15,6 +15,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
@@ -36,10 +38,6 @@ class MyFragment :
     private val mainViewModel: MainViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.myLLFilterAddBtn.setOnClickListener {
-            showCustomToast("아직 개발 중입니다.")
-        }
 
         binding.myLL.setOnClickListener {
             hideKeyboard()
@@ -157,6 +155,43 @@ class MyFragment :
             binding.myEditTxt.text.clear()
         }
 
+        setMyTagRecyclerview()
+
+        mainViewModel.scrapTemplateDataSet.observe(viewLifecycleOwner) {
+                mainViewModel.scrapTemplateRecyclerviewAdapter.submitList(it.toMutableList())
+                mainViewModel.tags.clear()
+                it.forEach { tag ->
+                    if (tag.name != "")  mainViewModel.tags.add(tag.tagId)
+                }
+            }
+
+
+        mainViewModel.tagLastLoadResponse.observe(this) {
+
+            if (it.code == "0000") {
+                it.result.tagResponses?.let { response ->  mainViewModel.lastTags.setValue(response) }
+            }
+        }
+
+        mainViewModel.tagLastLoadFailure.observe(this) {
+            it.message?.let { it1 -> showCustomToast(it1) }
+
+            when (it.code) {
+                "U000" -> {
+                    lifecycleScope.launch {
+                        mainViewModel.postReissueAccessToken()
+                        mainViewModel.getTagLastLoad()
+                    }
+                }
+            }
+        }
+
+        mainViewModel.showBottomSheetCall.observe(this) {
+            mainViewModel.tagColor.setValue( mainViewModel.randomColor())
+            val bottomDialogFragment = MyBottomDialogFragment()
+            bottomDialogFragment.show(childFragmentManager, bottomDialogFragment.tag)
+        }
+
 
     }
 
@@ -211,5 +246,13 @@ class MyFragment :
             }
         }
     }
-
+    private fun setMyTagRecyclerview() {
+        val layoutManager = FlexboxLayoutManager(activity)
+        layoutManager.flexDirection = FlexDirection.ROW
+        with(binding.myRecyclerviewFilter) {
+            this.layoutManager = layoutManager
+            adapter = mainViewModel.scrapTemplateRecyclerviewAdapter
+            visibility = android.view.View.VISIBLE
+        }
+    }
 }

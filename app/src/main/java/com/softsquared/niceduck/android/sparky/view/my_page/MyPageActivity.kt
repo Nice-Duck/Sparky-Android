@@ -1,17 +1,24 @@
 package com.softsquared.niceduck.android.sparky.view.my_page
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.os.ext.SdkExtensions.getExtensionVersion
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMyPageBinding
@@ -32,6 +39,22 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
         loadingDlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         loadingDlg.setContentView(R.layout.dialog_lottie_loading)
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        // Registers a photo picker activity launcher in single-select mode.
+        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            // Callback is invoked after the user selects a media item or closes the
+            // photo picker.
+            if (uri != null) {
+                Log.d("PhotoPicker", "Selected URI: $uri")
+                Glide.with(this).load(uri).centerCrop().into(binding.myPageImg)
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
+        }
+
+        binding.myPageImg.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
 
         myPageViewModel.reissueAccessTokenResponse.observe(this) { response ->
             when (response.code) {

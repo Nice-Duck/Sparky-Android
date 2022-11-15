@@ -152,7 +152,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                     it.message?.let { it1 -> showCustomToast(it1) }
                 }
             }
-
         }
 
 
