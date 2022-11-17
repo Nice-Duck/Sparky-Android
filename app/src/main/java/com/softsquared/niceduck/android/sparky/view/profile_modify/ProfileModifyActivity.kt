@@ -152,10 +152,6 @@ class ProfileModifyActivity : BaseActivity<ActivityProfileModifyBinding>(Activit
         }
 
         myPageViewModel.userUpdateFailure.observe(this) {
-            Glide.with(this).load(profileImg).transform(
-                CenterCrop(), RoundedCorners(8)
-            ).into(binding.profileModifyImg)
-
             when (it.code) {
 
                 "U000" -> {
