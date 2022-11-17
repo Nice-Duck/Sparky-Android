@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.drawable.ColorDrawable
@@ -12,11 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.view.Window
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -92,6 +95,36 @@ class ProfileModifyActivity : BaseActivity<ActivityProfileModifyBinding>(Activit
             }
         } catch (e: Exception) {
 
+        }
+
+        if (binding.profileModifyEditTxt.text.isNotEmpty()) {
+
+            binding.profileModifyEditTxt.backgroundTintList = ColorStateList.valueOf(
+                Color.parseColor(
+                    "#FF000000"
+                )
+            )
+
+        }
+
+        binding.profileModifyEditTxt.addTextChangedListener {
+            if (binding.profileModifyEditTxt.text.isNotEmpty()) {
+
+                binding.profileModifyEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#FF000000"
+                    )
+                )
+
+            } else {
+
+                binding.profileModifyEditTxt.backgroundTintList = ColorStateList.valueOf(
+                    Color.parseColor(
+                        "#BEBDBD"
+                    )
+                )
+
+            }
         }
 
         binding.profileModifyImgBack.setOnClickListener {

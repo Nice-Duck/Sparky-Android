@@ -20,12 +20,16 @@
         tools:targetApi="31">
         <activity
             android:name=".view.inquiry.InquiryActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.tag_list.TagListActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.profile_modify.ProfileModifyActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".view.web.WebViewActivity"

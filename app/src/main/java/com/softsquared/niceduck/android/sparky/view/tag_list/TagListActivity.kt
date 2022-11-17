@@ -11,6 +11,7 @@ import android.view.Window
 import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.softsquared.niceduck.android.sparky.R
@@ -216,9 +217,19 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
         dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dlg.setOnDismissListener { }
         val dlgTextView = dlg.findViewById<EditText>(R.id.dialog_two_btn_choice2_txt_content)
+        dlgTextView.addTextChangedListener {
+            if ( dlgTextView.text.isNotEmpty()) {
+                dlgTextView.setBackgroundResource(R.drawable.sign_input_focused)
+            } else {
+                dlgTextView.setBackgroundResource(R.drawable.sign_input_normal)
+            }
+        }
+
         tagList?.get(position)?.let {
             dlgTextView.setText(it.name)
         }
+
+
         val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_left) as TextView
         val ok = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_right) as TextView
 
