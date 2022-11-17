@@ -75,6 +75,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                         updateList.addAll(it1)
                         tagListAdapter?.submitList(updateList.toMutableList())
                     }
+                    myPageViewModel.getTagLastLoad()
                     myPageViewModel.patchTag = null
                     myPageViewModel.patchPosition = null
                 }
@@ -110,6 +111,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                     } catch (e: Exception) {
                         Log.d("test", e.message.toString())
                     }
+                    myPageViewModel.getTagLastLoad()
                     myPageViewModel.deleteTagId = null
                     myPageViewModel.deletePosition = null
                 }

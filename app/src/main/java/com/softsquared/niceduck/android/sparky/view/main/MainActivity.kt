@@ -30,6 +30,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         mainViewModel.getMyScrapLoad()
         mainViewModel.getHomeScrapLoad()
         mainViewModel.getUser()
+        mainViewModel.getTagLastLoad()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
