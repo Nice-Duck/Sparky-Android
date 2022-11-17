@@ -5,13 +5,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.view.Window
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.ActivityTagListBinding
+import com.softsquared.niceduck.android.sparky.model.TagRequest2
 import com.softsquared.niceduck.android.sparky.model.TagsResponse
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
@@ -36,12 +40,15 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         myPageViewModel.getTagLastLoad()
+        loadingDlg.show()
 
 
         myPageViewModel.tagLastLoadResponse.observe(this) {
             if (it.code == "0000") {
                 it.result.tagResponses?.let { it1 -> setRecyclerViewAdapter(it1) }
+
             }
+            loadingDlg.dismiss()
         }
 
         myPageViewModel.tagLastLoadFailure.observe(this) {
@@ -53,6 +60,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                     }
                 } else -> {
                 it.message?.let { it1 -> showCustomToast(it1) }
+                loadingDlg.dismiss()
             }
             }
 
@@ -60,7 +68,16 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
 
         myPageViewModel.tagPatchResponse.observe(this) {
             if (it.code == "0000") {
-
+                myPageViewModel.patchPosition?.let { position ->
+                    tagList?.set(position, myPageViewModel.patchTag!!)
+                    val updateList = mutableListOf<TagsResponse>()
+                    tagList?.let { it1 ->
+                        updateList.addAll(it1)
+                        tagListAdapter?.submitList(updateList.toMutableList())
+                    }
+                    myPageViewModel.patchTag = null
+                    myPageViewModel.patchPosition = null
+                }
             }
         }
 
@@ -69,7 +86,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                 "U000" -> {
                     lifecycleScope.launch {
                         myPageViewModel.postReissueAccessToken()
-                        //myPageViewModel.patchTag()
+                        myPageViewModel.patchTag()
                     }
                 } else -> {
                 it.message?.let { it1 -> showCustomToast(it1) }
@@ -81,7 +98,21 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
 
         myPageViewModel.tagDeleteResponse.observe(this) {
             if (it.code == "0000") {
+                myPageViewModel.deletePosition?.let { position ->
 
+                    try {
+                        tagList?.removeAt(position)
+                        val updateList = mutableListOf<TagsResponse>()
+                        tagList?.let { it1 ->
+                            updateList.addAll(it1)
+                            tagListAdapter?.submitList(updateList.toMutableList())
+                        }
+                    } catch (e: Exception) {
+                        Log.d("test", e.message.toString())
+                    }
+                    myPageViewModel.deleteTagId = null
+                    myPageViewModel.deletePosition = null
+                }
             }
         }
 
@@ -90,7 +121,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                 "U000" -> {
                     lifecycleScope.launch {
                         myPageViewModel.postReissueAccessToken()
-                        //myPageViewModel.deleteTag()
+                        myPageViewModel.deleteTag()
                     }
                 } else -> {
                 it.message?.let { it1 -> showCustomToast(it1) }
@@ -109,6 +140,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
                 }
                 else -> {
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
+                    loadingDlg.dismiss()
                 }
             }
 
@@ -123,6 +155,7 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
             Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
             finish()
+            loadingDlg.dismiss()
         }
     }
 
@@ -143,7 +176,29 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
     }
 
     override fun removeItem(position: Int) {
+        val dlg = Dialog(this)
+        dlg.setCancelable(false)
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg.setContentView(R.layout.dialog_two_btn_choice)
+        dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dlg.setOnDismissListener { }
+        val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_two_btn_choice_txt_content)
+        dlgTextView.text = "태그를 삭제 하시겠습니까?"
+        val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice_txt_left) as TextView
+        val ok = dlg.findViewById<View>(R.id.dialog_two_btn_choice_txt_right) as TextView
+        ok.text = "삭제하기"
+        ok.setOnClickListener {
+            dlg.dismiss()
+            tagList?.get(position)?.let {
+                myPageViewModel.deleteTagId = it.tagId
+                myPageViewModel.deletePosition = position
+                myPageViewModel.deleteTag()
+            }
 
+        }
+        cancel.setOnClickListener { dlg.dismiss() }
+
+        dlg.show()
     }
 
     override fun addItem() {
@@ -151,6 +206,35 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
     }
 
     override fun selectItem(position: Int) {
+        val dlg = Dialog(this)
+        dlg.setCancelable(false)
+        dlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dlg.setContentView(R.layout.dialog_two_btn_choice2)
+        dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dlg.setOnDismissListener { }
+        val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_two_btn_choice2_txt_content)
+        val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_left) as TextView
+        val ok = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_right) as TextView
 
+        ok.setOnClickListener {
+            dlg.dismiss()
+            tagList?.get(position)?.let {
+                val patch = TagsResponse(it.color, dlgTextView.text.toString(), it.tagId)
+                myPageViewModel.patchTag = patch
+                myPageViewModel.patchPosition = position
+                myPageViewModel.patchTag()
+            }
+
+
+        }
+        cancel.setOnClickListener { dlg.dismiss() }
+
+        dlg.show()
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        loadingDlg.dismiss()
     }
 }

@@ -49,7 +49,6 @@ class CustomSpinnerAdapter(context: Context, private val list: MutableList<Strin
 
         if (position == 1) {
             mConvertView!!.findViewById<TextView>(R.id.spinner_text).setTextColor(Color.parseColor("#FF7143"))
-            mConvertView!!.findViewById<View>(R.id.spinner_view).visibility = GONE
         }
 
         return mConvertView

@@ -21,6 +21,9 @@ class TagListRecyclerviewAdapter(private val view: ItemEvent) :
             TagListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             onItemClick = { position ->
                 view.selectItem(position)
+            },
+            onItemClick2 = { position ->
+                view.removeItem(position)
             }
         )
     }

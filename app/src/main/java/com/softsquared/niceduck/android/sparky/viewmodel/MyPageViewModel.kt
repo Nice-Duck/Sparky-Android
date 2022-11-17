@@ -172,16 +172,24 @@ class MyPageViewModel : ViewModel() {
     val tagPatchFailure: SingleLiveData<BaseResponse>
         get() = _tagPatchFailure
 
-    fun patchTag(request: TagRequest2) {
-        viewModelScope.launch {
-            val response = repository.patchTag(request)
+    var patchTag: TagsResponse? = null
+    var patchPosition: Int? = null
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagPatchResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagPatchFailure.setValue(error) }
+    fun patchTag() {
+        val request = patchTag?.let {
+            TagRequest2(it.tagId, it.name)
+        }
+        viewModelScope.launch {
+            request?.let {
+                val response = repository.patchTag(request)
+
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagPatchResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagPatchFailure.setValue(error) }
+                    }
                 }
             }
         }
@@ -194,19 +202,25 @@ class MyPageViewModel : ViewModel() {
     val tagDeleteFailure: SingleLiveData<BaseResponse>
         get() = _tagDeleteFailure
 
-    fun deleteTag(request: Int) {
-        viewModelScope.launch {
-            val response = repository.deleteTag(request)
+    var deletePosition: Int? = null
+    var deleteTagId: Int? = null
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagDeleteResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagDeleteFailure.setValue(error) }
+    fun deleteTag() {
+       deleteTagId?.let {
+            viewModelScope.launch {
+                val response = repository.deleteTag(it)
+
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagDeleteResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagDeleteFailure.setValue(error) }
+                    }
                 }
             }
         }
+
     }
 
 
