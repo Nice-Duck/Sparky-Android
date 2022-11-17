@@ -151,6 +151,7 @@
     </LinearLayout>
 
     <View
+        android:visibility="gone"
         android:layout_marginVertical="12dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -158,6 +159,7 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/my_page_LL_profile_share"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

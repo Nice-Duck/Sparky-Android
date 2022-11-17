@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.softsquared.niceduck.android.sparky.BuildConfig
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMyPageBinding
@@ -48,6 +50,14 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
         loadingDlg.setContentView(R.layout.dialog_lottie_loading)
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        binding.myPageLLCenter.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(
+                    "https://sites.google.com/view/sparky-service/%ED%99%88"))
+            startActivity(intent)
+        }
+
+
+        binding.myPageTxtVersion.text = "현재 버전 ${ BuildConfig.VERSION_NAME }"
 
         myPageViewModel.userResponse.observe(this) { response ->
             when (response.code) {
