@@ -33,9 +33,6 @@ class MyPageRepository {
     suspend fun postInquiry(request: InquiryRequest) =
         myPageService.postInquiry(request)
 
-    // 스크랩 신고
-    suspend fun getDeclaration(scrapId: String) =
-        myPageService.getDeclaration(scrapId)
 
     // 모든 태그 조회
     suspend fun getTagLastLoad() =

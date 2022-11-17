@@ -35,6 +35,10 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding.tagListImgBack.setOnClickListener {
+            finish()
+        }
+
         loadingDlg = Dialog(this)
         loadingDlg.setCancelable(false)
         loadingDlg.requestWindowFeature(Window.FEATURE_NO_TITLE)

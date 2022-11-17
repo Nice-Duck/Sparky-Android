@@ -106,7 +106,11 @@ class MyPageViewModel : ViewModel() {
     val inquiryFailure: SingleLiveData<BaseResponse>
         get() = _inquiryFailure
 
-    fun postInquiry(request: InquiryRequest) {
+    var title: String? = null
+    var contents: String? = null
+    var email: String? = null
+    fun postInquiry() {
+        val request: InquiryRequest = InquiryRequest(contents!!, email!!, title!!)
         viewModelScope.launch {
             val response = repository.postInquiry(request)
 
@@ -116,29 +120,6 @@ class MyPageViewModel : ViewModel() {
                 response.errorBody()?.let {
                     val errorBody = NetworkUtil.getErrorResponse(it)
                     errorBody?.let { error -> _inquiryFailure.setValue(error) }
-                }
-            }
-        }
-    }
-
-    private val _declarationResponse = MutableSingleLiveData<BaseResponse>()
-    val declarationResponse: SingleLiveData<BaseResponse>
-        get() = _declarationResponse
-
-    private val _declarationFailure = MutableSingleLiveData<BaseResponse>()
-    val declarationFailure: SingleLiveData<BaseResponse>
-        get() = _declarationFailure
-
-    fun getDeclaration(request: String) {
-        viewModelScope.launch {
-            val response = repository.getDeclaration(request)
-
-            if (response.isSuccessful) {
-                response.body()?.let { _declarationResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _declarationFailure.setValue(error) }
                 }
             }
         }

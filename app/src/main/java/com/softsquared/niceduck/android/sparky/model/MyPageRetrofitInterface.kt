@@ -17,7 +17,6 @@ interface MyPageRetrofitInterface {
     @POST("/api/v1/token")
     suspend fun postReissueAccessToken(@Header("Authorization") token: String?): Response<TokenResponse>
 
-    // 프로필 수정
     // 스크랩 수정
     @Multipart
     @PATCH("/api/v1/users")
@@ -31,9 +30,6 @@ interface MyPageRetrofitInterface {
     @POST("/api/v1/users/inquiry")
     suspend fun postInquiry(@Body request: InquiryRequest): Response<BaseResponse>
 
-    // 스크랩 신고
-    @GET("/api/v1/scraps/declaration")
-    suspend fun getDeclaration(@Query("scrapId") scrapId: String): Response<BaseResponse>
 
     // 모든 태그 조회
     @GET("/api/v1/tags")

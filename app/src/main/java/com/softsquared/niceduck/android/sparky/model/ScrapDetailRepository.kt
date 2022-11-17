@@ -10,4 +10,14 @@ class ScrapDetailRepository {
     suspend fun deleteScrap(scrapId: String) =
        scrapDetailService.deleteScrap(scrapId)
 
+    // 스크랩 신고
+    suspend fun getDeclaration(scrapId: String) =
+        scrapDetailService.getDeclaration(scrapId)
+
+    // 토큰 갱신
+    suspend fun postReissueAccessToken() =
+        scrapDetailService.postReissueAccessToken(
+            ApplicationClass.sSharedPreferences.getString(
+                ApplicationClass.X_REFRESH_TOKEN, null))
+
 }

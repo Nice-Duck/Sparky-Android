@@ -2,15 +2,43 @@ package com.softsquared.niceduck.android.sparky.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.model.ScrapDetailRepository
 import com.softsquared.niceduck.android.sparky.model.ScrapTemplateRepository
+import com.softsquared.niceduck.android.sparky.model.TokenResponse
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class ScrapDetailViewModel: ViewModel() {
     private val scrapDetailRepository = ScrapDetailRepository()
+
+    private val _declarationResponse = MutableSingleLiveData<BaseResponse>()
+    val declarationResponse: SingleLiveData<BaseResponse>
+        get() = _declarationResponse
+
+    private val _declarationFailure = MutableSingleLiveData<BaseResponse>()
+    val declarationFailure: SingleLiveData<BaseResponse>
+        get() = _declarationFailure
+
+    fun getDeclaration(request: String) {
+        viewModelScope.launch {
+            val response = scrapDetailRepository.getDeclaration(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { _declarationResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _declarationFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
 
     // 스크랩 저장
     private val _scrapDeleteResponse = MutableSingleLiveData<BaseResponse>()
@@ -34,4 +62,38 @@ class ScrapDetailViewModel: ViewModel() {
 
         }
     }
+
+    // 토큰 갱신
+    private val _reissueAccessTokenResponse: MutableSingleLiveData<TokenResponse> = MutableSingleLiveData()
+    val reissueAccessTokenResponse: SingleLiveData<TokenResponse>
+        get() = _reissueAccessTokenResponse
+
+    private val _reissueAccessTokenFailure = MutableSingleLiveData<Int>()
+    val reissueAccessTokenFailure: SingleLiveData<Int>
+        get() = _reissueAccessTokenFailure
+
+    // 토큰 갱신
+    suspend fun postReissueAccessToken(): Int {
+        val editor = ApplicationClass.sSharedPreferences.edit()
+        editor.putString(ApplicationClass.X_ACCESS_TOKEN, null)
+        editor.apply()
+
+        val scope = viewModelScope.async {
+            val response = scrapDetailRepository.postReissueAccessToken()
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    _reissueAccessTokenResponse.setValue(it)
+
+                }
+                1
+            } else {
+                _reissueAccessTokenFailure.setValue(response.code())
+                0
+            }
+
+        }
+        return scope.await()
+    }
+
 }
