@@ -1,14 +1,26 @@
 package com.softsquared.niceduck.android.sparky.view.detail
 
+import android.Manifest
 import android.app.Dialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.Window
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
@@ -21,17 +33,50 @@ import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.ActivityScrapModifyBinding
 import com.softsquared.niceduck.android.sparky.model.Scrap
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
+import com.softsquared.niceduck.android.sparky.utill.UriUtil
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapBottomDialogFragment
 import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.ScrapTemplateViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
 class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
     ActivityScrapModifyBinding::inflate) {
+    private val imageResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ){
+        result ->
+        if (result.resultCode == RESULT_OK) {
+            val imageUri = result.data?.data
+            imageUri?.let {
+                try {
+                    // API level 28 이하는 MediaStore.Images.Media.getBitmap 사용 (deprecated)
+                    // 그 이상부터 ImageDecoder.createSource 사용
+                    val bitmap = it.let {
+                        if (Build.VERSION.SDK_INT < 28) {
+                            MediaStore.Images
+                                .Media.getBitmap(contentResolver, it)
+                        } else {
+                            val source = ImageDecoder
+                                .createSource(contentResolver, it)
+                            ImageDecoder.decodeBitmap(source)
+                        }
+                    }
+                    scrapTemplateViewModel.image = bitmap
 
+                    Glide.with(this).load(imageUri).transform(
+                        CenterCrop(), RoundedCorners(8)
+                    ).into(binding.scrapModifyImgThumbnail)
+
+                } catch (e: Exception) {
+
+                    e.let { Log.d("test", e.message.toString())}
+                    showCustomToast("이미지를 가져오는데 실패했습니다.")
+                }
+            }
+        }
+    }
     lateinit var dlg: Dialog
     private val scrapTemplateViewModel: ScrapTemplateViewModel by viewModels()
 
@@ -75,20 +120,18 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
             finish()
         }
 
-        binding.scrapModifyImgThumbnail.setOnClickListener {
-            // TODO: 갤러리에서 이미지 추가
-        }
-
-
-
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
         if (scrap != null) {
 
-            scrapTemplateViewModel.memo = scrap.memo
-            scrapTemplateViewModel.subTitle.setValue(scrap.subTitle)
-            scrapTemplateViewModel.title.setValue(scrap.title)
-            scrapTemplateViewModel.url = scrap.scpUrl
-            scrapTemplateViewModel.img.setValue(scrap.imgUrl)
+/*            binding.scrapModifyImgThumbnail.setOnClickListener {
+                selectGallery()
+            }*/
+
+            scrapTemplateViewModel.memo = scrap.memo?: ""
+            scrapTemplateViewModel.subTitle.setValue(scrap.subTitle?: "")
+            scrapTemplateViewModel.title.setValue(scrap.title?: "")
+            scrapTemplateViewModel.url = scrap.scpUrl?: ""
+            scrapTemplateViewModel.img.setValue(scrap.imgUrl?: "")
 
             binding.scrapModifyBtnStore.setOnClickListener {
                 dlg.show()
@@ -117,9 +160,7 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
                 }
                 val newTagList = scrapTemplateViewModel.scrapTemplateDataSet.value
                 scrapTemplateViewModel.scrapTemplateDataSet.value = newTagList
-
             }
-
         }
 
 
@@ -131,6 +172,7 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
                 delay(1000)
                 dlg.dismiss()
             }
+
             if (it.code == "0000") {
                 scope.cancel()
                 finish()
@@ -249,10 +291,25 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
         }
     }
 
-
     override fun onStop() {
         super.onStop()
         dlg.dismiss()
+    }
+
+    private fun selectGallery() {
+        val readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+
+        if (readPermission == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+        } else {
+            val intent = Intent()
+            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+
+            imageResult.launch(intent)
+        }
     }
 
 

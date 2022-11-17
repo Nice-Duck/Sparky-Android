@@ -75,9 +75,9 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
                 scrapDetailViewModel.deleteScrap(scrap.scrapId.toString())
             }
 
-            binding.myScrapDetailEditTxtTitle.text = scrap.title
-            binding.myScrapDetailTxtSummary.text = scrap.subTitle
-            binding.myScrapDetailEditTxtMemo.setText(scrap.memo)
+            binding.myScrapDetailEditTxtTitle.text = scrap.title?: ""
+            binding.myScrapDetailTxtSummary.text = scrap.subTitle?: ""
+            binding.myScrapDetailEditTxtMemo.setText(scrap.memo)?: ""
 
             if (scrap.imgUrl != null && scrap.imgUrl != "") {
                 Glide.with(this).load(scrap.imgUrl).transform(

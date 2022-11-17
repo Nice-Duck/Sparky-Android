@@ -7,12 +7,12 @@ import java.io.Serializable
 
 @Parcelize
 data class Scrap(
-    val type: Int,
-    val imgUrl: String,
-    val memo: String,
-    val scpUrl: String,
-    val scrapId: Int,
-    val subTitle: String,
+    val type: Int? = 1,
+    val imgUrl: String? = "",
+    val memo: String? = "",
+    val scpUrl: String? = "",
+    val scrapId: Int?,
+    val subTitle: String? = "",
     val tagsResponse: ArrayList<TagsResponse>?,
-    val title: String
+    val title: String? = ""
 ): Parcelable

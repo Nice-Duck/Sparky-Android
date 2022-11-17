@@ -40,7 +40,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
         loadingDlg.setContentView(R.layout.dialog_lottie_loading)
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        // Registers a photo picker activity launcher in single-select mode.
+/*        // Registers a photo picker activity launcher in single-select mode.
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             // Callback is invoked after the user selects a media item or closes the
             // photo picker.
@@ -50,11 +50,13 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
             } else {
                 Log.d("PhotoPicker", "No media selected")
             }
-        }
+        }*/
+/*
 
         binding.myPageImg.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+*/
 
         myPageViewModel.reissueAccessTokenResponse.observe(this) { response ->
             when (response.code) {
@@ -68,6 +70,10 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
                     showCustomToast("네트워크 연결이 원활하지 않습니다.")
                 }
             }
+
+        }
+
+        binding.myPageLLProfileSetting.setOnClickListener {
 
         }
 
@@ -131,7 +137,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
             dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             dlg.setOnDismissListener { }
             val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_two_btn_choice_txt_content)
-            dlgTextView.text = "탈퇴하시겠습니까?"
+            dlgTextView.text = "탈퇴 하시겠습니까?"
             val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice_txt_left) as TextView
             val ok = dlg.findViewById<View>(R.id.dialog_two_btn_choice_txt_right) as TextView
             ok.text = "탈퇴하기"
@@ -152,7 +158,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
             dlg.setContentView(R.layout.dialog_two_btn_choice)
             dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_two_btn_choice_txt_content)
-            dlgTextView.text = "로그아웃하시겠습니까?"
+            dlgTextView.text = "로그아웃 하시겠습니까?"
             dlg.setOnDismissListener { }
 
             val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice_txt_left) as TextView

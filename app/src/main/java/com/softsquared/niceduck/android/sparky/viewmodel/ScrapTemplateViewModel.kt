@@ -1,19 +1,26 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.model.*
-import com.softsquared.niceduck.android.sparky.utill.BaseResponse
-import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
-import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
-import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.*
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.TagAddRecyclerviewAdapter
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.BufferedSink
 import org.jsoup.Connection
+import java.io.File
 import kotlin.random.Random
 
 class ScrapTemplateViewModel : ViewModel(), ItemEvent {
@@ -144,7 +151,6 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapStoreFailure: SingleLiveData<BaseResponse>
         get() = _scrapStoreFailure
 
-
     fun postScrapStore() {
         viewModelScope.launch {
             val response = scrapTemplateRepository.postStoreScrap(
@@ -171,6 +177,7 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
         }
     }
 
+
     // 스크랩 수정
     private val _scrapUpdateResponse = MutableSingleLiveData<BaseResponse>()
     val scrapUpdateResponse: SingleLiveData<BaseResponse>
@@ -179,18 +186,38 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapUpdateFailure: SingleLiveData<BaseResponse>
         get() = _scrapUpdateFailure
 
+
+    inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
+        override fun contentType(): MediaType = "image/jpeg".toMediaType()
+        override fun writeTo(sink: BufferedSink) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
+        }
+    }
+    var image: Bitmap? = null
+
     fun patchScrap(scrapId: String) {
+        Log.d("수정 테스트", "$title, $subTitle, $memo, $url, $tags, $image")
         viewModelScope.launch {
+            val formTitle = title.getValue()?.let { FormDataUtil.getBody("title", it) }
+            val formSubTitle = subTitle.getValue()?.let { FormDataUtil.getBody("subTitle", it) }
+            val formMemo = FormDataUtil.getBody("memo", memo)
+            val formUrl = FormDataUtil.getBody("scpUrl", url)
+            val stringTags = tags.toString().replace("[", "").replace("]", "")
+            val formTags = FormDataUtil.getBody("tags", stringTags)
+
+            val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
+            val bitmapMultipartBody: MultipartBody.Part? =
+                if (bitmapRequestBody == null) null
+                else MultipartBody.Part.createFormData("image", "sparky", bitmapRequestBody)
+
+
             val response = scrapTemplateRepository.patchScrap(
                 scrapId,
-                ScrapStoreRequest(
-                    img.getValue(),
-                    memo,
-                    url,
-                    tags,
-                    title.getValue(),
-                    subTitle.getValue()
-                )
+                formTitle,
+                formSubTitle,
+                formMemo,
+                formUrl,
+                formTags
             )
 
             if (response.isSuccessful) {
@@ -201,8 +228,6 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
                     errorBody?.let { error -> _scrapUpdateFailure.setValue(error) }
                 }
             }
-
-
         }
     }
 

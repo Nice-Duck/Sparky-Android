@@ -1,6 +1,8 @@
 package com.softsquared.niceduck.android.sparky.model
 
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -19,8 +21,15 @@ interface ScrapTemplateRetrofitInterface {
     suspend fun postStoreScrap(@Body request: ScrapStoreRequest): Response<BaseResponse>
 
     // 스크랩 수정
+    @Multipart
     @PATCH("/api/v1/scraps")
-    suspend fun patchScrap(@Query("scrapId") scrapId: String, @Body request: ScrapStoreRequest): Response<BaseResponse>
+    suspend fun patchScrap(@Query("scrapId") scrapId: String,
+                           @Part title: MultipartBody.Part?,
+                           @Part subTitle: MultipartBody.Part?,
+                           @Part memo: MultipartBody.Part?,
+                           @Part scpUrl: MultipartBody.Part?,
+                           @Part tags: MultipartBody.Part?,
+                           @Part image: MultipartBody.Part?): Response<BaseResponse>
 
     // 토큰 갱신
     @POST("/api/v1/token")
