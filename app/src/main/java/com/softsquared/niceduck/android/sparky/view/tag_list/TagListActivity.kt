@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -214,7 +215,10 @@ class TagListActivity : BaseActivity<ActivityTagListBinding>(ActivityTagListBind
         dlg.setContentView(R.layout.dialog_two_btn_choice2)
         dlg.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dlg.setOnDismissListener { }
-        val dlgTextView = dlg.findViewById<TextView>(R.id.dialog_two_btn_choice2_txt_content)
+        val dlgTextView = dlg.findViewById<EditText>(R.id.dialog_two_btn_choice2_txt_content)
+        tagList?.get(position)?.let {
+            dlgTextView.setText(it.name)
+        }
         val cancel = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_left) as TextView
         val ok = dlg.findViewById<View>(R.id.dialog_two_btn_choice2_txt_right) as TextView
 
