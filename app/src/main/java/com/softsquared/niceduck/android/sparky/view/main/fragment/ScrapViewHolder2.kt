@@ -4,8 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -27,13 +29,12 @@ class ScrapViewHolder2(
             scrapItem2TxtTitle.text = item.title
             scrapItem2TxtSummary.text = item.subTitle
 
-
             if (item.imgUrl != null && item.imgUrl != "") {
                 Glide.with(itemView.context).load(item.imgUrl).transform(
                     CenterCrop(), RoundedCorners(8)
                 ).into(scrapItem2Img)
             } else {
-                Glide.with(itemView.context).load(R.drawable.scrap_default_img2).transform(
+                Glide.with(itemView.context).load(R.drawable.scrap_default_img1).transform(
                     CenterCrop(), RoundedCorners(8)
                 ).into(scrapItem2Img)
             }

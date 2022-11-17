@@ -7,6 +7,7 @@ import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
 import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
 import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
+import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 import kotlinx.coroutines.*
 import okhttp3.internal.wait
 
@@ -68,4 +69,145 @@ class MyPageViewModel : ViewModel() {
         }
         return scope.await()
     }
+
+    private val _userResponse = MutableSingleLiveData<UserResponse>()
+    val userResponse: SingleLiveData<UserResponse>
+        get() = _userResponse
+
+    private val _userFailure = MutableSingleLiveData<BaseResponse>()
+    val userFailure: SingleLiveData<BaseResponse>
+        get() = _userFailure
+
+    fun getUser() {
+        viewModelScope.launch {
+            val response = repository.getUser()
+
+            if (response.isSuccessful) {
+                response.body()?.let { _userResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _userFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+
+    private val _inquiryResponse = MutableSingleLiveData<BaseResponse>()
+    val inquiryResponse: SingleLiveData<BaseResponse>
+        get() = _inquiryResponse
+
+    private val _inquiryFailure = MutableSingleLiveData<BaseResponse>()
+    val inquiryFailure: SingleLiveData<BaseResponse>
+        get() = _inquiryFailure
+
+    fun postInquiry(request: InquiryRequest) {
+        viewModelScope.launch {
+            val response = repository.postInquiry(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { _inquiryResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _inquiryFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+    private val _declarationResponse = MutableSingleLiveData<BaseResponse>()
+    val declarationResponse: SingleLiveData<BaseResponse>
+        get() = _declarationResponse
+
+    private val _declarationFailure = MutableSingleLiveData<BaseResponse>()
+    val declarationFailure: SingleLiveData<BaseResponse>
+        get() = _declarationFailure
+
+    fun getDeclaration(request: String) {
+        viewModelScope.launch {
+            val response = repository.getDeclaration(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { _declarationResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _declarationFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+
+    private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
+    val tagLastLoadResponse: SingleLiveData<TagLastLoadResponse>
+        get() = _tagLastLoadResponse
+    private val _tagLastLoadFailure = MutableSingleLiveData<BaseResponse>()
+    val tagLastLoadFailure: SingleLiveData<BaseResponse>
+        get() = _tagLastLoadFailure
+
+    fun getTagLastLoad() {
+        viewModelScope.launch {
+            val response = repository.getTagLastLoad()
+
+            if (response.isSuccessful) {
+                response.body()?.let { _tagLastLoadResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+
+
+    private val _tagPatchResponse = MutableSingleLiveData<TagResponse>()
+    val tagPatchResponse: SingleLiveData<TagResponse>
+        get() = _tagPatchResponse
+    private val _tagPatchFailure = MutableSingleLiveData<BaseResponse>()
+    val tagPatchFailure: SingleLiveData<BaseResponse>
+        get() = _tagPatchFailure
+
+    fun patchTag(request: TagRequest2) {
+        viewModelScope.launch {
+            val response = repository.patchTag(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { _tagPatchResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _tagPatchFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+    private val _tagDeleteResponse = MutableSingleLiveData<BaseResponse>()
+    val tagDeleteResponse: SingleLiveData<BaseResponse>
+        get() = _tagDeleteResponse
+    private val _tagDeleteFailure = MutableSingleLiveData<BaseResponse>()
+    val tagDeleteFailure: SingleLiveData<BaseResponse>
+        get() = _tagDeleteFailure
+
+    fun deleteTag(request: Int) {
+        viewModelScope.launch {
+            val response = repository.deleteTag(request)
+
+            if (response.isSuccessful) {
+                response.body()?.let { _tagDeleteResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _tagDeleteFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
+
 }

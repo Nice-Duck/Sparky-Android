@@ -7,8 +7,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
@@ -63,7 +65,7 @@ class OthersScrapDetailActivity: BaseActivity<ActivityOthersScrapDetailBinding>(
             if (scrap.imgUrl != null && scrap.imgUrl != "") {
                 Glide.with(this).load(scrap.imgUrl).transform(
                     CenterCrop(), RoundedCorners(8)
-                ).into(binding.othersScrapDetailImgThumbnail)
+                )   .into(binding.othersScrapDetailImgThumbnail)
             } else {
                 Glide.with(this).load(R.drawable.scrap_default_img1).transform(
                     CenterCrop(), RoundedCorners(8)

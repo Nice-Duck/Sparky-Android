@@ -217,7 +217,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
                 formSubTitle,
                 formMemo,
                 formUrl,
-                formTags
+                formTags,
+                bitmapMultipartBody
             )
 
             if (response.isSuccessful) {

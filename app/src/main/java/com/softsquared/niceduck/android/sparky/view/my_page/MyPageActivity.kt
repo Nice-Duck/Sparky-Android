@@ -5,16 +5,13 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
+
 import android.os.Bundle
-import android.os.SystemClock
-import android.os.ext.SdkExtensions.getExtensionVersion
-import android.util.Log
+
 import android.view.View
 import android.view.Window
 import android.widget.TextView
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
@@ -23,7 +20,10 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.databinding.ActivityMyPageBinding
 import com.softsquared.niceduck.android.sparky.utill.BaseActivity
+import com.softsquared.niceduck.android.sparky.view.inquiry.InquiryActivity
+import com.softsquared.niceduck.android.sparky.view.profile_modify.ProfileModifyActivity
 import com.softsquared.niceduck.android.sparky.view.sign_in.SignInActivity
+import com.softsquared.niceduck.android.sparky.view.tag_list.TagListActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MyPageViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -39,6 +39,21 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
         loadingDlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         loadingDlg.setContentView(R.layout.dialog_lottie_loading)
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        binding.myPageLLMyTags.setOnClickListener {
+            val intent = Intent(this, TagListActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.myPageTxtInquiry.setOnClickListener {
+            val intent = Intent(this, InquiryActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.myPageLLProfileSetting.setOnClickListener {
+            val intent = Intent(this, ProfileModifyActivity::class.java)
+            startActivity(intent)
+        }
 
 /*        // Registers a photo picker activity launcher in single-select mode.
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -73,10 +88,6 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
 
         }
 
-        binding.myPageLLProfileSetting.setOnClickListener {
-
-        }
-
         myPageViewModel.reissueAccessTokenFailure.observe(this) { response ->
             val editor = ApplicationClass.sSharedPreferences.edit()
             editor.clear()
@@ -107,7 +118,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
         }
 
         myPageViewModel.withdrawalFailure.observe(this) {
-            lifecycleScope.launch  {
+            lifecycleScope.launch {
                 delay(1000)
                 loadingDlg.dismiss()
             }

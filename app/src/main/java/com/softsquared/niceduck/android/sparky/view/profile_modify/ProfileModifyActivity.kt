@@ -12,9 +12,19 @@ import com.softsquared.niceduck.android.sparky.viewmodel.MyPageViewModel
 
 class ProfileModifyActivity : BaseActivity<ActivityProfileModifyBinding>(ActivityProfileModifyBinding::inflate) {
     lateinit var loadingDlg: Dialog
-    //private val myPageViewModel: MyPageViewModel by viewModels()
+    private val myPageViewModel: MyPageViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding.profileModifyImgBack.setOnClickListener {
+            finish()
+        }
+
+        binding.profileModifyBtnModify.setOnClickListener {
+           // 닉네임 중복 확인했던 것 그대로!
+        }
+
+
 
     }
 }

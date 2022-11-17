@@ -59,6 +59,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="14sp"
+    android:layout_gravity="center_horizontal"
     android:textColor="@color/black"
     android:textStyle="bold"/>
 
@@ -137,17 +138,36 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/my_page_txt_inquiry"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/setting"/>
+            android:text="문의하기"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow"/>
     </LinearLayout>
+
+    <View
+        android:layout_marginVertical="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/gray_300"/>
+
+    <TextView
+        android:id="@+id/my_page_LL_profile_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/profile_share"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
 </LinearLayout>
 
 <LinearLayout
@@ -167,7 +187,7 @@
         android:textSize="12sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="고객센터"/>
+        android:text="약관 및 정책"/>
 
     <View
         android:layout_marginVertical="12dp"
@@ -177,15 +197,15 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:id="@+id/my_page_txt_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
-        android:id="@+id/my_page_LL_profile_share"
+        android:text="현재 버전 1.0.0"
         android:textColor="@color/black"
-        android:textSize="12sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_share"/>
+        android:textSize="12sp" />
 
     <View
         android:layout_marginVertical="12dp"
