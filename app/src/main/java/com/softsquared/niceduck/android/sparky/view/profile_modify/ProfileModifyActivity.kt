@@ -204,8 +204,8 @@ class ProfileModifyActivity : BaseActivity<ActivityProfileModifyBinding>(Activit
         val readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
         if (readPermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, 100)
         } else {
             val intent = Intent()
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
@@ -216,4 +216,16 @@ class ProfileModifyActivity : BaseActivity<ActivityProfileModifyBinding>(Activit
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            val intent = Intent()
+            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+
+            imageResult.launch(intent)
+        }
+    }
 }

@@ -17,6 +17,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.Window
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
@@ -45,11 +46,13 @@ import kotlinx.coroutines.launch
 
 class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
     ActivityScrapModifyBinding::inflate) {
+
     private val imageResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ){
         result ->
         if (result.resultCode == RESULT_OK) {
+
             val imageUri = result.data?.data
             imageUri?.let {
                 try {
@@ -76,6 +79,7 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
                     showCustomToast("이미지를 가져오는데 실패했습니다.")
                 }
             }
+
         }
     }
     lateinit var dlg: Dialog
@@ -300,9 +304,22 @@ class ScrapModifyActivity : BaseActivity<ActivityScrapModifyBinding>(
         val readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
 
         if (readPermission == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
+            val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            ActivityCompat.requestPermissions(this, permissions, 100)
         } else {
+            val intent = Intent()
+            intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+
+            imageResult.launch(intent)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             val intent = Intent()
             intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             intent.type = "image/*"
