@@ -8,6 +8,10 @@ import retrofit2.create
 class MainRepository {
     private val mainService = ApplicationClass.sRetrofit.create<MainRetrofitInterface>()
 
+    // 마이페이지 로드
+    suspend fun getUser() =
+        mainService.getUser()
+
     // 스크랩 조회
     suspend fun getScrap(type: String? = null) =
         mainService.getScrap(type)

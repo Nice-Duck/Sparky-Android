@@ -1,15 +1,19 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.*
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
 import com.softsquared.niceduck.android.sparky.model.*
-import com.softsquared.niceduck.android.sparky.utill.BaseResponse
-import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
-import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
-import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.*
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.internal.wait
+import okio.BufferedSink
 
 class MyPageViewModel : ViewModel() {
     private val repository = MyPageRepository()
@@ -221,6 +225,48 @@ class MyPageViewModel : ViewModel() {
             }
         }
 
+    }
+
+    inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
+        override fun contentType(): MediaType = "image/jpeg".toMediaType()
+        override fun writeTo(sink: BufferedSink) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
+        }
+    }
+    var image: Bitmap? = null
+    var name: String = ""
+
+    // 프로필 수정
+    private val _userUpdateResponse = MutableSingleLiveData<UserResponse>()
+    val userUpdateResponse: SingleLiveData<UserResponse>
+        get() = _userUpdateResponse
+    private val _userUpdateFailure = MutableSingleLiveData<BaseResponse>()
+    val userUpdateFailure: SingleLiveData<BaseResponse>
+        get() = _userUpdateFailure
+
+    fun patchUser() {
+        viewModelScope.launch {
+            val formName= FormDataUtil.getBody("name", name)
+
+            val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
+            val bitmapMultipartBody: MultipartBody.Part? =
+                if (bitmapRequestBody == null) null
+                else MultipartBody.Part.createFormData("image", "sparky", bitmapRequestBody)
+
+
+            val response = repository.patchUser(formName,
+                bitmapMultipartBody
+            )
+
+            if (response.isSuccessful) {
+                response.body()?.let { _userUpdateResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _userUpdateFailure.setValue(error) }
+                }
+            }
+        }
     }
 
 

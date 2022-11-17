@@ -1,6 +1,7 @@
 package com.softsquared.niceduck.android.sparky.model
 
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
+import okhttp3.MultipartBody
 import org.jsoup.Connection
 import retrofit2.Call
 import retrofit2.Callback
@@ -16,7 +17,11 @@ interface MyPageRetrofitInterface {
     @POST("/api/v1/token")
     suspend fun postReissueAccessToken(@Header("Authorization") token: String?): Response<TokenResponse>
 
-    // 프로필 수정 (보류)
+    // 프로필 수정
+    // 스크랩 수정
+    @Multipart
+    @PATCH("/api/v1/users")
+    suspend fun patchUser(@Part name: MultipartBody.Part, @Part image: MultipartBody.Part?): Response<UserResponse>
 
     // 마이페이지 로드
     @GET("/api/v1/users")

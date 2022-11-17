@@ -29,6 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         super.onResume()
         mainViewModel.getMyScrapLoad()
         mainViewModel.getHomeScrapLoad()
+        mainViewModel.getUser()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +72,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
                 }
             }
         })
+
 
 
         binding.mainRefresh.setOnRefreshListener {

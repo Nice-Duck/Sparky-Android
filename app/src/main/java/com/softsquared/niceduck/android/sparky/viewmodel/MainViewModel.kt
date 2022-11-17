@@ -296,6 +296,29 @@ class MainViewModel() : ViewModel(), ItemEvent {
         getTagLastLoad()
     }
 
+    private val _userResponse = MutableSingleLiveData<UserResponse>()
+    val userResponse: SingleLiveData<UserResponse>
+        get() = _userResponse
+
+    private val _userFailure = MutableSingleLiveData<BaseResponse>()
+    val userFailure: SingleLiveData<BaseResponse>
+        get() = _userFailure
+
+    fun getUser() {
+        viewModelScope.launch {
+            val response = mainRepository.getUser()
+
+            if (response.isSuccessful) {
+                response.body()?.let { _userResponse.setValue(it) }
+            } else {
+                response.errorBody()?.let {
+                    val errorBody = NetworkUtil.getErrorResponse(it)
+                    errorBody?.let { error -> _userFailure.setValue(error) }
+                }
+            }
+        }
+    }
+
     fun randomColor(): String {
         return tagColorList.shuffled()[0]
     }

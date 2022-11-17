@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 
 import android.os.Bundle
+import android.util.Log
 
 import android.view.View
 import android.view.Window
@@ -31,14 +32,52 @@ import kotlinx.coroutines.launch
 class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding::inflate) {
     lateinit var loadingDlg: Dialog
     private val myPageViewModel: MyPageViewModel by viewModels()
+
+    override fun onResume() {
+        super.onResume()
+        myPageViewModel.getUser()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        var profileImg: String? = null
+        var profileName: String? = null
         loadingDlg = Dialog(this)
         loadingDlg.setCancelable(false)
         loadingDlg.requestWindowFeature(Window.FEATURE_NO_TITLE)
         loadingDlg.setContentView(R.layout.dialog_lottie_loading)
         loadingDlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+
+        myPageViewModel.userResponse.observe(this) { response ->
+            when (response.code) {
+                "0000" -> {
+                    binding.myPageTxtName.text = response.result.nickName
+                    try {
+                        profileImg = response.result.icon
+                        profileName = response.result.nickName
+                        if (!response.result.icon.isNullOrEmpty()) {
+                            Glide.with(this).load(response.result.icon).centerCrop().into(binding.myPageImg)
+                        }
+                    } catch (e: Exception) {
+                        Log.d("test", e.message.toString())
+                    }
+                }
+            }
+        }
+
+        myPageViewModel.userFailure.observe(this) {
+            when (it.code) {
+                "U000" -> {
+                    lifecycleScope.launch {
+                        myPageViewModel.postReissueAccessToken()
+                        myPageViewModel.getUser()
+                    }
+                } else -> {
+                it.message?.let { it1 -> showCustomToast(it1) }
+            }
+            }
+        }
 
         binding.myPageLLMyTags.setOnClickListener {
             val intent = Intent(this, TagListActivity::class.java)
@@ -52,26 +91,10 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
 
         binding.myPageLLProfileSetting.setOnClickListener {
             val intent = Intent(this, ProfileModifyActivity::class.java)
+            intent.putExtra("img", profileImg)
+            intent.putExtra("name", profileName)
             startActivity(intent)
         }
-
-/*        // Registers a photo picker activity launcher in single-select mode.
-        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            // Callback is invoked after the user selects a media item or closes the
-            // photo picker.
-            if (uri != null) {
-                Log.d("PhotoPicker", "Selected URI: $uri")
-                Glide.with(this).load(uri).centerCrop().into(binding.myPageImg)
-            } else {
-                Log.d("PhotoPicker", "No media selected")
-            }
-        }*/
-/*
-
-        binding.myPageImg.setOnClickListener {
-            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-        }
-*/
 
         myPageViewModel.reissueAccessTokenResponse.observe(this) { response ->
             when (response.code) {
