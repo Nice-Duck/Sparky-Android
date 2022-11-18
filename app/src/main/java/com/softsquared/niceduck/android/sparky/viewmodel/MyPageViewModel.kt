@@ -232,7 +232,7 @@ class MyPageViewModel : ViewModel() {
             val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
             val bitmapMultipartBody: MultipartBody.Part? =
                 if (bitmapRequestBody == null) null
-                else MultipartBody.Part.createFormData("image", "sparky", bitmapRequestBody)
+                else MultipartBody.Part.createFormData("icon", "sparky", bitmapRequestBody)
 
 
             val response = repository.patchUser(formName,
