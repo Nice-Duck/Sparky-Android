@@ -53,7 +53,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 // state changed
-                when(newState) {
+                when (newState) {
 
                     // 사용자가 BottomSheet를 위나 아래로 드래그 중인 상태
                     BottomSheetBehavior.STATE_DRAGGING -> { }
