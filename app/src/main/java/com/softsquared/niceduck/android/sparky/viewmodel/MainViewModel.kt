@@ -154,20 +154,24 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 마이 화면 스크랩 검색
     fun postScrapSearch() {
         viewModelScope.launch {
-            val response = mainRepository.postScrapSearch(
-                ScrapSearchRequest(
-                tags = tags,
-                title = searchTitle,
-                type = searchType
-            )
-            )
+            try {
+                val response = mainRepository.postScrapSearch(
+                    ScrapSearchRequest(
+                        tags = tags,
+                        title = searchTitle,
+                        type = searchType
+                    )
+                )
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _myScrapSearchResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _myScrapSearchResponse.setValue(it)
+                    }
+                } else {
+                    _myScrapSearchFailure.setValue(response.code())
                 }
-            } else {
-                _myScrapSearchFailure.setValue(response.code())
+            } catch (e: Exception) {
+                Log.d("test", e.message.toString())
             }
         }
     }
