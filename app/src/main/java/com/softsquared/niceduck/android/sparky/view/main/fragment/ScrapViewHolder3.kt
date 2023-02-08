@@ -20,7 +20,7 @@ import com.softsquared.niceduck.android.sparky.view.web.WebViewActivity
 import java.io.Serializable
 
 class ScrapViewHolder3(
-    private val binding: ScrapItem3Binding
+    private val binding: ScrapItem3Binding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Scrap) {
@@ -31,13 +31,19 @@ class ScrapViewHolder3(
 
 
             if (item.imgUrl != null && item.imgUrl != "") {
-                Glide.with(itemView.context).load(item.imgUrl).error(R.drawable.scrap_default_img3).transform(
-                    CenterCrop(), RoundedCorners(8)
-                ).into(scrapItem3Img)
+                Glide.with(itemView.context).load(item.imgUrl)
+                    .error(R.drawable.scrap_default_img3)
+                    .skipMemoryCache(true)
+                    .dontAnimate()
+                    .transform(
+                        CenterCrop(), RoundedCorners(8)
+                    ).into(scrapItem3Img)
             } else {
-                Glide.with(itemView.context).load(R.drawable.scrap_default_img3).transform(
-                    CenterCrop(), RoundedCorners(8)
-                ).into(scrapItem3Img)
+                Glide.with(itemView.context).load(R.drawable.scrap_default_img3)
+                    .skipMemoryCache(true)
+                    .dontAnimate().transform(
+                        CenterCrop(), RoundedCorners(8)
+                    ).into(scrapItem3Img)
             }
 
             val tags = item.tagsResponse
