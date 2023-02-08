@@ -33,7 +33,6 @@ class ScrapViewHolder2(
                 Glide.with(itemView.context).load(item.imgUrl)
                     .placeholder(R.drawable.scrap_default_img1)
                     .error(R.drawable.scrap_default_img1)
-                    .skipMemoryCache(true)
                     .dontAnimate()
                     .transform(
                         CenterCrop(), RoundedCorners(8)
@@ -41,7 +40,6 @@ class ScrapViewHolder2(
             } else {
                 Glide.with(itemView.context).load(R.drawable.scrap_default_img1)
                     .placeholder(R.drawable.scrap_default_img1)
-                    .skipMemoryCache(true)
                     .dontAnimate().transform(
                         CenterCrop(), RoundedCorners(8)
                     ).into(scrapItem2Img)
