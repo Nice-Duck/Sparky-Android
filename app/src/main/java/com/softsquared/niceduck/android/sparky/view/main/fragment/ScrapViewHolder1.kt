@@ -30,6 +30,7 @@ class ScrapViewHolder1(
             scrapItem1TxtSummary.text = item.subTitle
             if (item.imgUrl != null && item.imgUrl != "") {
                 Glide.with(itemView.context).load(item.imgUrl)
+                    .placeholder(R.drawable.scrap_default_img1)
                     .error(R.drawable.scrap_default_img1)
                     .skipMemoryCache(true)
                     .dontAnimate()
@@ -38,6 +39,7 @@ class ScrapViewHolder1(
                     ).into(scrapItem1Img)
             } else {
                 Glide.with(itemView.context).load(R.drawable.scrap_default_img1)
+                    .placeholder(R.drawable.scrap_default_img1)
                     .skipMemoryCache(true)
                     .dontAnimate().transform(
                         CenterCrop(), RoundedCorners(8)

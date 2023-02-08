@@ -31,13 +31,16 @@ class ScrapViewHolder4(
 
 
             if (item.imgUrl != null && item.imgUrl != "") {
-                Glide.with(itemView.context).load(item.imgUrl).error(R.drawable.scrap_default_img1)
+                Glide.with(itemView.context).load(item.imgUrl)
+                    .error(R.drawable.scrap_default_img1)
+                    .placeholder(R.drawable.scrap_default_img1)
                     .skipMemoryCache(true)
                     .dontAnimate().transform(
                         CenterCrop(), RoundedCorners(8)
                     ).into(scrapItem4Img)
             } else {
                 Glide.with(itemView.context).load(R.drawable.scrap_default_img1)
+                    .placeholder(R.drawable.scrap_default_img1)
                     .skipMemoryCache(true)
                     .dontAnimate().transform(
                         CenterCrop(), RoundedCorners(8)
