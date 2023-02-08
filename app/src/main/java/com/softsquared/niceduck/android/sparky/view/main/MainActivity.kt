@@ -27,54 +27,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onResume() {
         super.onResume()
+        mainViewModel.getUser()
         mainViewModel.getMyScrapLoad()
         mainViewModel.getHomeScrapLoad()
-        mainViewModel.getUser()
         mainViewModel.getTagLastLoad()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val bottomSheetParent = findViewById<LinearLayout>(com.softsquared.niceduck.android.sparky.R.id.bottom_sheet_parent)
-        val mBottomSheetBehaviour = BottomSheetBehavior.from(bottomSheetParent)
-        mBottomSheetBehaviour.peekHeight = 0
-        mBottomSheetBehaviour.skipCollapsed = true
-        mBottomSheetBehaviour.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // slideOffset 범위: -1.0 ~ 1.0
-                // -1.0 HIDDEN, 0.0 COLLAPSED, 1.0 EXPANDED
-                if (slideOffset > 0.0) {
-
-                } else {
-
-                }
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                // state changed
-                when (newState) {
-
-                    // 사용자가 BottomSheet를 위나 아래로 드래그 중인 상태
-                    BottomSheetBehavior.STATE_DRAGGING -> { }
-
-                    // 드래그 동작 후 BottomSheet가 특정 높이로 고정될 때의 상태
-                    // SETTLING 후 EXPANDED, SETTLING 후 COLLAPSED, SETTLING 후 HIDDEN
-                    BottomSheetBehavior.STATE_SETTLING -> { }
-
-                    // 최대 높이로 보이는 상태
-                    BottomSheetBehavior.STATE_EXPANDED -> { }
-
-                    // peek 높이 만큼 보이는 상태
-                    BottomSheetBehavior.STATE_COLLAPSED -> { }
-
-                    // 숨김 상태
-                    BottomSheetBehavior.STATE_HIDDEN -> { }
-                }
-            }
-        })
-
-
 
         binding.mainRefresh.setOnRefreshListener {
             mainViewModel.getMyScrapLoad()
@@ -89,7 +49,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         binding.mainImgScrapAddBtn.setOnClickListener {
             val bottomDialogFragment = ScrapAddBottomDialogFragment()
             bottomDialogFragment.show(supportFragmentManager, bottomDialogFragment.tag)
-            //mBottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
 
@@ -124,7 +83,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
         }
 
         val navController = navHostFragment.navController
-        findViewById<BottomNavigationView>(com.softsquared.niceduck.android.sparky.R.id.main_bottomNavigationView)
+        findViewById<BottomNavigationView>(R.id.main_bottomNavigationView)
             .setupWithNavController(navController)
     }
 }

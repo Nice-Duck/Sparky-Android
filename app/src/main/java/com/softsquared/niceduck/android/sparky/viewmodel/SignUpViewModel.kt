@@ -1,5 +1,6 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,15 +35,19 @@ class SignUpViewModel : ViewModel() {
 
     fun getDuplicationEmailCheck() {
         viewModelScope.launch {
-            val response = repository.getDuplicationEmailCheck(email)
+            try {
+                val response = repository.getDuplicationEmailCheck(email)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _duplicationEmailCheckResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _duplicationEmailCheckFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _duplicationEmailCheckResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _duplicationEmailCheckFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -58,15 +63,19 @@ class SignUpViewModel : ViewModel() {
 
     fun getDuplicationNameCheck() {
         viewModelScope.launch {
-            val response = repository.getDuplicationNameCheck(name)
+            try {
+                val response = repository.getDuplicationNameCheck(name)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _duplicationNameCheckResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _duplicationNameCheckFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _duplicationNameCheckResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _duplicationNameCheckFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -82,15 +91,19 @@ class SignUpViewModel : ViewModel() {
 
     fun postCertificationSend() {
         viewModelScope.launch {
-            val response = repository.postCertificationSend(SignUpCertificationSendRequest(email))
+            try {
+                val response = repository.postCertificationSend(SignUpCertificationSendRequest(email))
 
-            if (response.isSuccessful) {
-                response.body()?.let { _certificationSendResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _certificationSendFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _certificationSendResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _certificationSendFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -106,15 +119,19 @@ class SignUpViewModel : ViewModel() {
 
     fun postCertificationCheck(number: String) {
         viewModelScope.launch {
-            val response = repository.postCertificationCheck(SignUpCertificationCheckRequest(email, number))
+            try {
+                val response = repository.postCertificationCheck(SignUpCertificationCheckRequest(email, number))
 
-            if (response.isSuccessful) {
-                response.body()?.let { _certificationCheckResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _certificationCheckFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _certificationCheckResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _certificationCheckFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -130,21 +147,25 @@ class SignUpViewModel : ViewModel() {
 
     fun postSignUp() {
         viewModelScope.launch {
-            val response = repository.postSignUp(
-                SignUpRequest(
-                    email,
-                    name,
-                    pwd
+            try {
+                val response = repository.postSignUp(
+                    SignUpRequest(
+                        email,
+                        name,
+                        pwd
+                    )
                 )
-            )
 
-            if (response.isSuccessful) {
-                response.body()?.let { _signUpResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _signUpFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _signUpResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _signUpFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }

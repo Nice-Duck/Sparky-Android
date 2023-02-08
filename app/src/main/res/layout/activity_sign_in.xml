@@ -87,22 +87,6 @@
             android:textSize="12sp"
             android:text="@string/email_sign_up"/>
 
-        <ImageView
-            android:layout_gravity="center_vertical"
-            android:layout_width="1dp"
-            android:layout_height="14dp"
-            android:src="@drawable/center_line"
-            android:layout_marginHorizontal="10dp"/>
-
-        <TextView
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/sign_in_txt_find_pwd_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/password_find"/>
     </LinearLayout>
 
 </LinearLayout>

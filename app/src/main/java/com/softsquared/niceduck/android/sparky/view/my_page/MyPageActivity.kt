@@ -67,7 +67,7 @@ class MyPageActivity : BaseActivity<ActivityMyPageBinding>(ActivityMyPageBinding
                         profileImg = response.result.icon
                         profileName = response.result.nickName
                         if (!response.result.icon.isNullOrEmpty()) {
-                            Glide.with(this).load(response.result.icon).centerCrop().into(binding.myPageImg)
+                            Glide.with(this).load(response.result.icon).error(R.drawable.defult_profile).centerCrop().into(binding.myPageImg)
                         }
                     } catch (e: Exception) {
                         Log.d("test", e.message.toString())

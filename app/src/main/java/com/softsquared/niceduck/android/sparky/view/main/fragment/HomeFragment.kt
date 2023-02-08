@@ -40,14 +40,12 @@ class HomeFragment :
             it.clearFocus()
         }
 
-        mainViewModel.getUser()
-
         mainViewModel.userResponse.observe(viewLifecycleOwner) { response ->
             when (response.code) {
                 "0000" -> {
                     try {
                         if (!response.result.icon.isNullOrEmpty()) {
-                            Glide.with(this).load(response.result.icon).centerCrop().into(binding.homeImgMyPage)
+                            Glide.with(this).load(response.result.icon).error(R.drawable.defult_profile).centerCrop().into(binding.homeImgMyPage)
                         }
                     } catch (e: Exception) {
                         Log.d("test", e.message.toString())

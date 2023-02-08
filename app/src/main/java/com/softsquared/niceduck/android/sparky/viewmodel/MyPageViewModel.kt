@@ -28,15 +28,19 @@ class MyPageViewModel : ViewModel() {
 
     fun deleteWithdrawal() {
         viewModelScope.launch {
-            val response = repository.deleteWithdrawal()
+            try {
+                val response = repository.deleteWithdrawal()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _withdrawalResponse.setValue(it) }
-            } else {
+                if (response.isSuccessful) {
+                    response.body()?.let { _withdrawalResponse.setValue(it) }
+                } else {
                     response.errorBody()?.let {
                         val errorBody = NetworkUtil.getErrorResponse(it)
                         errorBody?.let { error -> _withdrawalFailure.setValue(error) }
                     }
+                }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -57,25 +61,29 @@ class MyPageViewModel : ViewModel() {
         editor.apply()
 
         val scope = viewModelScope.async {
-            val response = repository.postReissueAccessToken()
+            try {
+                val response = repository.postReissueAccessToken()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _reissueAccessTokenResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _reissueAccessTokenResponse.setValue(it)
 
+                    }
+                    1
+                } else {
+                    _reissueAccessTokenFailure.setValue(response.code())
+                    0
                 }
-                1
-            } else {
-                _reissueAccessTokenFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
                 0
             }
-
         }
         return scope.await()
     }
 
-    private val _userResponse = MutableSingleLiveData<UserResponse>()
-    val userResponse: SingleLiveData<UserResponse>
+    private val _userResponse = MutableLiveData<UserResponse>()
+    val userResponse: LiveData<UserResponse>
         get() = _userResponse
 
     private val _userFailure = MutableSingleLiveData<BaseResponse>()
@@ -84,15 +92,19 @@ class MyPageViewModel : ViewModel() {
 
     fun getUser() {
         viewModelScope.launch {
-            val response = repository.getUser()
+            try {
+                val response = repository.getUser()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _userResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _userFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _userResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _userFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -109,52 +121,61 @@ class MyPageViewModel : ViewModel() {
     var title: String? = null
     var contents: String? = null
     var email: String? = null
-    fun postInquiry() {
-        val request: InquiryRequest = InquiryRequest(contents!!, email!!, title!!)
-        viewModelScope.launch {
-            val response = repository.postInquiry(request)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _inquiryResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _inquiryFailure.setValue(error) }
+    fun postInquiry() {
+        val request = InquiryRequest(contents!!, email!!, title!!)
+        viewModelScope.launch {
+            try {
+                val response = repository.postInquiry(request)
+
+                if (response.isSuccessful) {
+                    response.body()?.let { _inquiryResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _inquiryFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
 
 
-    private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
-    val tagLastLoadResponse: SingleLiveData<TagLastLoadResponse>
+    private val _tagLastLoadResponse = MutableLiveData<TagLastLoadResponse>()
+    val tagLastLoadResponse: LiveData<TagLastLoadResponse>
         get() = _tagLastLoadResponse
-    private val _tagLastLoadFailure = MutableSingleLiveData<BaseResponse>()
-    val tagLastLoadFailure: SingleLiveData<BaseResponse>
+    private val _tagLastLoadFailure = MutableLiveData<BaseResponse>()
+    val tagLastLoadFailure: LiveData<BaseResponse>
         get() = _tagLastLoadFailure
 
     fun getTagLastLoad() {
         viewModelScope.launch {
-            val response = repository.getTagLastLoad()
+            try {
+                val response = repository.getTagLastLoad()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagLastLoadResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagLastLoadResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
 
 
 
-    private val _tagPatchResponse = MutableSingleLiveData<TagResponse>()
-    val tagPatchResponse: SingleLiveData<TagResponse>
+    private val _tagPatchResponse = MutableLiveData<TagResponse>()
+    val tagPatchResponse: LiveData<TagResponse>
         get() = _tagPatchResponse
-    private val _tagPatchFailure = MutableSingleLiveData<BaseResponse>()
-    val tagPatchFailure: SingleLiveData<BaseResponse>
+    private val _tagPatchFailure = MutableLiveData<BaseResponse>()
+    val tagPatchFailure: LiveData<BaseResponse>
         get() = _tagPatchFailure
 
     var patchTag: TagsResponse? = null
@@ -166,25 +187,29 @@ class MyPageViewModel : ViewModel() {
         }
         viewModelScope.launch {
             request?.let {
-                val response = repository.patchTag(request)
+                try {
+                    val response = repository.patchTag(request)
 
-                if (response.isSuccessful) {
-                    response.body()?.let { _tagPatchResponse.setValue(it) }
-                } else {
-                    response.errorBody()?.let {
-                        val errorBody = NetworkUtil.getErrorResponse(it)
-                        errorBody?.let { error -> _tagPatchFailure.setValue(error) }
+                    if (response.isSuccessful) {
+                        response.body()?.let { _tagPatchResponse.setValue(it) }
+                    } else {
+                        response.errorBody()?.let {
+                            val errorBody = NetworkUtil.getErrorResponse(it)
+                            errorBody?.let { error -> _tagPatchFailure.setValue(error) }
+                        }
                     }
+                } catch (e: Exception) {
+                    e.message?.let { it1 -> Log.d("test", it1) }
                 }
             }
         }
     }
 
-    private val _tagDeleteResponse = MutableSingleLiveData<BaseResponse>()
-    val tagDeleteResponse: SingleLiveData<BaseResponse>
+    private val _tagDeleteResponse = MutableLiveData<BaseResponse>()
+    val tagDeleteResponse: LiveData<BaseResponse>
         get() = _tagDeleteResponse
-    private val _tagDeleteFailure = MutableSingleLiveData<BaseResponse>()
-    val tagDeleteFailure: SingleLiveData<BaseResponse>
+    private val _tagDeleteFailure = MutableLiveData<BaseResponse>()
+    val tagDeleteFailure: LiveData<BaseResponse>
         get() = _tagDeleteFailure
 
     var deletePosition: Int? = null
@@ -193,15 +218,19 @@ class MyPageViewModel : ViewModel() {
     fun deleteTag() {
        deleteTagId?.let {
             viewModelScope.launch {
-                val response = repository.deleteTag(it)
+                try {
+                    val response = repository.deleteTag(it)
 
-                if (response.isSuccessful) {
-                    response.body()?.let { _tagDeleteResponse.setValue(it) }
-                } else {
-                    response.errorBody()?.let {
-                        val errorBody = NetworkUtil.getErrorResponse(it)
-                        errorBody?.let { error -> _tagDeleteFailure.setValue(error) }
+                    if (response.isSuccessful) {
+                        response.body()?.let { _tagDeleteResponse.setValue(it) }
+                    } else {
+                        response.errorBody()?.let {
+                            val errorBody = NetworkUtil.getErrorResponse(it)
+                            errorBody?.let { error -> _tagDeleteFailure.setValue(error) }
+                        }
                     }
+                } catch (e: Exception) {
+                    e.message?.let { it1 -> Log.d("test", it1) }
                 }
             }
         }
@@ -227,25 +256,29 @@ class MyPageViewModel : ViewModel() {
 
     fun patchUser() {
         viewModelScope.launch {
-            val formName= FormDataUtil.getBody("name", name)
+            try {
+                val formName= FormDataUtil.getBody("name", name)
 
-            val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
-            val bitmapMultipartBody: MultipartBody.Part? =
-                if (bitmapRequestBody == null) null
-                else MultipartBody.Part.createFormData("icon", "sparky", bitmapRequestBody)
+                val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
+                val bitmapMultipartBody: MultipartBody.Part? =
+                    if (bitmapRequestBody == null) null
+                    else MultipartBody.Part.createFormData("icon", "sparky", bitmapRequestBody)
 
 
-            val response = repository.patchUser(formName,
-                bitmapMultipartBody
-            )
+                val response = repository.patchUser(formName,
+                    bitmapMultipartBody
+                )
 
-            if (response.isSuccessful) {
-                response.body()?.let { _userUpdateResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _userUpdateFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _userUpdateResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _userUpdateFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }

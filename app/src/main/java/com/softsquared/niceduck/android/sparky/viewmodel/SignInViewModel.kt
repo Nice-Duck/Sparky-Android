@@ -1,5 +1,6 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.softsquared.niceduck.android.sparky.model.*
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
@@ -25,22 +26,26 @@ class SignInViewModel : ViewModel() {
 
     fun postSignIn() {
         viewModelScope.launch {
-            val response = repository.postSignIn(
-                SignInRequest(
-                    email,
-                    pwd
+            try {
+                val response = repository.postSignIn(
+                    SignInRequest(
+                        email,
+                        pwd
+                    )
                 )
-            )
 
-            if (response.isSuccessful) {
-                response.body()?.let { _signInResponse.setValue(it) }
-            } else {
+                if (response.isSuccessful) {
+                    response.body()?.let { _signInResponse.setValue(it) }
+                } else {
                     response.errorBody()?.let {
                         val errorBody = NetworkUtil.getErrorResponse(it)
                         errorBody?.let { error -> _signInFailure.setValue(error) }
                     }
 
 
+                }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }

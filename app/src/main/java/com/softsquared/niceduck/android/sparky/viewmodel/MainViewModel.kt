@@ -33,14 +33,18 @@ class MainViewModel() : ViewModel(), ItemEvent {
 
     fun getScrapValidation(url: String) {
         viewModelScope.launch {
-            val response =  mainRepository.getScrapValidation(url)
+            try {
+                val response =  mainRepository.getScrapValidation(url)
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _scrapValidationResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _scrapValidationResponse.setValue(it)
+                    }
+                } else {
+                    _scrapValidationFailure.setValue(response.code())
                 }
-            } else {
-                _scrapValidationFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -83,12 +87,12 @@ class MainViewModel() : ViewModel(), ItemEvent {
     val homeScrapLoadResponse: LiveData<ScrapRoadResponse>
         get() = _homeScrapLoadResponse
 
-    private val _homeScrapLoadFailure = MutableLiveData<Int>()
-    val homeScrapLoadFailure: LiveData<Int>
+    private val _homeScrapLoadFailure = MutableSingleLiveData<Int>()
+    val homeScrapLoadFailure: SingleLiveData<Int>
         get() = _homeScrapLoadFailure
 
-    private val _homeScrapSearchResponse: MutableSingleLiveData<SearchScrapResponse> = MutableSingleLiveData()
-    val homeScrapSearchResponse: SingleLiveData<SearchScrapResponse>
+    private val _homeScrapSearchResponse: MutableLiveData<SearchScrapResponse> = MutableLiveData()
+    val homeScrapSearchResponse: LiveData<SearchScrapResponse>
         get() = _homeScrapSearchResponse
 
     private val _homeScrapSearchFailure = MutableSingleLiveData<Int>()
@@ -103,19 +107,23 @@ class MainViewModel() : ViewModel(), ItemEvent {
         editor.apply()
 
         val scope = viewModelScope.async {
-            val response = mainRepository.postReissueAccessToken()
+            try {
+                val response = mainRepository.postReissueAccessToken()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _reissueAccessTokenResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _reissueAccessTokenResponse.setValue(it)
 
+                    }
+                    1
+                } else {
+                    _reissueAccessTokenFailure.setValue(response.code())
+                    0
                 }
-                1
-            } else {
-                _reissueAccessTokenFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
                 0
             }
-
         }
         return scope.await()
     }
@@ -124,14 +132,18 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 홈 화면 스크랩 조회
     fun getHomeScrapLoad() {
         viewModelScope.launch {
-            val response = mainRepository.getScrap()
+            try {
+                val response = mainRepository.getScrap()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _homeScrapLoadResponse.value = response.body()
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _homeScrapLoadResponse.value = response.body()
+                    }
+                } else {
+                    _homeScrapLoadFailure.setValue(response.code())
                 }
-            } else {
-                _homeScrapLoadFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -139,14 +151,18 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 마이 화면 스크랩 조회
     fun getMyScrapLoad() {
         viewModelScope.launch {
-            val response = mainRepository.getScrap("1")
+            try {
+                val response = mainRepository.getScrap("1")
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _myScrapLoadResponse.value = it
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _myScrapLoadResponse.value = it
+                    }
+                } else {
+                    _myScrapLoadFailure.setValue(response.code())
                 }
-            } else {
-                _myScrapLoadFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -184,21 +200,28 @@ class MainViewModel() : ViewModel(), ItemEvent {
     fun postHomeScrapSearch() {
         viewModelScope.launch {
             Log.d("테스트", "$homeSearchTitle, $homeSearchType")
-            val response = mainRepository.postScrapSearch(
-                ScrapSearchRequest(
-                    tags = null,
-                    title = homeSearchTitle,
-                    type = homeSearchType
-                )
-            )
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _homeScrapSearchResponse.setValue(it)
+            try {
+                val response = mainRepository.postScrapSearch(
+                    ScrapSearchRequest(
+                        tags = null,
+                        title = homeSearchTitle,
+                        type = homeSearchType
+                    )
+                )
+
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _homeScrapSearchResponse.setValue(it)
+                    }
+                } else {
+                    _homeScrapSearchFailure.setValue(response.code())
                 }
-            } else {
-                _homeScrapSearchFailure.setValue(response.code())
+
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
+
         }
     }
 
@@ -252,15 +275,19 @@ class MainViewModel() : ViewModel(), ItemEvent {
     // 태그 저장
     fun postTagSave(request: TagRequest) {
         viewModelScope.launch {
-            val response = scrapTemplateRepository.postTagSave(request)
+            try {
+                val response = scrapTemplateRepository.postTagSave(request)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagSaveResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagSaveFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagSaveResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagSaveFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -277,21 +304,24 @@ class MainViewModel() : ViewModel(), ItemEvent {
 
     fun getTagLastLoad() {
         viewModelScope.launch {
-            val response = scrapTemplateRepository.getTagLastLoad()
+            try {
+                val response = scrapTemplateRepository.getTagLastLoad()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagLastLoadResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagLastLoadResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
 
     init {
-
         val initTags = ArrayList<TagsResponse>()
 
         scrapTemplateRecyclerviewAdapter = MyTagRecyclerviewAdapter(this) // 템플릿 화면 어댑터 생성
@@ -300,25 +330,29 @@ class MainViewModel() : ViewModel(), ItemEvent {
         getTagLastLoad()
     }
 
-    private val _userResponse = MutableSingleLiveData<UserResponse>()
-    val userResponse: SingleLiveData<UserResponse>
+    private val _userResponse = MutableLiveData<UserResponse>()
+    val userResponse: LiveData<UserResponse>
         get() = _userResponse
 
-    private val _userFailure = MutableSingleLiveData<BaseResponse>()
-    val userFailure: SingleLiveData<BaseResponse>
+    private val _userFailure = MutableLiveData<BaseResponse>()
+    val userFailure: LiveData<BaseResponse>
         get() = _userFailure
 
     fun getUser() {
         viewModelScope.launch {
-            val response = mainRepository.getUser()
+            try {
+                val response = mainRepository.getUser()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _userResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _userFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _userResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _userFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
@@ -26,15 +27,19 @@ class ScrapDetailViewModel: ViewModel() {
 
     fun getDeclaration(request: String) {
         viewModelScope.launch {
-            val response = scrapDetailRepository.getDeclaration(request)
+            try {
+                val response = scrapDetailRepository.getDeclaration(request)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _declarationResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _declarationFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _declarationResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _declarationFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -51,12 +56,16 @@ class ScrapDetailViewModel: ViewModel() {
 
     fun deleteScrap(scrapId: String) {
         viewModelScope.launch {
-            val response = scrapDetailRepository.deleteScrap(scrapId)
+            try {
+                val response = scrapDetailRepository.deleteScrap(scrapId)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _scrapDeleteResponse.setValue(it) }
-            } else {
-                _scrapDeleteFailure.setValue(response.code())
+                if (response.isSuccessful) {
+                    response.body()?.let { _scrapDeleteResponse.setValue(it) }
+                } else {
+                    _scrapDeleteFailure.setValue(response.code())
+                }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
 
 
@@ -79,19 +88,23 @@ class ScrapDetailViewModel: ViewModel() {
         editor.apply()
 
         val scope = viewModelScope.async {
-            val response = scrapDetailRepository.postReissueAccessToken()
+            try {
+                val response = scrapDetailRepository.postReissueAccessToken()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _reissueAccessTokenResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _reissueAccessTokenResponse.setValue(it)
 
+                    }
+                    1
+                } else {
+                    _reissueAccessTokenFailure.setValue(response.code())
+                    0
                 }
-                1
-            } else {
-                _reissueAccessTokenFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
                 0
             }
-
         }
         return scope.await()
     }
