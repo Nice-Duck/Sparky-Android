@@ -1,12 +1,16 @@
 package com.softsquared.niceduck.android.sparky.view.main
 
+
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
@@ -23,14 +27,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>(ActivityMainBinding::infl
 
     override fun onResume() {
         super.onResume()
+        mainViewModel.getUser()
         mainViewModel.getMyScrapLoad()
         mainViewModel.getHomeScrapLoad()
+        mainViewModel.getTagLastLoad()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
 
         binding.mainRefresh.setOnRefreshListener {
             mainViewModel.getMyScrapLoad()

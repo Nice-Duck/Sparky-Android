@@ -31,6 +31,9 @@
             android:layout_marginTop="20dp">
 
             <ImageView
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 android:id="@+id/scrap_modify_img_back"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -68,6 +71,9 @@
             >
 
             <ImageView
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_marginTop="5dp"
                 android:layout_gravity="top"
                 android:id="@+id/scrap_modify_img_thumbnail"

@@ -2,6 +2,8 @@ package com.softsquared.niceduck.android.sparky.config
 
 import android.app.Application
 import android.content.SharedPreferences
+import com.google.gson.GsonBuilder
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sRetrofit
 import com.softsquared.niceduck.android.sparky.model.AuthRepository
 import com.softsquared.niceduck.android.sparky.utill.BaseResponse
 import okhttp3.OkHttpClient
@@ -45,10 +47,12 @@ class ApplicationClass : Application() {
 
         // sRetrofit 이라는 전역변수에 API url, 인터셉터, Gson을 넣어주고 빌드해주는 코드
         // 이 전역변수로 http 요청을 서버로 보내면 됩니다.
+
+        val gson = GsonBuilder().setLenient().create()
         sRetrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }
 }

@@ -18,11 +18,8 @@ import com.softsquared.niceduck.android.sparky.databinding.FragmentSignUpInputNa
 import com.softsquared.niceduck.android.sparky.utill.BaseFragment
 import com.softsquared.niceduck.android.sparky.view.sign_up.SignUpSuccessActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.SignUpViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
 import java.util.regex.Pattern
 
 class SignUpInputNameFragment :

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="스피너">
+        <item><font fgcolor='#616161'>수정하기</font></item>
+        <item><font fgcolor='#FF7143'>삭제하기</font></item>
+        <item><font fgcolor='#616161'> </font></item>
+    </string-array>
+
+</resources>

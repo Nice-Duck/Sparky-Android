@@ -15,6 +15,9 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/scrap_bottom_dialog_img_back_btn"
         android:layout_width="24dp"
         android:layout_height="24dp"

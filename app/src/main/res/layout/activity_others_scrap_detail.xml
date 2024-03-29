@@ -35,6 +35,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -169,6 +172,9 @@
                 android:id="@+id/others_scrap_detail_txt_scrap_add"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/scrap_add"/>
@@ -184,6 +190,9 @@
                 android:id="@+id/others_scrap_detail_txt_share"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share"/>
@@ -199,9 +208,32 @@
                 android:id="@+id/others_scrap_detail_txt_url_copy"
                 android:textColor="@color/black"
                 android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/url_copy"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="20dp"
+            android:padding="12dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/template_background">
+            <TextView
+                android:id="@+id/others_scrap_detail_txt_declaration"
+                android:textColor="@color/sparky_orange"
+                android:textSize="12sp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="신고하기"/>
         </LinearLayout>
 
     </LinearLayout>

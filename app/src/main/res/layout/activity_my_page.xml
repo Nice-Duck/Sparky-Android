@@ -12,9 +12,12 @@
     android:paddingHorizontal="20dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp">
+    android:layout_marginTop="20dp">
 
     <ImageView
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
         android:id="@+id/my_page_img_back"
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -33,19 +36,22 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 <de.hdodenhof.circleimageview.CircleImageView
+    android:focusable="true"
+    android:clickable="true"
     android:layout_marginTop="45dp"
     android:layout_marginBottom="12dp"
     android:id="@+id/my_page_img"
     android:layout_gravity="center_horizontal"
     android:layout_width="84dp"
-    android:layout_height="84dp"
-    android:src="@color/gray_400"/>
+    android:layout_height="84dp" />
 
 <TextView
     android:layout_marginBottom="36dp"
@@ -53,6 +59,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="14sp"
+    android:layout_gravity="center_horizontal"
     android:textColor="@color/black"
     android:textStyle="bold"/>
 
@@ -64,6 +71,9 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_profile_setting"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -77,6 +87,7 @@
             android:text="@string/profile_setting"
             android:textColor="@color/black"
             android:textSize="12sp" />
+
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -90,6 +101,9 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_my_tags"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
@@ -115,23 +129,47 @@
         android:layout_marginBottom="15dp"
         android:background="@color/gray_300"/>
     <LinearLayout
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_service_setting"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
+            android:id="@+id/my_page_txt_inquiry"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/setting"/>
+            android:text="문의하기"/>
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow"/>
     </LinearLayout>
+
+    <View
+        android:visibility="gone"
+        android:layout_marginVertical="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="15dp"
+        android:background="@color/gray_300"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/my_page_LL_profile_share"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/profile_share"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
 </LinearLayout>
 
 <LinearLayout
@@ -143,12 +181,15 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_center"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="고객센터"/>
+        android:text="약관 및 정책"/>
 
     <View
         android:layout_marginVertical="12dp"
@@ -158,12 +199,15 @@
         android:background="@color/gray_300"/>
 
     <TextView
-        android:id="@+id/my_page_LL_profile_share"
+        android:id="@+id/my_page_txt_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="현재 버전 1.0.0"
         android:textColor="@color/black"
-        android:textSize="12sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/profile_share"/>
+        android:textSize="12sp" />
 
     <View
         android:layout_marginVertical="12dp"
@@ -173,10 +217,13 @@
         android:background="@color/gray_300"/>
 
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_logout"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logout"/>
 </LinearLayout>
@@ -190,10 +237,13 @@
     android:orientation="vertical"
     android:background="@drawable/template_background">
     <TextView
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:id="@+id/my_page_LL_withdraw"
         android:textColor="@color/sparky_orange"
         android:textSize="12sp"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/withdraw"/>
 </LinearLayout>

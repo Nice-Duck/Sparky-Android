@@ -13,9 +13,13 @@ class ScrapTemplateViewHolder(
 
     fun bind(item: TagsResponse) {
         with(binding) {
-            tagItemLL.backgroundTintList = ColorStateList.valueOf(Color.parseColor(item.color))
+            try {
+                tagItemLL.backgroundTintList = ColorStateList.valueOf(Color.parseColor(item.color))
+            } catch (e: Exception) {
+                tagItemLL.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#DFDFDF"))
+            }
             tagItemTxt.text = item.name
-            tagItemImg.setOnClickListener {
+            tagItemLL.setOnClickListener {
                 onItemClick(adapterPosition)
             }
         }

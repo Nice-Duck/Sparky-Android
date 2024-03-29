@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="100dp"
     android:padding="20dp"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    android:background="@drawable/bottom_dialog_background"
     android:orientation="vertical">
 
 
@@ -16,6 +14,9 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
             android:id="@+id/scrap_add_bottom_dialog_img_back_btn"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -58,6 +59,7 @@
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="15sp" />
+
     <TextView
         android:id="@+id/scrap_add_bottom_dialog_txt_validation"
         android:visibility="gone"

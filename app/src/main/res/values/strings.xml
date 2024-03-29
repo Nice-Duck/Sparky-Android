@@ -21,7 +21,7 @@
     <string name="sign_up_success">회원가입이 완료되었어요</string>
     <string name="sign_up_success2">이제 로그인하여 Sparky를 이용해보세요</string>
     <string name="scrap_store">스크랩 저장</string>
-    <string name="tag_setting">추천할 태그</string>
+    <string name="tag_setting">추가할 태그</string>
     <string name="memo">메모</string>
     <string name="memo_input_request">메모를 입력하세요</string>
     <string name="store">저장하기</string>

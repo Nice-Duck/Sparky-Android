@@ -16,7 +16,6 @@ class TagAddRecyclerviewAdapter(private val viewModel: ItemEvent) :
             TagItem2Binding.inflate(LayoutInflater.from(parent.context), parent, false),
             onItemClick = { position ->
                 viewModel.selectItem(position)
-                d("선택 테스트", position.toString())
             }
         )
     }

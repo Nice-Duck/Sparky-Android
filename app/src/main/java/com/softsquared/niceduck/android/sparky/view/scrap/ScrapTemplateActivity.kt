@@ -15,6 +15,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.flexbox.FlexDirection
@@ -113,7 +114,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
         }
 
         scrapTemplateViewModel.tagLastLoadFailure.observe(this) {
-            it.message?.let { it1 -> showCustomToast(it1) }
 
             when (it.code) {
                 "U000" -> {
@@ -121,6 +121,8 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                         scrapTemplateViewModel.postReissueAccessToken()
                         scrapTemplateViewModel.getTagLastLoad()
                     }
+                } else -> {
+                    it.message?.let { it1 -> showCustomToast(it1) }
                 }
             }
         }
@@ -152,7 +154,6 @@ class ScrapTemplateActivity : BaseActivity<ActivityScrapTemplateBinding>(Activit
                     it.message?.let { it1 -> showCustomToast(it1) }
                 }
             }
-
         }
 
 

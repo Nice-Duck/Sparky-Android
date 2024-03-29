@@ -19,9 +19,24 @@
         android:theme="@style/Theme.Sparky"
         tools:targetApi="31">
         <activity
-            android:name=".view.web.WebViewActivity"
+            android:name=".view.inquiry.InquiryActivity"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
             android:exported="false" />
+        <activity
+            android:name=".view.tag_list.TagListActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".view.profile_modify.ProfileModifyActivity"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name=".view.web.WebViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.my_page.MyPageActivity"
             android:exported="false"
@@ -79,8 +94,8 @@
         <activity
             android:name=".view.main.MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

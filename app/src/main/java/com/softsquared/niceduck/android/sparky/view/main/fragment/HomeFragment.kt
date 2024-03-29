@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.View.*
@@ -14,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentHomeBinding
 import com.softsquared.niceduck.android.sparky.model.Scrap
@@ -36,6 +38,33 @@ class HomeFragment :
         binding.homeLL.setOnClickListener {
             hideKeyboard()
             it.clearFocus()
+        }
+
+        mainViewModel.userResponse.observe(viewLifecycleOwner) { response ->
+            when (response.code) {
+                "0000" -> {
+                    try {
+                        if (!response.result.icon.isNullOrEmpty()) {
+                            Glide.with(this).load(response.result.icon).error(R.drawable.defult_profile).centerCrop().into(binding.homeImgMyPage)
+                        }
+                    } catch (e: Exception) {
+                        Log.d("test", e.message.toString())
+                    }
+                }
+            }
+        }
+
+        mainViewModel.userFailure.observe(viewLifecycleOwner) {
+            when (it.code) {
+                "U000" -> {
+                    lifecycleScope.launch {
+                        mainViewModel.postReissueAccessToken()
+                        mainViewModel.getUser()
+                    }
+                } else -> {
+                it.message?.let { it1 -> showCustomToast(it1) }
+            }
+            }
         }
 
 

@@ -1,19 +1,28 @@
 package com.softsquared.niceduck.android.sparky.viewmodel
 
+import android.graphics.Bitmap
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.softsquared.niceduck.android.sparky.config.ApplicationClass
+import com.softsquared.niceduck.android.sparky.config.ApplicationClass.Companion.sSharedPreferences
 import com.softsquared.niceduck.android.sparky.model.*
-import com.softsquared.niceduck.android.sparky.utill.BaseResponse
-import com.softsquared.niceduck.android.sparky.utill.MutableSingleLiveData
-import com.softsquared.niceduck.android.sparky.utill.NetworkUtil
-import com.softsquared.niceduck.android.sparky.utill.SingleLiveData
+import com.softsquared.niceduck.android.sparky.utill.*
 import com.softsquared.niceduck.android.sparky.view.scrap.ItemEvent
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateRecyclerviewAdapter
 import com.softsquared.niceduck.android.sparky.view.scrap.TagAddRecyclerviewAdapter
 import kotlinx.coroutines.*
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okio.BufferedSink
 import org.jsoup.Connection
+import java.io.File
 import kotlin.random.Random
 
 class ScrapTemplateViewModel : ViewModel(), ItemEvent {
@@ -70,15 +79,19 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     // 태그 저장
     fun postTagSave(request: TagRequest) {
         viewModelScope.launch {
-            val response = scrapTemplateRepository.postTagSave(request)
+            try {
+                val response = scrapTemplateRepository.postTagSave(request)
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagSaveResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagSaveFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagSaveResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagSaveFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -86,8 +99,8 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
 
 
     // 태그 조회
-    private val _tagLastLoadResponse = MutableSingleLiveData<TagLastLoadResponse>()
-    val tagLastLoadResponse: SingleLiveData<TagLastLoadResponse>
+    private val _tagLastLoadResponse = MutableLiveData<TagLastLoadResponse>()
+    val tagLastLoadResponse: LiveData<TagLastLoadResponse>
         get() = _tagLastLoadResponse
     private val _tagLastLoadFailure = MutableSingleLiveData<BaseResponse>()
     val tagLastLoadFailure: SingleLiveData<BaseResponse>
@@ -95,15 +108,19 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
 
     fun getTagLastLoad() {
         viewModelScope.launch {
-            val response = scrapTemplateRepository.getTagLastLoad()
+            try {
+                val response = scrapTemplateRepository.getTagLastLoad()
 
-            if (response.isSuccessful) {
-                response.body()?.let { _tagLastLoadResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _tagLastLoadResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _tagLastLoadFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
         }
     }
@@ -144,32 +161,36 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapStoreFailure: SingleLiveData<BaseResponse>
         get() = _scrapStoreFailure
 
-
     fun postScrapStore() {
         viewModelScope.launch {
-            val response = scrapTemplateRepository.postStoreScrap(
-                ScrapStoreRequest(
-                    img.getValue(),
-                    memo,
-                    url,
-                    tags,
-                    title.getValue(),
-                    subTitle.getValue()
+            try {
+                val response = scrapTemplateRepository.postStoreScrap(
+                    ScrapStoreRequest(
+                        img.getValue(),
+                        memo,
+                        url,
+                        tags,
+                        title.getValue(),
+                        subTitle.getValue()
+                    )
                 )
-            )
 
-            if (response.isSuccessful) {
-                response.body()?.let { _scrapStoreResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _scrapStoreFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _scrapStoreResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _scrapStoreFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
 
 
         }
     }
+
 
     // 스크랩 수정
     private val _scrapUpdateResponse = MutableSingleLiveData<BaseResponse>()
@@ -179,35 +200,57 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
     val scrapUpdateFailure: SingleLiveData<BaseResponse>
         get() = _scrapUpdateFailure
 
+
+    inner class BitmapRequestBody(private val bitmap: Bitmap) : RequestBody() {
+        override fun contentType(): MediaType = "image/jpeg".toMediaType()
+        override fun writeTo(sink: BufferedSink) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 99, sink.outputStream())
+        }
+    }
+    var image: Bitmap? = null
+
     fun patchScrap(scrapId: String) {
+        Log.d("수정 테스트", "$title, $subTitle, $memo, $url, $tags, $image")
         viewModelScope.launch {
-            val response = scrapTemplateRepository.patchScrap(
-                scrapId,
-                ScrapStoreRequest(
-                    img.getValue(),
-                    memo,
-                    url,
-                    tags,
-                    title.getValue(),
-                    subTitle.getValue()
+            try {
+                val formTitle = title.getValue()?.let { FormDataUtil.getBody("title", it) }
+                val formSubTitle = subTitle.getValue()?.let { FormDataUtil.getBody("subTitle", it) }
+                val formMemo = FormDataUtil.getBody("memo", memo)
+                val formUrl = FormDataUtil.getBody("scpUrl", url)
+                val stringTags = tags.toString().replace("[", "").replace("]", "")
+                val formTags = FormDataUtil.getBody("tags", stringTags)
+
+                val bitmapRequestBody = image?.let { BitmapRequestBody(it) }
+                val bitmapMultipartBody: MultipartBody.Part? =
+                    if (bitmapRequestBody == null) null
+                    else MultipartBody.Part.createFormData("image", "sparky", bitmapRequestBody)
+
+
+                val response = scrapTemplateRepository.patchScrap(
+                    scrapId,
+                    formTitle,
+                    formSubTitle,
+                    formMemo,
+                    formUrl,
+                    formTags,
+                    bitmapMultipartBody
                 )
-            )
 
-            if (response.isSuccessful) {
-                response.body()?.let { _scrapUpdateResponse.setValue(it) }
-            } else {
-                response.errorBody()?.let {
-                    val errorBody = NetworkUtil.getErrorResponse(it)
-                    errorBody?.let { error -> _scrapUpdateFailure.setValue(error) }
+                if (response.isSuccessful) {
+                    response.body()?.let { _scrapUpdateResponse.setValue(it) }
+                } else {
+                    response.errorBody()?.let {
+                        val errorBody = NetworkUtil.getErrorResponse(it)
+                        errorBody?.let { error -> _scrapUpdateFailure.setValue(error) }
+                    }
                 }
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
             }
-
-
         }
     }
 
     init {
-
         val tags = arrayListOf(TagsResponse("", "", 0))
 
         scrapTemplateRecyclerviewAdapter = ScrapTemplateRecyclerviewAdapter(this) // 템플릿 화면 어댑터 생성
@@ -262,27 +305,29 @@ class ScrapTemplateViewModel : ViewModel(), ItemEvent {
 
     // 토큰 갱신
     suspend fun postReissueAccessToken(): Int {
-        val editor = ApplicationClass.sSharedPreferences.edit()
+        val editor = sSharedPreferences.edit()
         editor.putString(ApplicationClass.X_ACCESS_TOKEN, null)
         editor.apply()
 
         val scope = viewModelScope.async {
-            val response = scrapTemplateRepository.postReissueAccessToken()
+            try {
+                val response = scrapTemplateRepository.postReissueAccessToken()
 
-            if (response.isSuccessful) {
-                response.body()?.let {
-                    _reissueAccessTokenResponse.setValue(it)
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        _reissueAccessTokenResponse.setValue(it)
 
+                    }
+                    1
+                } else {
+                    _reissueAccessTokenFailure.setValue(response.code())
+                    0
                 }
-                1
-            } else {
-                _reissueAccessTokenFailure.setValue(response.code())
+            } catch (e: Exception) {
+                e.message?.let { Log.d("test", it) }
                 0
             }
-
         }
         return scope.await()
     }
-
-
 }

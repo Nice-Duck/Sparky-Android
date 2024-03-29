@@ -1,13 +1,18 @@
 package com.softsquared.niceduck.android.sparky.view.detail
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.softsquared.niceduck.android.sparky.R
@@ -30,7 +35,6 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
         }
 
         scrapDetailViewModel.scrapDeleteResponse.observe(this) {
-            // TODO: 실패 코드 추가
             if (it.code == "0000") {
                 finish()
             }
@@ -43,19 +47,39 @@ class MyScrapDetailActivity : BaseActivity<ActivityMyScrapDetailBinding>(Activit
         val scrap: Scrap? = intent.getParcelableExtra("scrap")
 
         if (scrap != null) {
+
+            binding.myScrapDetailTxtShare.setOnClickListener {
+                val sendIntent: Intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    putExtra(Intent.EXTRA_TEXT, scrap.scpUrl)
+                    type = "text/plain"
+                }
+
+                val shareIntent = Intent.createChooser(sendIntent, null)
+                startActivity(shareIntent)
+            }
+
+            binding.myScrapDetailTxtUrlCopy.setOnClickListener {
+                val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip : ClipData = ClipData.newPlainText("url", scrap.scpUrl)
+                clipboardManager.setPrimaryClip(clip)
+                showCustomToast("URL이 복사되었습니다.")
+            }
+
             binding.myScrapDetailTxtModify.setOnClickListener {
                 val intent = Intent(this, ScrapModifyActivity::class.java)
                 intent.putExtra("scrap", scrap)
                 startActivity(intent)
+                finish()
             }
 
             binding.myScrapDetailTxtUrlDelete.setOnClickListener {
                 scrapDetailViewModel.deleteScrap(scrap.scrapId.toString())
             }
 
-            binding.myScrapDetailEditTxtTitle.text = scrap.title
-            binding.myScrapDetailTxtSummary.text = scrap.subTitle
-            binding.myScrapDetailEditTxtMemo.setText(scrap.memo)
+            binding.myScrapDetailEditTxtTitle.text = scrap.title?: ""
+            binding.myScrapDetailTxtSummary.text = scrap.subTitle?: ""
+            binding.myScrapDetailEditTxtMemo.setText(scrap.memo)?: ""
 
             if (scrap.imgUrl != null && scrap.imgUrl != "") {
                 Glide.with(this).load(scrap.imgUrl).transform(

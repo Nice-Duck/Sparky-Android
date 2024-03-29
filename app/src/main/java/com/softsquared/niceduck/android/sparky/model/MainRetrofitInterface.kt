@@ -5,6 +5,10 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface MainRetrofitInterface {
+    // 마이페이지 로드
+    @GET("/api/v1/users")
+    suspend fun getUser(): Response<UserResponse>
+
     // 스크랩 조회
     @GET("/api/v1/scraps")
     suspend fun getScrap(@Query("type") type: String? = null): Response<ScrapRoadResponse>

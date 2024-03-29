@@ -2,7 +2,6 @@ package com.softsquared.niceduck.android.sparky.view.main.fragment
 
 import android.app.Dialog
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,8 +18,6 @@ import com.softsquared.niceduck.android.sparky.R
 import com.softsquared.niceduck.android.sparky.databinding.FragmentScrapAddBottomDialogBinding
 import com.softsquared.niceduck.android.sparky.view.scrap.ScrapTemplateActivity
 import com.softsquared.niceduck.android.sparky.viewmodel.MainViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
