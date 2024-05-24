@@ -22,3 +22,69 @@
 - 백엔드 개발자 1명
 - iOS 개발자 1명
 - AOS 개발자 1명
+
+## 🔗 Link
+
+(현재 서비스 종료)
+
+[https://play.google.com/store/apps/details?id=com.softsquared.niceduck.android.sparky](https://play.google.com/store/apps/details?id=com.softsquared.niceduck.android.sparky) 
+
+## 📖 상세 내용
+
+### 로그인
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/3de22d3b-8254-4cf0-85fd-53b7e41e9549)
+    
+
+### 회원가입
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/c8a84836-5c57-4b6c-a812-57eb6ea076c9)
+
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/7624a34c-504a-41a5-8ab9-23448fdc8ac6)
+
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/f8543733-30ac-42c8-aa14-0a4b3f9710bd)
+
+
+### 링크 스크랩 기능
+링크 스크랩 기능은 사용자가 저장하고 싶은 웹페이지의 HTML 구조를 파싱((Jsoup 사용)하여 원하는 정보를 Sparky만의 저장 템플릿에 맞춰서 저장하고 표시하는 기능입니다.
+    
+스크랩 기능은 크게 두 가지입니다. 
+    
+
+### 저장하고 싶은 링크 uri를 입력하여 저장 
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/162737e5-b5fb-4bf2-9ff3-657ed0d99cf2)
+
+### 다른 앱에서 앱 사용 도중에 저장하고 싶은 웹페이지를 우리 앱에 공유하여 저장 (Android Sharesheet)
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/bda05c91-7b63-411f-95a1-7faa6693fdd5)
+
+### 스크랩 템플릿
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/565d0aab-b258-49f2-82a7-ff834424fa5e)
+
+### 사용자들이 저장한 스크랩 리스트 조회
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/8ce2f2b3-e390-4495-9ab6-da2456bfe36a)
+
+### Lottie 애니메이션 로딩
+![](https://github.com/GNUting/GNUting-Android/assets/86148926/6f3603f7-a19a-4327-8e43-280008450787)
+
+### shimmer library을 사용한 스켈레톤 UI
+<img width="330" src="https://github.com/GNUting/GNUting-Android/assets/86148926/a141adbf-f7ee-487a-912a-6ceb3b3886bf">
+    
+
+## ℹ️ 시연 영상
+
+[https://blog.naver.com/pck4949/222947888217](https://blog.naver.com/pck4949/222947888217)
+
+
+## 🛠️ 사용 기술 및 라이브러리
+
+- Kotlin
+- Coroutines
+- **MVVM 패턴**
+- Retrofit2
+- OkHttp3
+- ViewModel, LiveData, Room, Navigation Component
+- Glide
+- **Jsoup (HTML 파서 라이브러리)**
+- **Android Sharesheet**
+- **JWT - Access Token & Refresh Token**
+- **Lottie**
+- **shimmer library**
+
