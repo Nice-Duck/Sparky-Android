@@ -29,6 +29,11 @@
 
 [https://play.google.com/store/apps/details?id=com.softsquared.niceduck.android.sparky](https://play.google.com/store/apps/details?id=com.softsquared.niceduck.android.sparky) 
 
+## ℹ️ 시연 영상
+
+[https://blog.naver.com/pck4949/222947888217](https://blog.naver.com/pck4949/222947888217)
+
+
 ## 📖 상세 내용
 
 ### 로그인
@@ -66,13 +71,8 @@
 
 ### shimmer library을 사용한 스켈레톤 UI
 <img width="330" src="https://github.com/GNUting/GNUting-Android/assets/86148926/a141adbf-f7ee-487a-912a-6ceb3b3886bf">
+
     
-
-## ℹ️ 시연 영상
-
-[https://blog.naver.com/pck4949/222947888217](https://blog.naver.com/pck4949/222947888217)
-
-
 ## 🛠️ 사용 기술 및 라이브러리
 
 - Kotlin
